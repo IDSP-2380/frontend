@@ -1,4 +1,4 @@
-.calendarWrapper {
+.timeWrapper {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -6,7 +6,8 @@
   max-width: 15rem;
 }
 
-.calendarIcon {
+.alarmIcon {
   width: 24px;
   height: 24px;
 }
+

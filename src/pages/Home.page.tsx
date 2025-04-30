@@ -1,10 +1,12 @@
 import { HeaderMenu } from '@/components/Welcome/HeaderMenu';
-import { Calendar } from '@/components/Calendar/DatePicker';
+import { DatePicker } from '@/components/Calendar/DatePicker';
+import { TimePicker } from '@/components/Time/TimePicker';
 
 export function HomePage() {
   return (
     <>
-      <Calendar />
+      <DatePicker />
+      <TimePicker />
     </>
   );
 }
