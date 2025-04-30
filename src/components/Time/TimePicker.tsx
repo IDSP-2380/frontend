@@ -1,20 +1,28 @@
+// TimePicker.tsx
 import { TimeInput } from '@mantine/dates';
 import { Box } from '@mantine/core';
-import TimeClass from './TimePicker.module.css'
+import TimeClass from './TimePicker.module.css';
 
-export function TimePicker() {
+interface TimePickerProps {
+  value: string;
+  onChange: (value: string) => void;
+}
+
+export function TimePicker({ value, onChange }: TimePickerProps) {
   return (
- <Box className={TimeClass.timeWrapper} >
-  <TimeInput
-    withSeconds        
-    rightSection={
+    <Box className={TimeClass.timeWrapper}>
+      <TimeInput
+        withSeconds
+        value={value}
+        onChange={(event) => onChange(event.currentTarget.value)}
+        rightSection={
           <img
             src="icons/Alarm.svg"
             alt="alarm icon"
-
             className={TimeClass.alarmIcon}
           />
-        }/>
-</Box>
-        )
+        }
+      />
+    </Box>
+  );
 }

@@ -1,16 +1,18 @@
 import { useState } from 'react';
-import { DatePicker } from '../components/Calendar/DatePicker';
+import { DatePicker } from '@/components/Calendar/DatePicker';
 import { Text, Button } from '@mantine/core';
 import type { DateValue } from '@mantine/dates';
+import { TimePicker } from '@/components/Time/TimePicker';
 
 export function HomePage() {
   const [startDate, setStartDate] = useState<DateValue>(null);
   const [endDate, setEndDate] = useState<DateValue>(null);
   const [error, setError] = useState<string | null>(null);
+  const [time, setTime] = useState<string>('');
 
 const validate = () => {
   const today = new Date();
-  today.setHours(0, 0, 0, 0); // Remove time portion for comparison
+  today.setHours(0, 0, 0, 0); 
 
   if (!startDate || !endDate) {
     setError('Both dates must be selected');
@@ -20,6 +22,7 @@ const validate = () => {
     setError('Start date must be before end date');
   } else {
     setError(null);
+    console.log('Selected Time:', time);
   }
 };
 
@@ -30,6 +33,7 @@ const validate = () => {
       <DatePicker label="End Date" value={endDate} onChange={setEndDate} />
       {error && <Text c="red">{error}</Text>}
       <Button onClick={validate}>Submit</Button>
+      <TimePicker value={time} onChange={setTime} />
     </>
   );
 }
