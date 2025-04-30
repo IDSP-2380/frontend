@@ -33,21 +33,30 @@ const TextEditor = () => {
   };
 
   return (
+    <>
+    <h2>Start your story</h2>
     <div>
       <div id="toolbar" className='ql-toolbar'>
+      <button className="ql-undo"> <img src="/undo.svg" alt="" /> </button>
+      <button className="ql-redo" ><img src="/undo.svg" alt="" style={{ transform: 'scaleX(-1)' }}/> </button>
       <select className="ql-header">
         <option value="1" />
         <option value="2" />
         <option selected />
       </select>
+      
       <button className="ql-bold" />
       <button className="ql-italic" />
       <button className="ql-underline" />
-      <button className="ql-list" value="ordered" />
-      <button className="ql-list" value="bullet" />
-      <button className="ql-undo"> <img src="/undo.svg" alt="" /> </button>
-      <button className="ql-redo" ><img src="/undo.svg" alt="" style={{ transform: 'scaleX(-1)' }}/> </button>
+      <button className="ql-strike" />
+      
+      <button className="ql-mic"> <img src="/microphone.svg" alt="" style={{width: 18, height: 18}}/> </button>
+
+      <label htmlFor="spell-check">Spell Check</label>
+      <input type="checkbox" id='spell-check' name='spell-check'/>
+      
     </div>
+  
       <ReactQuill 
         ref={quillRef}
         theme="snow" 
@@ -56,6 +65,7 @@ const TextEditor = () => {
         modules={modules} 
       />
     </div>
+    </>
   );
 };
 
