@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import DateClass from './DatePicker.module.css';
 import { DateInput } from '@mantine/dates';
 import { Box, Text } from '@mantine/core';
@@ -6,18 +5,20 @@ import type { DateValue } from '@mantine/dates';
 
 interface CalendarProps {
   label?: string;
+  value: DateValue;
+  onChange: (date: DateValue) => void;
 }
 
-export function DatePicker({ label }: CalendarProps) {
-  const [date, setDate] = useState<DateValue>(null);
-
+export function DatePicker({ label, value, onChange, }: CalendarProps) {
   return (
-    <Box className={DateClass.calendarWrapper} >
+    <Box className={DateClass.calendarWrapper}>
       <Text>{label}</Text>
       <DateInput
         placeholder="Select date"
-        value={date}
+        value={value}
+        onChange={onChange}
         valueFormat="YYYY-MM-DD"
+        minDate={new Date()}
         rightSection={
           <img
             src="icons/CalendarDots.svg"
@@ -30,3 +31,4 @@ export function DatePicker({ label }: CalendarProps) {
     </Box>
   );
 }
+
