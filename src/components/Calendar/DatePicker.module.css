@@ -1,0 +1,20 @@
+.calendarWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  max-width: 20rem;
+}
+
+.calendarIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.dropdown {
+  border-radius: 4px;
+  overflow: hidden;
+}
+.input {
+  border-radius: 12px;
+}

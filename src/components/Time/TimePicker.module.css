@@ -1,0 +1,12 @@
+.timeWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  max-width: 15rem;
+}
+
+.alarmIcon {
+  width: 24px;
+  height: 24px;
+}
