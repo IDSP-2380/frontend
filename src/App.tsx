@@ -1,5 +1,5 @@
 import '@mantine/core/styles.css';
-// import "../"
+import '@mantine/tiptap/styles.css';
 
 import { MantineProvider } from '@mantine/core';
 import { Router } from './Router';
