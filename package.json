@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@mantine/core": "^7.17.5",
+    "@mantine/dates": "^7.17.5",
     "@mantine/hooks": "^7.17.5",
     "@mantine/tiptap": "^7.17.5",
     "@tiptap/core": "^2.11.7",
@@ -33,6 +34,7 @@
     "@tiptap/pm": "^2.11.7",
     "@tiptap/react": "^2.11.7",
     "@tiptap/starter-kit": "^2.11.7",
+    "dayjs": "^1.11.13",
     "quill": "2.0.3",
     "react": "18",
     "react-dom": "18",
