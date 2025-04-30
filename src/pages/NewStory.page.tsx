@@ -8,6 +8,8 @@ import { useState } from "react";
 
 import { NewPublicStory } from "./NewPublicStory.page";
 
+import { NewPrivateStory } from "./NewPrivateStory.page";
+
 import { NumberInput } from "@mantine/core";
 
 
@@ -23,6 +25,7 @@ export function NewStoryPage() {
   return (
     <>
       <HeaderMenu />
+      <h1 className="h1">Start New Story</h1>
       <Tabs variant="none" value={value} onChange={setValue} >
         <Tabs.List ref={setRootRef} className={FormClasses.list}>
           <Tabs.Tab value="1" ref={setControlRef('1')} className={FormClasses.tab}>
@@ -40,7 +43,7 @@ export function NewStoryPage() {
         </Tabs.List>
 
         <Tabs.Panel value="1"><NewPublicStory /></Tabs.Panel>
-        <Tabs.Panel value="2">Private Story Form</Tabs.Panel>
+        <Tabs.Panel value="2"><NewPrivateStory /></Tabs.Panel>
       </Tabs>
         
     </>

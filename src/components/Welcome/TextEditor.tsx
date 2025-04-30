@@ -34,35 +34,45 @@ const TextEditor = () => {
 
   return (
     <>
-    <h2>Start your story</h2>
-    <div>
-      <div id="toolbar" className='ql-toolbar'>
-      <button className="ql-undo"> <img src="/undo.svg" alt="" /> </button>
-      <button className="ql-redo" ><img src="/undo.svg" alt="" style={{ transform: 'scaleX(-1)' }}/> </button>
-      <select className="ql-header">
+    <h2 className="h2">Start your story</h2>
+    <div className="textEditorDiv">
+    <div id="toolbar" className='ql-toolbar'>
+
+      
+        <button className="ql-undo toolbar-item" > <img src="/undo.svg" alt="" className='toolbar-item'/> </button>
+        <button className="ql-redo toolbar-item" ><img src="/undo.svg" alt="" style={{ transform: 'scaleX(-1)' }} className='toolbar-item'/> </button>
+     
+
+      <div className="toolbar-center">
+      <select className="ql-header toolbar-item">
         <option value="1" />
         <option value="2" />
         <option selected />
       </select>
       
-      <button className="ql-bold" />
-      <button className="ql-italic" />
-      <button className="ql-underline" />
-      <button className="ql-strike" />
+      <div className="toolbar-section">
+        <button className="ql-bold toolbar-item" />
+        <button className="ql-italic toolbar-item" />
+        <button className="ql-underline toolbar-item" />
+        <button className="ql-strike toolbar-item" />
+        <button className="ql-mic toolbar-item"> <img src="/microphone.svg" alt="" style={{width: 18, height: 18}}/> </button>
+      </div>
+      </div>
       
-      <button className="ql-mic"> <img src="/microphone.svg" alt="" style={{width: 18, height: 18}}/> </button>
-
-      <label htmlFor="spell-check">Spell Check</label>
-      <input type="checkbox" id='spell-check' name='spell-check'/>
+      
+      
+        <label htmlFor="spell-check" className="toolbar-item spellcheck-label">Spell Check</label>
+        <input type="checkbox" id='spell-check' name='spell-check' className="toolbar-item"/>
+      
       
     </div>
   
       <ReactQuill 
         ref={quillRef}
-        theme="snow" 
         value={value} 
         onChange={setValue} 
         modules={modules} 
+        className="textBox"
       />
     </div>
     </>

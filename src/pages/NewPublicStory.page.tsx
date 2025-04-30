@@ -1,5 +1,5 @@
 import { HeaderMenu } from "@/components/Welcome/HeaderMenu";
-import { TextInput } from "@mantine/core";
+import { Button, TextInput } from "@mantine/core";
 import { Form } from "react-router-dom";
 import FormClasses from "../components/Welcome/Form.module.css"
 import TextEditor from "@/components/Welcome/TextEditor";
