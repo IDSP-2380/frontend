@@ -26,6 +26,12 @@ export function DatePicker({ label, value, onChange, }: CalendarProps) {
             className={DateClass.calendarIcon}
           />
         }
+        classNames={{
+            input: DateClass.input         
+        }}
+        popoverProps={{
+            classNames: { dropdown: DateClass.dropdown }, 
+        }}
         rightSectionWidth={36}
       />
     </Box>

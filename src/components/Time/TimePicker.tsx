@@ -1,7 +1,7 @@
-// TimePicker.tsx
 import { TimeInput } from '@mantine/dates';
 import { Box } from '@mantine/core';
 import TimeClass from './TimePicker.module.css';
+import { useMantineTheme } from '@mantine/core';
 
 interface TimePickerProps {
   value: string;
@@ -9,6 +9,8 @@ interface TimePickerProps {
 }
 
 export function TimePicker({ value, onChange }: TimePickerProps) {
+  const theme = useMantineTheme();
+
   return (
     <Box className={TimeClass.timeWrapper}>
       <TimeInput
@@ -22,6 +24,11 @@ export function TimePicker({ value, onChange }: TimePickerProps) {
             className={TimeClass.alarmIcon}
           />
         }
+        styles={{
+          input: {
+            borderRadius: theme.radius.lg, 
+          },
+          }}
       />
     </Box>
   );

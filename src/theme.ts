@@ -56,6 +56,6 @@ export const theme = createTheme({
   radius: {
     sm: '4px',
     md: '8px',
-    lg: '16px',
+    lg: '12px',
   },
 });
