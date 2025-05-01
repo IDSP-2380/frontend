@@ -4,11 +4,14 @@ import { ReactNode, CSSProperties } from 'react';
 import { useMantineTheme } from '@mantine/core';
 import styles from './primaryButton.module.css';
 
-type buttonNames = 'primary' | 'primaryBig'
+type buttonNames = 'primary' | 'primaryBig' | 'primaryWhite' | 'primaryWhiteBig' | 'secondaryWhite'
 
 const buttonClassMapping = {
     primary: styles.primary,
-    primaryBig: styles.primaryBig
+    primaryBig: styles.primaryBig,
+    primaryWhite: styles.primaryWhite,
+    primaryWhiteBig: styles.primaryWhiteBig,
+    secondaryWhite: styles.secondaryWhite
 }
 
 interface buttonProps {

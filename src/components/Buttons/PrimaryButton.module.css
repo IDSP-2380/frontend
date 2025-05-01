@@ -19,11 +19,29 @@
   cursor: pointer;
 }
 
+/* main blue primary button */
 .primary {
     background-color: var(--primary-500);
     color: var(--background-paper);
+    font-size: var(--font-size-L);
 }
 
+.primary:hover{
+    background-color: var(--primary-500);
+}
+
+.primary.disabled {
+  background-color: var(--primary-200);
+    color: var(--primary-300);
+}
+
+
+.primary.disabled:hover {
+  background-color: var(--primary-200);
+  color: var(--primary-300);
+}
+
+/* big blue primary button */
 .primaryBig{
     background-color: var(--primary-500);
     width: 23rem;
@@ -44,4 +62,75 @@
 
 .primaryBig:hover{
     background-color: var(--primary-500);
+}
+
+/* primary white button */
+.primaryWhite {
+    background-color: var(--neutral-white);
+    color: var(--primary-500);
+    font-size: var(--font-size-L);
+    border: 1px solid var(--primary-500)
+}
+
+.primaryWhite.disabled {
+    background-color: var(--neutral-white);
+    color: var(--primary-200);
+}
+
+
+.primaryWhite.disabled:hover {
+  background-color: var(--neutral-white);
+    color: var(--primary-200);
+}
+
+.primaryWhite:hover{
+  background-color: var(--neutral-white);
+  color: var(--primary-500);
+}
+
+/* BIG primary white button */
+.primaryWhiteBig {
+    background-color: var(--neutral-white);
+    color: var(--primary-500);
+    font-size: var(--font-size-L);
+    border: 1px solid var(--primary-500);
+    width: 23rem;
+}
+
+.primaryWhiteBig.disabled {
+    background-color: var(--neutral-white);
+    color: var(--primary-200);
+    border: 1px solid var(--primary-200);
+}
+
+
+.primaryWhiteBig.disabled:hover {
+  background-color: var(--neutral-white);
+  color: var(--primary-200);
+  border: 1px solid var(--primary-200);
+}
+
+.primaryWhiteBig:hover{
+  background-color: var(--neutral-white);
+  color: var(--primary-500);
+}
+
+/* Secondary white button */
+.secondaryWhite{
+    background-color: var(--background-paper);
+    color: var(--neutral-900);
+    font-size: var(--font-size-S);
+    border: 1px solid var(--background-paper-200);
+    height: 40px;
+    font-size: 16px;
+    font-weight: var(--font-weight-semi-bold);
+    min-width: 8rem;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+}
+
+.secondaryWhite:hover {
+    background-color: var(--background-paper);
+    color: var(--neutral-900);
+    border: 1px solid var(--background-paper-200);
 }

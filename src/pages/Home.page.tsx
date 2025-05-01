@@ -53,7 +53,7 @@ const validate = () => {
       />
       {/* <primaryButton disabled={!isFormComplete} onClick={validate} rightSection={<img  src={isFormComplete ? '/icons/CaretRight.svg' : '/icons/CaretRightDisabled.svg'} alt="icon" />} >Add an Inklink</primaryButton> */}
 
-      <ButtonBase disabled={!isFormComplete} onClick={validate} buttonType="primaryBig"  rightSection={<img  src={isFormComplete ? '/icons/CaretRight.svg' : '/icons/CaretRightDisabled.svg'} alt="icon" />} >Post Story</ButtonBase >
+      <ButtonBase disabled={!isFormComplete} onClick={validate} buttonType="secondaryWhite"  rightSection={<img  src={isFormComplete ? '/icons/CaretRight.svg' : '/icons/CaretRightDisabled.svg'} alt="icon" />} >Post Story</ButtonBase >
     </>
   );
 }
