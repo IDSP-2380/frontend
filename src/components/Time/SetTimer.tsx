@@ -92,7 +92,7 @@ export function SetTimer({ days, hours, minutes, onChange }: SetTimerProps) {
           suffix="d"
         />
 
-        <Text size="sm" color="gray.6">:</Text>
+        <Text size="sm" c="gray.6">:</Text>
         </Box>
 
         <Box style={{ width: 'min-content', display: 'flex', alignItems: 'center' }}>
@@ -108,7 +108,7 @@ export function SetTimer({ days, hours, minutes, onChange }: SetTimerProps) {
           styles={unitStyles}
           suffix="h"
         />
-        <Text size="sm" color="gray.6">:</Text>
+        <Text size="sm" c="gray.6">:</Text>
 </Box>
 
 
