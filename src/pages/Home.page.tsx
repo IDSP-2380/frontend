@@ -4,6 +4,7 @@ import { Text } from '@mantine/core';
 import type { DateValue } from '@mantine/dates';
 import { SetTimer } from '@/components/Time/SetTimer';
 import { PrimraryButton } from '@/components/Buttons/PrimraryButton';
+import { ButtonBase } from '@/components/Buttons/ButtonBase';
 
 
 export function HomePage() {
@@ -51,7 +52,9 @@ const validate = () => {
           setMinutes(m);
         }}
       />
-      <PrimraryButton disabled={!isFormComplete} onClick={validate} rightSection={<img  src={isFormComplete ? '/icons/CaretRight.svg' : '/icons/CaretRightDisabled.svg'} alt="icon" />} >Add an Inklink</PrimraryButton>
+      {/* <PrimraryButton disabled={!isFormComplete} onClick={validate} rightSection={<img  src={isFormComplete ? '/icons/CaretRight.svg' : '/icons/CaretRightDisabled.svg'} alt="icon" />} >Add an Inklink</PrimraryButton> */}
+
+      <ButtonBase disabled={!isFormComplete} onClick={validate} buttonType="primraryBig"  rightSection={<img  src={isFormComplete ? '/icons/CaretRight.svg' : '/icons/CaretRightDisabled.svg'} alt="icon" />} >Add an Inklink</ButtonBase >
     </>
   );
 }

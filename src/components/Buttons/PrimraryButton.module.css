@@ -19,3 +19,11 @@
 .enabled {
   cursor: pointer;
 }
+
+.primrary {
+    background-color: green;
+}
+
+.primraryBig{
+    background-color: yellow;
+}
