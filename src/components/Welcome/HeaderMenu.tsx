@@ -48,7 +48,6 @@ export function HeaderMenu() {
             >
               <Center>
                 <span className={classes.linkLabel}>{link.label}</span>
-                {/* <IconChevronDown size={14} stroke={1.5} /> */}
               </Center>
             </a>
           </Menu.Target>

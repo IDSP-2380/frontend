@@ -19,7 +19,7 @@ export function TimePicker({ value, onChange }: TimePickerProps) {
         onChange={(event) => onChange(event.currentTarget.value)}
         rightSection={
           <img
-            src="icons/Alarm.svg"
+            src="/icons/Alarm.svg"
             alt="alarm icon"
             className={TimeClass.alarmIcon}
           />

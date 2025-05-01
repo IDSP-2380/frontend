@@ -1,69 +1,51 @@
 import { HeaderMenu } from "@/components/Welcome/HeaderMenu";
 import { TextInput } from "@mantine/core";
 import { Form } from "react-router-dom";
-import FormClasses from "../components/Welcome/Form.module.css";
-import { TextEditor } from "@/components/Welcome/TextEditor";
+import FormClasses from "../components/Welcome/Form.module.css"
+import TextEditor from "@/components/Welcome/TextEditor";
+import { FloatingIndicator, Tabs } from "@mantine/core";
+import { useState } from "react";
+
+import { NewPublicStory } from "./NewPublicStory.page";
+
+import { NewPrivateStory } from "./NewPrivateStory.page";
 
 import { NumberInput } from "@mantine/core";
 
 
 export function NewStoryPage() {
+
+  const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
+  const [value, setValue] = useState<string | null>('1');
+  const [controlsRefs, setControlsRefs] = useState<Record<string, HTMLButtonElement | null>>({});
+  const setControlRef = (val: string) => (node: HTMLButtonElement) => {
+    controlsRefs[val] = node;
+    setControlsRefs(controlsRefs);
+  };
   return (
     <>
       <HeaderMenu />
-        <Form action="/events" method="post" className={FormClasses.storyForm}>
-        <div className={FormClasses.storySettings}>
-          <div className={FormClasses.storySettingsInputs}>
-          <TextInput 
-            label="Story Title"
-            className={FormClasses.inputBar}
-            placeholder="Add a title for your story"
-            styles={{
-              input: {
-                borderRadius: "12px",
-                width: "480px",
-                height: "48px",
-                border: "1px solid #B4B1AD"
-              }
-            }}
-            name="storyTitle"
-          />
-          <NumberInput 
-            label="Word count limit for each link:"
-            placeholder="max. 250"
-            className={FormClasses.inlineInput}
-            styles={{
-              input: {
-                width: "120px",
-                height: "48px",
-                borderRadius: "12px",
-                border: "1px solid #B4B1AD"
-              }
-            }}
-            hideControls
-            name="maxWordCount"
-            />
-            <NumberInput 
-            label="Number of links to complete story:"
-            placeholder="max. 20"
-            className={FormClasses.inlineInput}
-            styles={{
-              input: {
-                width: "120px",
-                height: "48px",
-                borderRadius: "12px",
-                border: "1px solid #B4B1AD"
-              }
-            }}
-            hideControls
-            name="numberOfLinks"
-            />
-            </div>
-          </div>  
+      <h1 className="h1">Start New Story</h1>
+      <Tabs variant="none" value={value} onChange={setValue} >
+        <Tabs.List ref={setRootRef} className={FormClasses.list}>
+          <Tabs.Tab value="1" ref={setControlRef('1')} className={FormClasses.tab}>
+           Public
+          </Tabs.Tab>
+          <Tabs.Tab value="2" ref={setControlRef('2')} className={FormClasses.tab}>
+            Private
+          </Tabs.Tab>
 
-          <TextEditor />
-          
-        </Form>
+          <FloatingIndicator
+            target={value ? controlsRefs[value] : null}
+            parent={rootRef}
+            className={FormClasses.indicator}
+          />
+        </Tabs.List>
+
+        <Tabs.Panel value="1"><NewPublicStory /></Tabs.Panel>
+        <Tabs.Panel value="2"><NewPrivateStory /></Tabs.Panel>
+      </Tabs>
+        
     </>
   );
 }
