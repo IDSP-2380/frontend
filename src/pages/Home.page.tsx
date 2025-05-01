@@ -3,7 +3,6 @@ import { DatePicker } from '@/components/Calendar/DatePicker';
 import { Text } from '@mantine/core';
 import type { DateValue } from '@mantine/dates';
 import { SetTimer } from '@/components/Time/SetTimer';
-import { PrimraryButton } from '@/components/Buttons/PrimraryButton';
 import { ButtonBase } from '@/components/Buttons/ButtonBase';
 
 
@@ -52,9 +51,9 @@ const validate = () => {
           setMinutes(m);
         }}
       />
-      {/* <PrimraryButton disabled={!isFormComplete} onClick={validate} rightSection={<img  src={isFormComplete ? '/icons/CaretRight.svg' : '/icons/CaretRightDisabled.svg'} alt="icon" />} >Add an Inklink</PrimraryButton> */}
+      {/* <primaryButton disabled={!isFormComplete} onClick={validate} rightSection={<img  src={isFormComplete ? '/icons/CaretRight.svg' : '/icons/CaretRightDisabled.svg'} alt="icon" />} >Add an Inklink</primaryButton> */}
 
-      <ButtonBase disabled={!isFormComplete} onClick={validate} buttonType="primraryBig"  rightSection={<img  src={isFormComplete ? '/icons/CaretRight.svg' : '/icons/CaretRightDisabled.svg'} alt="icon" />} >Add an Inklink</ButtonBase >
+      <ButtonBase disabled={!isFormComplete} onClick={validate} buttonType="primaryBig"  rightSection={<img  src={isFormComplete ? '/icons/CaretRight.svg' : '/icons/CaretRightDisabled.svg'} alt="icon" />} >Post Story</ButtonBase >
     </>
   );
 }

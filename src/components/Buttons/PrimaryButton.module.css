@@ -1,0 +1,47 @@
+.buttonRoot {
+  border-radius: 999px;
+  font-weight: var(--font-weight-bold);
+  height: 52px;
+  padding-inline: 64.33px;
+}
+
+.sectionIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.disabled {
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.enabled {
+  cursor: pointer;
+}
+
+.primary {
+    background-color: var(--primary-500);
+    color: var(--background-paper);
+}
+
+.primaryBig{
+    background-color: var(--primary-500);
+    width: 23rem;
+    color: var(--background-paper);
+    font-size: var(--font-size-L);
+}
+
+.primaryBig.disabled {
+  background-color: var(--primary-200);
+    color: var(--primary-300);
+}
+
+
+.primaryBig.disabled:hover {
+  background-color: var(--primary-200);
+  color: var(--primary-300);
+}
+
+.primaryBig:hover{
+    background-color: var(--primary-500);
+}

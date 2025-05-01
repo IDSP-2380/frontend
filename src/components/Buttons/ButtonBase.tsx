@@ -2,13 +2,13 @@
 import { Button } from '@mantine/core';
 import { ReactNode, CSSProperties } from 'react';
 import { useMantineTheme } from '@mantine/core';
-import styles from './PrimraryButton.module.css';
+import styles from './primaryButton.module.css';
 
-type buttonNames = 'primrary' | 'primraryBig'
+type buttonNames = 'primary' | 'primaryBig'
 
 const buttonClassMapping = {
-    primrary: styles.primrary,
-    primraryBig: styles.primraryBig
+    primary: styles.primary,
+    primaryBig: styles.primaryBig
 }
 
 interface buttonProps {
@@ -30,7 +30,7 @@ export function ButtonBase({
   style,
   width,
   disabled,
-  buttonType = 'primrary',
+  buttonType = 'primary',
 }: buttonProps) {
   return (
     <Button
@@ -39,7 +39,12 @@ export function ButtonBase({
       rightSection={rightSection}
       disabled={disabled}
       className={buttonClassMapping[buttonType]}
-      style={{ width, ...style }}
+      style={{  ...style }}
+
+      classNames={{
+        root: `${styles.buttonRoot} ${disabled ? styles.disabled : styles.enabled}`,
+        section: styles.sectionIcon,
+      }}
     >
       {children}
     </Button>

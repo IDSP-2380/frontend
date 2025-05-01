@@ -1,7 +1,7 @@
 import { Button } from '@mantine/core';
 import { ReactNode, CSSProperties } from 'react';
 import { useMantineTheme } from '@mantine/core';
-import styles from './PrimraryButton.module.css';
+import styles from './primaryButton.module.css';
 
 interface buttonProps {
   onClick: () => void;
@@ -13,7 +13,7 @@ interface buttonProps {
   style?: CSSProperties;
 }
 
-export function PrimraryButton({
+export function primaryButton({
   onClick,
   children,
   leftSection,
