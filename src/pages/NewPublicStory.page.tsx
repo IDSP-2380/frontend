@@ -20,10 +20,12 @@ export function NewPublicStory() {
   };
   return (
     <>
-        <Form action="/events" method="post" className={FormClasses.storyForm}>
+        <Form action="/create/story/public" method="post" className={FormClasses.storyForm}>
         <div className={FormClasses.storySettings}>
           <div className={FormClasses.storySettingsInputs}>
           <TextInput 
+            required
+            withAsterisk={false}
             label="Story Title"
             className={FormClasses.inputBar}
             placeholder="Add a title for your story"
@@ -41,6 +43,8 @@ export function NewPublicStory() {
             name="storyTitle"
           />
           <NumberInput 
+            required
+            withAsterisk={false}
             label="Word count limit for each link:"
             placeholder="max. 250"
             className={FormClasses.inlineInput}
@@ -61,6 +65,8 @@ export function NewPublicStory() {
             name="maxWordCount"
             />
             <NumberInput 
+            required
+            withAsterisk={false}
             label="Number of links to complete story:"
             placeholder="max. 20"
             classNames={{

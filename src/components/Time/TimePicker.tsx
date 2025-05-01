@@ -16,6 +16,7 @@ export function TimePicker({ value, onChange }: TimePickerProps) {
       <TimeInput
         withSeconds
         value={value}
+        className={TimeClass.input}
         onChange={(event) => onChange(event.currentTarget.value)}
         rightSection={
           <img
@@ -26,7 +27,8 @@ export function TimePicker({ value, onChange }: TimePickerProps) {
         }
         styles={{
           input: {
-            borderRadius: theme.radius.lg, 
+            borderRadius: "12px", 
+            border: "1px solid var(--neutral-400)"
           },
           }}
       />

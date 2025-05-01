@@ -1,24 +1,30 @@
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
-import { IconGripVertical } from '@tabler/icons-react';
 import cx from 'clsx';
 import { Text } from '@mantine/core';
 import { useListState } from '@mantine/hooks';
 import classes from './DndListHandle.module.css';
-import FormClasses from "../Welcome/Form.module.css"
+import { useEffect } from 'react';
 
-const data = [
-  { position: 6, mass: 12.011, symbol: 'C', name: 'Carbon' },
-  { position: 7, mass: 14.007, symbol: 'N', name: 'Nitrogen' },
-  { position: 39, mass: 88.906, symbol: 'Y', name: 'Yttrium' },
-  { position: 56, mass: 137.33, symbol: 'Ba', name: 'Barium' },
-  { position: 58, mass: 140.12, symbol: 'Ce', name: 'Cerium' },
-];
 
-export function DndListHandle() {
-  const [state, handlers] = useListState(data);
+type DndListHandleProps = {
+    collaboratorList: string[];
+};
+
+export function DndListHandle({collaboratorList}: DndListHandleProps) {
+  const [state, handlers] = useListState(collaboratorList);
+
+  useEffect(() => {
+    const newItems = collaboratorList.filter(item => !state.includes(item));
+    if (newItems.length > 0) {
+      handlers.append(...newItems);
+    }
+  }, [collaboratorList]);
+  
 
   const items = state.map((item, index) => (
-    <Draggable key={item.symbol} index={index} draggableId={item.symbol}>
+    
+    <Draggable key={item} index={index} draggableId={item}>
+
       {(provided, snapshot) => (
         <div className={cx(classes.dragAndDropItem, { [classes.itemDragging]: snapshot.isDragging })}ref={provided.innerRef}
         {...provided.draggableProps}>
@@ -30,13 +36,8 @@ export function DndListHandle() {
           
         >
           
-          <Text className={classes.symbol}>{item.symbol}</Text>
-          <div>
-            <Text>{item.name}</Text>
-            <Text c="dimmed" size="sm">
-              Position: {item.position} • Mass: {item.mass}
-            </Text>
-          </div>
+          <Text className={classes.symbol}>{item}</Text>
+          
         </div>
         </div>
       )}

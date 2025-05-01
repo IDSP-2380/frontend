@@ -74,6 +74,7 @@ const TextEditor = () => {
         className="textBox"
         placeholder='The story begins...'
       />
+      <input type="hidden" name='linkContent' value={value}/>
     </div>
     </>
   );

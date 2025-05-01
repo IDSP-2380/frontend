@@ -10,11 +10,13 @@ import type { DateValue } from '@mantine/dates';
 import { TimePicker } from "@/components/Time/TimePicker";
 import { DndListHandle } from "@/components/DragNDrop/DndListHandle";
 import { NumberInput } from "@mantine/core";
-
+import { useListState } from '@mantine/hooks';
 
 export function NewPrivateStory() {
 
   const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
+  const [collaborator, setCollaborator] = useState('');
+
   const [value, setValue] = useState<string | null>('1');
   const [controlsRefs, setControlsRefs] = useState<Record<string, HTMLButtonElement | null>>({});
   const setControlRef = (val: string) => (node: HTMLButtonElement) => {
@@ -25,7 +27,7 @@ export function NewPrivateStory() {
   const groceries = ['🍎 Apples', '🍌 Bananas', '🥦 Broccoli', '🥕 Carrots', '🍫 Chocolate'];
 
   const combobox = useCombobox();
-  const [collaborator, setCollaborator] = useState('');
+  
   const shouldFilterOptions = !groceries.some((item) => item === value);
   const filteredOptions = shouldFilterOptions
     ? groceries.filter((item) => item.toLowerCase().includes(collaborator.toLowerCase().trim()))
@@ -75,22 +77,32 @@ export function NewPrivateStory() {
     ];
 
     const items = theGroceries.map((item) => (
-      <Accordion.Item key={item.value} value={item.value} className={FormClasses.accordionItem}>
+      <Accordion.Item key={item.value} value={item.value} className={FormClasses.accordionItem} >
         <Accordion.Control>{item.value}</Accordion.Control>
         <Accordion.Panel className={FormClasses.accordionPanel}>{item.description}</Accordion.Panel>
       </Accordion.Item>
     ));
 
-    function addUserToCollaborators() {
-      
+    const [collaboratorList, handlers] = useListState<string>();
+
+    function addUserToCollaborators(thing: string) {
+      if (!collaboratorList.includes(thing)) {
+        handlers.append(thing);
+      }
     }
+
+    const [isActiveDate, setIsActiveDate] = useState(false);
+
+    const [isActiveTime, setIsActiveTime] = useState(false);
 
   return (
     <>
-        <Form action="/events" method="post" className={FormClasses.storyForm}>
+        <Form action="/create/story/private" method="post" className={FormClasses.storyForm}>
         <div className={FormClasses.storySettings}>
           <div className={FormClasses.storySettingsInputs}>
-          <TextInput 
+          <TextInput
+            required 
+            withAsterisk={false}
             label="Story Title"
             className={FormClasses.inputBar}
             classNames={{
@@ -109,6 +121,7 @@ export function NewPrivateStory() {
             name="storyTitle"
           />
 
+
     <Combobox
         onOptionSubmit={(optionValue) => {
             setCollaborator(optionValue);
@@ -119,6 +132,8 @@ export function NewPrivateStory() {
         <Combobox.Target>
           
             <TextInput
+            required
+            withAsterisk={false}
             label="Pick value or type anything"
             placeholder="Pick value or type anything"
             value={collaborator}
@@ -143,7 +158,10 @@ export function NewPrivateStory() {
             onFocus={() => combobox.openDropdown()}
             onBlur={() => combobox.closeDropdown()}
             name="collaborator"
-            rightSection={<Button className={FormClasses.inviteButton} onClick={(event) => addUserToCollaborators}>Invite</Button>}
+            rightSection={<Button className={FormClasses.inviteButton} onClick={() => {
+              addUserToCollaborators(collaborator);
+              setCollaborator('')
+            }}>Invite</Button>}
             rightSectionWidth={80}
             />
         </Combobox.Target>
@@ -155,10 +173,15 @@ export function NewPrivateStory() {
         </Combobox.Dropdown>
     </Combobox>
 
-    <DndListHandle />
+    <div className={FormClasses.listTitle}>Writing order</div>
+    {collaboratorList && 
+    <DndListHandle collaboratorList={collaboratorList}/>}
+    
 
         
           <NumberInput 
+            required
+            withAsterisk={false}
             label="Word count limit for each link:"
             placeholder="max. 250"
             className={FormClasses.inlineInput}
@@ -174,6 +197,8 @@ export function NewPrivateStory() {
             name="maxWordCount"
             />
             <NumberInput 
+            required
+            withAsterisk={false}
             label="Number of links to complete story:"
             placeholder="max. 20"
             className={FormClasses.inlineInput}
@@ -191,27 +216,35 @@ export function NewPrivateStory() {
             </div>
           </div>  
 
-          <DatePicker label="Project start date:" value={startDate} onChange={setStartDate} />
+          <div className={FormClasses.projectStartDate} >
+            <DatePicker label="Project start date:" value={startDate} onChange={setStartDate} />
+          </div>
 
-          <h2 className={FormClasses.projectEndDate}>Project End Date:</h2>
+          <h2 className={FormClasses.projectEndDate}>Project end Date:</h2>
+
+          <div className={FormClasses.bottomBars}>
           
-          <Accordion className={FormClasses.projectEndDate}>
+          <Accordion className={`${FormClasses.projectEndDate} ${FormClasses.endDate}`} onClick={() => setIsActiveDate(!isActiveDate)}>
             {items[0]}
           </Accordion>
 
-          <p>Based on selected date, each writer's time per turn is...</p>
-            <span>2d:00h:00m</span>
-          
+            <div className={`${FormClasses.setEndDate} ${isActiveDate ? '' : FormClasses.noDisplay}`}>
+            <p>Based on selected date, each writer's time per turn is...</p>
+              <span>2d:00h:00m</span>
+            </div>
 
           
           
-          <Accordion className={FormClasses.projectEndDate}>
+          <Accordion className={`${FormClasses.projectEndDate} ${FormClasses.endTime}`} onClick={() => setIsActiveTime(!isActiveTime)}>
             {items[1]}
           </Accordion>
 
-          <p>Based on time per turn, project end date will be...</p>
-          <span>2021-12-30</span>
+          <div className={`${FormClasses.setEndDate} ${isActiveTime ? '' : FormClasses.noDisplay}`}>
+            <p>Based on time per turn, project end date will be...</p>
+            <span>2021-12-30</span>
+          </div>
 
+          </div>
         </Form>
     </>
   );

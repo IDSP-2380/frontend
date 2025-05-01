@@ -10,3 +10,10 @@
   width: 24px;
   height: 24px;
 }
+
+.timeWrapper input {
+  border-radius: 12px;
+  display: block;
+  margin: 0 auto;
+  border: 1px solid var(--background-paper-200);
+}
