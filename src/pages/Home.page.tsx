@@ -12,11 +12,11 @@ export function HomePage() {
   const [error, setError] = useState<string | null>(null);
   const [time, setTime] = useState<string | undefined>(undefined);
 
-  const [days, setDays] = useState(2);
+  const [days, setDays] = useState(0);
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
 
-const isFormComplete = startDate && endDate && time;
+const isFormComplete = startDate && endDate && days >= 1;
 
 const validate = () => {
   const today = new Date();
@@ -30,7 +30,6 @@ const validate = () => {
     setError('Start date must be before end date');
   } else {
     setError(null);
-    console.log('Selected Time:', time);
   }
 };
 
