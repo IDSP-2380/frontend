@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import Quill from 'quill';
 import FormClasses from "./Form.module.css"
 
@@ -73,6 +72,7 @@ const TextEditor = () => {
         onChange={setValue} 
         modules={modules} 
         className="textBox"
+        placeholder='The story begins...'
       />
     </div>
     </>

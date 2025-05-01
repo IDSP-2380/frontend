@@ -3,18 +3,23 @@
   align-items: center;
   gap: 0.5rem;
   min-height: 48px;
-  max-width: 20rem;
+  width: 480px;
+  justify-content: space-between;
 }
 
 .calendarIcon {
   width: 24px;
   height: 24px;
+  background-color: var(--neutral-white);
 }
 
 .dropdown {
   border-radius: 4px;
   overflow: hidden;
 }
+
 .input {
   border-radius: 12px;
+  display: block;
+  margin: 0 auto;
 }

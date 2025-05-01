@@ -27,6 +27,9 @@ export function NewPublicStory() {
             label="Story Title"
             className={FormClasses.inputBar}
             placeholder="Add a title for your story"
+            classNames={{
+              input: FormClasses.customInput,
+            }}
             styles={{
               input: {
                 borderRadius: "12px",
@@ -41,6 +44,11 @@ export function NewPublicStory() {
             label="Word count limit for each link:"
             placeholder="max. 250"
             className={FormClasses.inlineInput}
+            
+            classNames={{
+              input: FormClasses.customInput,
+              label: FormClasses.inputBar
+            }}
             styles={{
               input: {
                 width: "120px",
@@ -55,6 +63,10 @@ export function NewPublicStory() {
             <NumberInput 
             label="Number of links to complete story:"
             placeholder="max. 20"
+            classNames={{
+              input: FormClasses.customInput,
+            }}
+            
             className={FormClasses.inlineInput}
             styles={{
               input: {

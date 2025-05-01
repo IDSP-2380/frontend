@@ -52,7 +52,7 @@
 
 }
 
-* {
+body {
     background-color: var(--background-paper);
 }
 
@@ -121,4 +121,13 @@
   text-align: center;
   padding-bottom: 1.5rem;
 
+}
+
+.ql-editor.ql-blank::before {
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-S);
+  line-height: var(--font-line-height-S);
+  font-family: var(--opensans);
+  color: var(--neutral-400);
+  font-style: normal;
 }

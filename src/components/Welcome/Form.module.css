@@ -1,21 +1,47 @@
-.inputBar {
-    
+.inputBar label {
     font-family: var(--opensans);
     font-weight: var(--font-weight-semi-bold);
     font-size: var(--font-size-M);
     line-height: var(--font-line-height-S);
+    padding-bottom: 1rem;
+    white-space: nowrap;
 }
 
-input::placeholder {
+.calendarLabel, .projectEndDate {
+  font-family: var(--opensans);
+  font-weight: var(--font-weight-semi-bold);
+  font-size: var(--font-size-M);
+  line-height: var(--font-line-height-S);
+  white-space: nowrap;
+}
+
+.projectEndDate {
+  text-align: left;
+  width: 480px;
+}
+
+
+
+.customInput::placeholder  {
+    font-weight: var(--font-weight-regular);
+    font-size: var(--font-size-M);
+    line-height: var(--font-line-height-S);
     font-family: var(--opensans);
     color: var(--neutral-400);
+    font-style: normal;
 }
+
+
 
 .inlineInput {
     display: flex;
     font-family: var(--opensans);
     align-items: center;
     gap: 1.5rem;
+}
+
+.inlineInput label {
+  font-size: var(--font-size-M);
 }
 
 .storyForm {
@@ -47,17 +73,7 @@ input::placeholder {
     justify-content: center;    
 }
   
-  .indicator {
-    background-color: var(--mantine-color-white);
-    border-radius: var(--mantine-radius-md);
-    border: 1px solid var(--mantine-color-gray-2);
-    box-shadow: var(--mantine-shadow-sm);
-  
-    @mixin dark {
-      background-color: var(--mantine-color-dark-6);
-      border-color: var(--mantine-color-dark-4);
-    }
-  }
+
 
   span {
     &[data-active] {
@@ -101,7 +117,60 @@ input::placeholder {
     }
   }
 
+  .tab button {
+    border-radius: 12px;
+  }
+
   .startYourStory {
     font-size: var(--font-size-M);
   }
   
+  .inviteButton {
+    width: 68px;
+    height: 28px;
+    padding: 0;
+    border-radius: 8px;
+    border: 1px solid var(--primary-500);
+    background-color: var(--primary-50);
+  }
+
+  .inviteButton span {
+    font-size: var(--font-size-S);
+    line-height: var(--font-line-height-S);
+    font-weight: var(--font-weight-semi-bold);
+    color: var(--primary-500);
+  }
+
+  .inviteButton:hover {
+    background-color: var(--primary-50);
+  }
+
+  .projectEndDate button {
+    width: 480px;
+    height: 48px;
+    border-radius: 12px;
+    background-color: var(--neutral-white);
+  }
+
+  .projectEndDate button:hover {
+    background-color: var(--neutral-white);
+  }
+
+.accordionItem {
+  border: 1px solid var(--background-paper-200);
+  box-sizing: border-box;
+  border-radius: 12px;
+  background-color: var(--neutral-white);
+}
+
+.accordionItem button {
+  border-radius: 12px;
+  width: 479px;
+}
+
+.accordionPanel {
+  display: block;
+  margin: 0 auto;
+  background-color: var(--neutral-white);
+  border-radius: 0 0 12px 12px;
+}
