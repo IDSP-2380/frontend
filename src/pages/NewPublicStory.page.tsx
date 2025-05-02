@@ -17,8 +17,6 @@ export function NewPublicStory() {
   const [numberOfLinks, setNumberOfLinks] = useState<string | number>('');
   const [linkContent, setLinkContent] = useState("");
 
- 
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
