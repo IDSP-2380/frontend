@@ -12,6 +12,7 @@ import { DndListHandle } from "@/components/DragNDrop/DndListHandle";
 import { NumberInput } from "@mantine/core";
 import { useListState } from '@mantine/hooks';
 import { useRef } from "react";
+import { ButtonBase } from "@/components/Buttons/ButtonBase";
 import axios from "axios";
 
 export function NewPrivateStory() {
@@ -25,6 +26,11 @@ export function NewPrivateStory() {
     controlsRefs[val] = node;
     setControlsRefs(controlsRefs);
   };
+
+
+  const [days, setDays] = useState(0);
+  const [hours, setHours] = useState(0);
+  const [minutes, setMinutes] = useState(0);
 
   const groceries = ['🍎 Apples', '🍌 Bananas', '🥦 Broccoli', '🥕 Carrots', '🍫 Chocolate'];
 
@@ -45,12 +51,24 @@ export function NewPrivateStory() {
       const [endDate, setEndDate] = useState<DateValue>(null);
       const [error, setError] = useState<string | null>(null);
       const [time, setTime] = useState<string>('');
+      const [isActiveDate, setIsActiveDate] = useState(false);
 
-  const [days, setDays] = useState(0);
-  const [hours, setHours] = useState(0);
-  const [minutes, setMinutes] = useState(0);
+    const [isActiveTime, setIsActiveTime] = useState(false);
+
+    const [maxWordCount, setMaxWordCount] = useState<string | number>('');
+    const [numberOfLinks, setNumberOfLinks] = useState<string | number>('');
+    const [storyTitle, setStoryTitle] = useState("");
+    const [collaboratorList, handlers] = useListState<string>();
+
+    const isFormComplete = startDate && endDate && days >= 1 && storyTitle.trim() !== "" && collaboratorList.length > 0 && Number(maxWordCount) > 0 && Number(numberOfLinks) > 0;
+
+    
     
     const validate = () => {
+      if (storyTitle.trim() === "" || collaboratorList.length === 0 || maxWordCount === 0 || numberOfLinks === 0) {
+        throw new Error("fill out all fields")
+      }
+
       const today = new Date();
       today.setHours(0, 0, 0, 0); 
     
@@ -78,16 +96,16 @@ export function NewPrivateStory() {
       },
        {
         value: 'Set by Time per turn',
-        description:  <SetTimer
-                          days={days}
-                          hours={hours}
-                          minutes={minutes}
-                          onChange={(d, h, m) => {
-                            setDays(d);
-                            setHours(h);
-                            setMinutes(m);
-                          }}
-                        />
+        description: <SetTimer
+        days={days}
+        hours={hours}
+        minutes={minutes}
+        onChange={(d, h, m) => {
+          setDays(d);
+          setHours(h);
+          setMinutes(m);
+        }}
+      />
        }
     ];
 
@@ -98,7 +116,7 @@ export function NewPrivateStory() {
       </Accordion.Item>
     ));
 
-    const [collaboratorList, handlers] = useListState<string>();
+    
 
     function addUserToCollaborators(thing: string) {
       if (!collaboratorList.includes(thing)) {
@@ -106,30 +124,7 @@ export function NewPrivateStory() {
       }
     }
 
-    const [isActiveDate, setIsActiveDate] = useState(false);
-
-    const [isActiveTime, setIsActiveTime] = useState(false);
-
-    const[wordCount, setWordCount] = useState(0);
-
-
-    function wordCountCheck(value: number | string | null) {
-      if (value === null || value === '') return;
-      const number = typeof value === 'number' ? value : parseInt(value.toString());
-      if (number <= 250) {
-        setWordCount(number);
-      } 
-      while (number > 250) {
-        console.log("too big")
-      }
-    }
-
     const inputRef = useRef<HTMLInputElement>(null);
-
-    const [storyTitle, setStoryTitle] = useState("");
-    const [maxWordCount, setMaxWordCount] = useState<string | number>('');
-    const [numberOfLinks, setNumberOfLinks] = useState<string | number>('');
-    const [linkContent, setLinkContent] = useState("");
 
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -137,13 +132,18 @@ export function NewPrivateStory() {
   
       const payload = {
         storyTitle,
+        collaboratorList,
         maxWordCount,
         numberOfLinks,
-        linkContent
+        startDate,
+        endDate,
+        days,
+        hours,
+        minutes
       };
   
       try {
-        await axios.post('http://localhost:3000/api/stories/create/story/private', payload, {
+        await axios.post('http://localhost:3000/api/stories/create/story/public', payload, {
           headers: {
             'Content-Type': 'application/json'
           }
@@ -156,7 +156,7 @@ export function NewPrivateStory() {
 
   return (
     <>
-        <Form action="/create/story/private" method="post" className={FormClasses.storyForm}>
+        <form onSubmit={handleSubmit} method="post" className={FormClasses.storyForm}>
         <div className={FormClasses.storySettings}>
           <div className={FormClasses.storySettingsInputs}>
           
@@ -168,6 +168,7 @@ export function NewPrivateStory() {
             classNames={{
               input: FormClasses.customInput,
             }}
+            onChange={(event) => setStoryTitle(event.currentTarget.value)}
             placeholder="Add a title for your story"
             styles={{
               input: {
@@ -175,11 +176,10 @@ export function NewPrivateStory() {
                 width: "480px",
                 height: "48px",
                 border: "1px solid #B4B1AD",
-                
               }
             }}
-            name="storyTitle"
             value={storyTitle}
+            name="storyTitle"
           />
 
 
@@ -193,7 +193,6 @@ export function NewPrivateStory() {
         <Combobox.Target>
           
             <TextInput
-            required
             withAsterisk={false}
             label="Pick value or type anything"
             placeholder="Pick value or type anything"
@@ -236,7 +235,7 @@ export function NewPrivateStory() {
 
     <div className={FormClasses.listTitle}>Writing order</div>
     {collaboratorList && 
-    <DndListHandle collaboratorList={collaboratorList}/>}
+    <DndListHandle collaboratorList={collaboratorList} />}
     
 
         
@@ -256,10 +255,8 @@ export function NewPrivateStory() {
             }}
             hideControls
             name="maxWordCount"
-            value={wordCount}
-            onChange={(val) => {
-              wordCountCheck(val);
-            }}
+            value={maxWordCount}
+            onChange={setMaxWordCount}
             />
 
             
@@ -279,6 +276,8 @@ export function NewPrivateStory() {
             }}
             hideControls
             name="numberOfLinks"
+            value={numberOfLinks}
+            onChange={setNumberOfLinks}
             />
             </div>
           </div>  
@@ -312,7 +311,9 @@ export function NewPrivateStory() {
           </div>
 
           </div>
-        </Form>
+
+          <ButtonBase disabled={!isFormComplete} onClick={validate} buttonType="secondarySquare"  rightSection={isFormComplete ? <img  src='/icons/CaretRight.svg' alt="icon" />: <img  src='/icons/CaretRightDisabled.svg' alt="icon" />}>Submit</ButtonBase >
+          </form>
     </>
   );
 }

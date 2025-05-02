@@ -38,7 +38,7 @@ export function SetTimer({ days, hours, minutes, onChange }: SetTimerProps) {
         padding: '4px 12px',
         maxWidth: '20rem'
       }}
-      onClick={(event) => {event.stopPropagation()}}
+      onClick={(event) => event.stopPropagation()}
     >
       <Box style={{ display: 'flex', alignItems: 'center', }}>
         <Box style={{ width: 'min-content', display: 'flex', alignItems: 'center' }}>
@@ -72,7 +72,7 @@ export function SetTimer({ days, hours, minutes, onChange }: SetTimerProps) {
           suffix="h"
         />
         <Text size="sm" c="gray.6">:</Text>
-</Box>
+        </Box>
 
 
         <Box style={{ width: 'min-content', display: 'flex', alignItems: 'center' }}>
@@ -88,8 +88,8 @@ export function SetTimer({ days, hours, minutes, onChange }: SetTimerProps) {
           styles={unitStyles}
           suffix="m"
         />
-</Box>
-</Box>
+      </Box>
+      </Box>
 
 
       <Box style={{display: 'flex', alignItems: 'center'}}>
