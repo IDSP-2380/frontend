@@ -5,33 +5,60 @@ import FormClasses from "../components/Welcome/Form.module.css"
 import TextEditor from "@/components/Welcome/TextEditor";
 import { FloatingIndicator, Tabs } from "@mantine/core";
 import { useState } from "react";
+import axios from "axios";
 
 import { NumberInput } from "@mantine/core";
 
 
 export function NewPublicStory() {
 
-  const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
-  const [value, setValue] = useState<string | null>('1');
-  const [controlsRefs, setControlsRefs] = useState<Record<string, HTMLButtonElement | null>>({});
-  const setControlRef = (val: string) => (node: HTMLButtonElement) => {
-    controlsRefs[val] = node;
-    setControlsRefs(controlsRefs);
+  const [storyTitle, setStoryTitle] = useState("");
+  const [maxWordCount, setMaxWordCount] = useState<string | number>('');
+  const [numberOfLinks, setNumberOfLinks] = useState<string | number>('');
+  const [linkContent, setLinkContent] = useState("");
+
+ 
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const payload = {
+      storyTitle,
+      maxWordCount,
+      numberOfLinks,
+      linkContent: "text content lol"
+    };
+
+    try {
+      await axios.post('http://localhost:3000/api/stories/create/story/public', payload, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+    } catch (err) {
+      console.error("Failed to send to backend:", err);
+    }
   };
+
+
   return (
     <>
-        <Form action="/create/story/public" method="post" className={FormClasses.storyForm}>
+       <form onSubmit={handleSubmit} method="post" className={FormClasses.storyForm}>
         <div className={FormClasses.storySettings}>
           <div className={FormClasses.storySettingsInputs}>
+          
           <TextInput 
             required
             withAsterisk={false}
             label="Story Title"
             className={FormClasses.inputBar}
+            value={storyTitle}
             placeholder="Add a title for your story"
             classNames={{
               input: FormClasses.customInput,
             }}
+            onChange={(event) => setStoryTitle(event.currentTarget.value)}
             styles={{
               input: {
                 borderRadius: "12px",
@@ -42,6 +69,7 @@ export function NewPublicStory() {
             }}
             name="storyTitle"
           />
+
           <NumberInput 
             required
             withAsterisk={false}
@@ -61,9 +89,12 @@ export function NewPublicStory() {
                 border: "1px solid #B4B1AD"
               }
             }}
+            onChange={setMaxWordCount}
             hideControls
             name="maxWordCount"
+            value={maxWordCount}
             />
+
             <NumberInput 
             required
             withAsterisk={false}
@@ -72,7 +103,7 @@ export function NewPublicStory() {
             classNames={{
               input: FormClasses.customInput,
             }}
-            
+            onChange={setNumberOfLinks}
             className={FormClasses.inlineInput}
             styles={{
               input: {
@@ -84,13 +115,16 @@ export function NewPublicStory() {
             }}
             hideControls
             name="numberOfLinks"
+            value={numberOfLinks}
             />
             </div>
           </div>  
 
           <TextEditor />
-          
-        </Form>
+
+          <Button type="submit">Create Story</Button>
+
+        </form>
     </>
   );
 }

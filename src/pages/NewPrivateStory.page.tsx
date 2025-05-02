@@ -4,13 +4,14 @@ import { Form } from "react-router-dom";
 import FormClasses from "../components/Welcome/Form.module.css"
 import TextEditor from "@/components/Welcome/TextEditor";
 import { FloatingIndicator, Tabs, Box } from "@mantine/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DatePicker } from "@/components/Calendar/DatePicker";
 import type { DateValue } from '@mantine/dates';
 import { TimePicker } from "@/components/Time/TimePicker";
 import { DndListHandle } from "@/components/DragNDrop/DndListHandle";
 import { NumberInput } from "@mantine/core";
 import { useListState } from '@mantine/hooks';
+import { useRef } from "react";
 
 export function NewPrivateStory() {
 
@@ -94,6 +95,22 @@ export function NewPrivateStory() {
     const [isActiveDate, setIsActiveDate] = useState(false);
 
     const [isActiveTime, setIsActiveTime] = useState(false);
+
+    const[wordCount, setWordCount] = useState(0);
+
+
+    function wordCountCheck(value: number | string | null) {
+      if (value === null || value === '') return;
+      const number = typeof value === 'number' ? value : parseInt(value.toString());
+      if (number <= 250) {
+        setWordCount(number);
+      } 
+      while (number > 250) {
+        console.log("too big")
+      }
+    }
+
+    const inputRef = useRef<HTMLInputElement>(null);
 
   return (
     <>
@@ -195,7 +212,13 @@ export function NewPrivateStory() {
             }}
             hideControls
             name="maxWordCount"
+            value={wordCount}
+            onChange={(val) => {
+              wordCountCheck(val);
+            }}
             />
+
+            
             <NumberInput 
             required
             withAsterisk={false}
