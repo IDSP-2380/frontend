@@ -40,7 +40,6 @@ const validate = () => {
       <DatePicker label="Start Date" value={startDate} onChange={setStartDate} />
       <DatePicker label="End Date" value={endDate} onChange={setEndDate} />
       {error && <Text c="red">{error}</Text>}
-      {/* <SetTimer value={time} onChange={setTime} /> */}
  <SetTimer
         days={days}
         hours={hours}
@@ -51,8 +50,6 @@ const validate = () => {
           setMinutes(m);
         }}
       />
-      {/* <primaryButton disabled={!isFormComplete} onClick={validate} rightSection={<img  src={isFormComplete ? '/icons/CaretRight.svg' : '/icons/CaretRightDisabled.svg'} alt="icon" />} >Add an Inklink</primaryButton> */}
-
       <ButtonBase disabled={!isFormComplete} onClick={validate} buttonType="secondarySquare"  rightSection={isFormComplete ? <img  src='/icons/CaretRight.svg' alt="icon" />: <img  src='/icons/CaretRightDisabled.svg' alt="icon" />}>Edit</ButtonBase >
     </>
   );
