@@ -30,6 +30,7 @@ export const theme = createTheme({
       'var(--primary-900)',
     ],
     gray: [
+      'var(--neutral-200)',
       'var(--neutral-300)',
       'var(--neutral-400)',
       'var(--neutral-500)',

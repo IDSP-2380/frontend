@@ -1,75 +1,47 @@
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wdth,wght@0,18..144,87..112,300..900;1,18..144,87..112,300..900&family=Open+Sans:ital,wdth,wght@0,75..100,300..800;1,75..100,300..800&display=swap');
-
-:root {
-    --merriweather: Merriweather;
-    --opensans: "Open Sans";
-
-    --font-size-XXL: 26px;
-    --font-size-XL: 24px;
-    --font-size-L: 20px;
-    --font-size-M: 18px;
-    --font-size-S: 16px;
-    --font-size-XS: 14px;
-
-    --font-line-height-XL: 36px;
-    --font-line-height-L: 32px;
-    --font-line-height-M: 28px;
-    --font-line-height-S: 24px;
-    --font-line-height-XS: 20px;
-
-    --font-weight-regular: 400;     
-    --font-weight-medium: 500;      
-    --font-weight-semi-bold: 600;   
-    --font-weight-bold: 700;
-    --font-weight-black: 900px;    
-
-    --font-style-italic: italic;
-
-    --primary-50:  #EAEDF8;
-    --primary-100: #BEC7E8;
-    --primary-200: #9EACDD;
-    --primary-300: #7286CD;
-    --primary-400: #576EC3;
-    --primary-500: #2D4AB4;
-    --primary-600: #2943A4;
-    --primary-700: #203580;
-    --primary-800: #192963;
-    --primary-900: #131F4C;
-  
-    --background-paper:      #FDF9F4;
-    --background-paper-50:   #E6E3DE;
-    --background-paper-100:  #CDCBC8;
-    --background-paper-200:  #B4B1AD;
-
-    --neutral-white:   #FFFFFF;
-    --neutral-300:     #7F7F7F;
-    --neutral-400:     #666666;
-    --neutral-500:     #404040; 
-    --neutral-600:     #3A3A3A;
-    --neutral-700:     #2D2D2D;
-    --neutral-800:     #232323;
-    --neutral-900:     #1B1B1B;
-
-}
-
-.inputBar {
-    
+.inputBar label {
     font-family: var(--opensans);
     font-weight: var(--font-weight-semi-bold);
     font-size: var(--font-size-M);
     line-height: var(--font-line-height-S);
+    padding-bottom: 1rem;
+    white-space: nowrap;
 }
 
-input::placeholder {
+.calendarLabel, .projectEndDate {
+  font-family: var(--opensans);
+  font-weight: var(--font-weight-semi-bold);
+  font-size: var(--font-size-M);
+  line-height: var(--font-line-height-S);
+  white-space: nowrap;
+}
+
+.projectEndDate {
+  text-align: left;
+  width: 480px;
+}
+
+
+
+.customInput::placeholder  {
+    font-weight: var(--font-weight-regular);
+    font-size: var(--font-size-M);
+    line-height: var(--font-line-height-S);
     font-family: var(--opensans);
     color: var(--neutral-400);
+    font-style: normal;
 }
+
+
 
 .inlineInput {
     display: flex;
     font-family: var(--opensans);
     align-items: center;
     gap: 1.5rem;
+}
+
+.inlineInput label {
+  font-size: var(--font-size-M);
 }
 
 .storyForm {
@@ -92,4 +64,113 @@ input::placeholder {
     flex-direction: column;
     gap: 2rem;
     padding: 1.5rem 0;
+}
+
+.list {
+    position: relative;
+    margin-bottom: var(--mantine-spacing-md);
+    display: flex;
+    justify-content: center;    
+}
+  
+
+
+  span {
+    &[data-active] {
+        background-color: var(--primary-50);
+      }
+  }
+
+
+  
+  .tab {
+    z-index: 1;
+    font-weight: var(--font-weight-semi-bold);
+    font-size: var(--font-size-M);
+    font-family: var(--opensans);
+    list-style: var(--font-line-height-S);
+    transition: color 100ms ease;
+    color: var(--background-paper-200);
+    width: 356px;
+    height: 56px;
+    border: 0; 
+    
+  
+    &[data-active] {
+      color: var(--primary-500);
+      border-radius: 12px;
+      border: 1px solid var(--primary-300);
+      background-color: var(--primary-50);
+    }
+
+    &[data-active] span,
+    &[data-active] * {
+      background-color: var(--primary-50);
+    }
+  
+    @mixin dark {
+      color: var(--mantine-color-dark-1);
+  
+      &[data-active] {
+        color: var(--mantine-color-white);
+      }
+    }
+  }
+
+  .tab button {
+    border-radius: 12px;
+  }
+
+  .startYourStory {
+    font-size: var(--font-size-M);
+  }
+  
+  .inviteButton {
+    width: 68px;
+    height: 28px;
+    padding: 0;
+    border-radius: 8px;
+    border: 1px solid var(--primary-500);
+    background-color: var(--primary-50);
+  }
+
+  .inviteButton span {
+    font-size: var(--font-size-S);
+    line-height: var(--font-line-height-S);
+    font-weight: var(--font-weight-semi-bold);
+    color: var(--primary-500);
+  }
+
+  .inviteButton:hover {
+    background-color: var(--primary-50);
+  }
+
+  .projectEndDate button {
+    width: 480px;
+    height: 48px;
+    border-radius: 12px;
+    background-color: var(--neutral-white);
+  }
+
+  .projectEndDate button:hover {
+    background-color: var(--neutral-white);
+  }
+
+.accordionItem {
+  border: 1px solid var(--background-paper-200);
+  box-sizing: border-box;
+  border-radius: 12px;
+  background-color: var(--neutral-white);
+}
+
+.accordionItem button {
+  border-radius: 12px;
+  width: 479px;
+}
+
+.accordionPanel {
+  display: block;
+  margin: 0 auto;
+  background-color: var(--neutral-white);
+  border-radius: 0 0 12px 12px;
 }
