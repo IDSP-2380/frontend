@@ -1,41 +1,3 @@
-// import { TimePicker } from '@mantine/dates';
-// import { Box, useMantineTheme } from '@mantine/core';
-// import TimeClass from './SetTimer.module.css';
-
-// interface SetTimerProps {
-//   value: string | undefined;
-//   onChange: (value: string) => void;
-// }
-
-// export function SetTimer({ value, onChange }: SetTimerProps) {
-//   const theme = useMantineTheme();
-
-//   return (
-//     <Box className={TimeClass.timeWrapper}>
-//       <TimePicker
-//         withSeconds
-//         value={value}
-//         onChange={(val) => {
-//           if (val) onChange(val);
-//         }}
-//         rightSection={
-//           <img
-//             src="icons/Alarm.svg"
-//             alt="alarm icon"
-//             className={TimeClass.alarmIcon}
-//           />
-//         }
-//         styles={{
-//           input: {
-//             borderRadius: theme.radius.lg,
-//           },
-//         }}
-//       />
-//     </Box>
-//   );
-// }
-
-
 import {
   Box,
   NumberInput,
@@ -76,6 +38,7 @@ export function SetTimer({ days, hours, minutes, onChange }: SetTimerProps) {
         padding: '4px 12px',
         maxWidth: '20rem'
       }}
+      onClick={(event) => {event.stopPropagation()}}
     >
       <Box style={{ display: 'flex', alignItems: 'center', }}>
         <Box style={{ width: 'min-content', display: 'flex', alignItems: 'center' }}>
