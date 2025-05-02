@@ -2,7 +2,7 @@
 import { Button } from '@mantine/core';
 import { ReactNode, CSSProperties } from 'react';
 import { useMantineTheme } from '@mantine/core';
-import styles from './primaryButton.module.css';
+import styles from './ButtonBase.module.css';
 
 type buttonNames = 'primary' | 'primaryBig' | 'primaryWhite' | 'primaryWhiteBig' | 'secondaryWhite' | 'secondaryDim' | 'secondarySquare'
 
