@@ -12,6 +12,7 @@ import { DndListHandle } from "@/components/DragNDrop/DndListHandle";
 import { NumberInput } from "@mantine/core";
 import { useListState } from '@mantine/hooks';
 import { useRef } from "react";
+import axios from "axios";
 
 export function NewPrivateStory() {
 
@@ -125,11 +126,40 @@ export function NewPrivateStory() {
 
     const inputRef = useRef<HTMLInputElement>(null);
 
+    const [storyTitle, setStoryTitle] = useState("");
+    const [maxWordCount, setMaxWordCount] = useState<string | number>('');
+    const [numberOfLinks, setNumberOfLinks] = useState<string | number>('');
+    const [linkContent, setLinkContent] = useState("");
+
+
+    const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+  
+      const payload = {
+        storyTitle,
+        maxWordCount,
+        numberOfLinks,
+        linkContent
+      };
+  
+      try {
+        await axios.post('http://localhost:3000/api/stories/create/story/private', payload, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+  
+      } catch (err) {
+        console.error("Failed to send to backend:", err);
+      }
+    };
+
   return (
     <>
         <Form action="/create/story/private" method="post" className={FormClasses.storyForm}>
         <div className={FormClasses.storySettings}>
           <div className={FormClasses.storySettingsInputs}>
+          
           <TextInput
             required 
             withAsterisk={false}
@@ -149,6 +179,7 @@ export function NewPrivateStory() {
               }
             }}
             name="storyTitle"
+            value={storyTitle}
           />
 
 

@@ -24,7 +24,7 @@ export function NewPublicStory() {
       storyTitle,
       maxWordCount,
       numberOfLinks,
-      linkContent: "text content lol"
+      linkContent
     };
 
     try {
@@ -118,7 +118,7 @@ export function NewPublicStory() {
             </div>
           </div>  
 
-          <TextEditor />
+          <TextEditor value={linkContent} onChange={setLinkContent} />
 
           <Button type="submit">Create Story</Button>
 
