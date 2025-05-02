@@ -76,6 +76,7 @@ export function SetTimer({ days, hours, minutes, onChange }: SetTimerProps) {
         padding: '4px 12px',
         maxWidth: '20rem'
       }}
+      onClick={(event) => event.stopPropagation()}
     >
       <Box style={{ display: 'flex', alignItems: 'center', }}>
         <Box style={{ width: 'min-content', display: 'flex', alignItems: 'center' }}>

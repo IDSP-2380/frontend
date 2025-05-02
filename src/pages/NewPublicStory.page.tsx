@@ -6,6 +6,7 @@ import TextEditor from "@/components/Welcome/TextEditor";
 import { FloatingIndicator, Tabs } from "@mantine/core";
 import { useState } from "react";
 import axios from "axios";
+import { ButtonBase } from "@/components/Buttons/ButtonBase";
 
 import { NumberInput } from "@mantine/core";
 
@@ -15,9 +16,14 @@ export function NewPublicStory() {
   const [storyTitle, setStoryTitle] = useState("");
   const [maxWordCount, setMaxWordCount] = useState<string | number>('');
   const [numberOfLinks, setNumberOfLinks] = useState<string | number>('');
-  const [linkContent, setLinkContent] = useState("");
 
- 
+  const isFormComplete = storyTitle.trim() !== "" && Number(maxWordCount) > 0 && Number(numberOfLinks) > 0;
+
+  const validate = () => {
+    if (storyTitle.trim() === "" || maxWordCount === 0 || numberOfLinks === 0) {
+      throw new Error("fill out all fields")
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -122,7 +128,7 @@ export function NewPublicStory() {
 
           <TextEditor />
 
-          <Button type="submit">Create Story</Button>
+          <ButtonBase disabled={!isFormComplete} onClick={validate} buttonType="secondarySquare"  rightSection={isFormComplete ? <img  src='/icons/CaretRight.svg' alt="icon" />: <img  src='/icons/CaretRightDisabled.svg' alt="icon" />}>Submit</ButtonBase >
 
         </form>
     </>
