@@ -124,9 +124,6 @@ export function NewPrivateStory() {
       }
     }
 
-    const inputRef = useRef<HTMLInputElement>(null);
-
-
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
   
@@ -143,7 +140,7 @@ export function NewPrivateStory() {
       };
   
       try {
-        await axios.post('http://localhost:3000/api/stories/create/story/public', payload, {
+        await axios.post('http://localhost:3000/api/stories/create/story/private', payload, {
           headers: {
             'Content-Type': 'application/json'
           }
@@ -153,6 +150,85 @@ export function NewPrivateStory() {
         console.error("Failed to send to backend:", err);
       }
     };
+
+    const [timePerTurn, setTimePerTurn] = useState({ days: 0, hours: 0, minutes: 0 });
+
+
+    function calculateTimePerTurn() {
+      if (!startDate || !endDate || collaboratorList.length === 0 || numberOfLinks === 0) {
+        return { days: 0, hours: 0, minutes: 0 };
+      }
+    
+      const startDateTime = new Date(startDate).getTime();
+      const endDateTime = new Date(endDate).getTime();
+      const totalProjectTime = endDateTime - startDateTime;
+      
+      const turnsPerCollaborator = Math.ceil(Number(numberOfLinks) / collaboratorList.length);
+      
+      const timePerTurnMs = totalProjectTime / (turnsPerCollaborator * collaboratorList.length);
+      
+      const timePerTurnDays = Math.floor(timePerTurnMs / (1000 * 60 * 60 * 24));
+      const timePerTurnHours = Math.floor((timePerTurnMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const timePerTurnMinutes = Math.floor((timePerTurnMs % (1000 * 60 * 60)) / (1000 * 60));
+      
+      return { days: timePerTurnDays, hours: timePerTurnHours, minutes: timePerTurnMinutes };
+    }
+
+    useEffect(() => {
+      if (startDate && endDate && collaboratorList.length > 0 && Number(numberOfLinks) > 0) {
+        const result = calculateTimePerTurn();
+        setTimePerTurn(result);
+      }
+    }, [startDate, endDate, collaboratorList, numberOfLinks]);
+
+    const [calculatedEndDate, setCalculatedEndDate] = useState<Date | null>(null);
+
+    function calculateEndDate() {
+      if (!startDate || collaboratorList.length === 0 || 
+          Number(numberOfLinks) <= 0 || (days <= 0 && hours <= 0 && minutes <= 0)) {
+        return null;
+      }
+      
+      const timePerTurnMs = 
+        (days * 24 * 60 * 60 * 1000) + 
+        (hours * 60 * 60 * 1000) + 
+        (minutes * 60 * 1000);
+      
+      const totalTurns = Number(numberOfLinks);
+      
+      const totalProjectTimeMs = timePerTurnMs * totalTurns;
+      
+      const startDateTime = new Date(startDate).getTime();
+      const endDateTime = startDateTime + totalProjectTimeMs;
+      
+      return new Date(endDateTime);
+    }
+
+    useEffect(() => {
+      if (isActiveTime && startDate && calculatedEndDate) {
+        setEndDate(calculatedEndDate);
+      }
+    }, [isActiveTime, calculatedEndDate, startDate]);
+
+    useEffect(() => {
+      if (startDate && collaboratorList.length > 0 && Number(numberOfLinks) > 0 && 
+          (days > 0 || hours > 0 || minutes > 0)) {
+        const result = calculateEndDate();
+        setCalculatedEndDate(result);
+      }
+    }, [startDate, days, hours, minutes, collaboratorList.length, numberOfLinks, isActiveTime]);
+
+    useEffect(() => {
+      if (isActiveDate && startDate && endDate && collaboratorList.length > 0 && Number(numberOfLinks) > 0) {
+        const result = calculateTimePerTurn();
+        setDays(result.days);
+        setHours(result.hours);
+        setMinutes(result.minutes);
+      } 
+      else if (isActiveTime && startDate && calculatedEndDate) {
+        setEndDate(calculatedEndDate);
+      }
+    }, [isActiveDate, isActiveTime]);
 
   return (
     <>
@@ -296,7 +372,7 @@ export function NewPrivateStory() {
 
             <div className={`${FormClasses.setEndDate} ${isActiveDate ? '' : FormClasses.noDisplay}`}>
             <p>Based on selected date, each writer's time per turn is...</p>
-              <span>2d:00h:00m</span>
+              <span>{timePerTurn.days}d:{timePerTurn.hours}h:{timePerTurn.minutes}m</span>
             </div>
 
           
@@ -306,14 +382,17 @@ export function NewPrivateStory() {
           </Accordion>
 
           <div className={`${FormClasses.setEndDate} ${isActiveTime ? '' : FormClasses.noDisplay}`}>
-            <p>Based on time per turn, project end date will be...</p>
-            <span>2021-12-30</span>
+            <p>Based on time per turn, project end date will be...</p> 
+            <span>{calculatedEndDate ? calculatedEndDate.toLocaleDateString() : 'N/A'}</span>
           </div>
 
           </div>
 
-          <ButtonBase disabled={!isFormComplete} onClick={validate} buttonType="secondarySquare"  rightSection={isFormComplete ? <img  src='/icons/CaretRight.svg' alt="icon" />: <img  src='/icons/CaretRightDisabled.svg' alt="icon" />}>Submit</ButtonBase >
-          </form>
+          <div className={FormClasses.createProjectButton}>
+          <ButtonBase disabled={!isFormComplete} onClick={validate} buttonType="primary"  rightSection={isFormComplete ? <img  src='/icons/CaretRight.svg' alt="icon" />: <img  src='/icons/CaretRightDisabled.svg' alt="icon" />} width={360}>Create Project</ButtonBase >
+          </div>
+        
+        </form>
     </>
   );
 }
