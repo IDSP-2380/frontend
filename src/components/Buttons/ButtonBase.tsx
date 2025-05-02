@@ -45,7 +45,7 @@ export function ButtonBase({
       disabled={disabled}
       className={buttonClassMapping[buttonType]}
       style={{  ...style }}
-
+      type='submit'
       classNames={{
         root: `${styles.buttonRoot} ${disabled ? styles.disabled : styles.enabled}`,
         section: styles.sectionIcon,

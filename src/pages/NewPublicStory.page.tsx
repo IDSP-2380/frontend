@@ -16,6 +16,7 @@ export function NewPublicStory() {
   const [storyTitle, setStoryTitle] = useState("");
   const [maxWordCount, setMaxWordCount] = useState<string | number>('');
   const [numberOfLinks, setNumberOfLinks] = useState<string | number>('');
+  const [linkContent, setLinkContent] = useState("");
 
   const isFormComplete = storyTitle.trim() !== "" && Number(maxWordCount) > 0 && Number(numberOfLinks) > 0;
 
@@ -32,7 +33,7 @@ export function NewPublicStory() {
       storyTitle,
       maxWordCount,
       numberOfLinks,
-      linkContent: "text content lol"
+      linkContent
     };
 
     try {
@@ -126,7 +127,7 @@ export function NewPublicStory() {
             </div>
           </div>  
 
-          <TextEditor />
+          <TextEditor value={linkContent} onChange={setLinkContent} />
 
           <ButtonBase disabled={!isFormComplete} onClick={validate} buttonType="secondarySquare"  rightSection={isFormComplete ? <img  src='/icons/CaretRight.svg' alt="icon" />: <img  src='/icons/CaretRightDisabled.svg' alt="icon" />}>Submit</ButtonBase >
 

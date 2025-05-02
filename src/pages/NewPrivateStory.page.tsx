@@ -13,6 +13,7 @@ import { NumberInput } from "@mantine/core";
 import { useListState } from '@mantine/hooks';
 import { useRef } from "react";
 import { ButtonBase } from "@/components/Buttons/ButtonBase";
+import axios from "axios";
 
 export function NewPrivateStory() {
 
@@ -123,13 +124,39 @@ export function NewPrivateStory() {
       }
     }
 
-    
-
     const inputRef = useRef<HTMLInputElement>(null);
+
+
+    const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+  
+      const payload = {
+        storyTitle,
+        collaboratorList,
+        maxWordCount,
+        numberOfLinks,
+        startDate,
+        endDate,
+        days,
+        hours,
+        minutes
+      };
+  
+      try {
+        await axios.post('http://localhost:3000/api/stories/create/story/public', payload, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+  
+      } catch (err) {
+        console.error("Failed to send to backend:", err);
+      }
+    };
 
   return (
     <>
-        <Form action="/create/story/private" method="post" className={FormClasses.storyForm}>
+        <form onSubmit={handleSubmit} method="post" className={FormClasses.storyForm}>
         <div className={FormClasses.storySettings}>
           <div className={FormClasses.storySettingsInputs}>
           
@@ -166,7 +193,6 @@ export function NewPrivateStory() {
         <Combobox.Target>
           
             <TextInput
-            required
             withAsterisk={false}
             label="Pick value or type anything"
             placeholder="Pick value or type anything"
@@ -287,7 +313,7 @@ export function NewPrivateStory() {
           </div>
 
           <ButtonBase disabled={!isFormComplete} onClick={validate} buttonType="secondarySquare"  rightSection={isFormComplete ? <img  src='/icons/CaretRight.svg' alt="icon" />: <img  src='/icons/CaretRightDisabled.svg' alt="icon" />}>Submit</ButtonBase >
-        </Form>
+          </form>
     </>
   );
 }

@@ -12,8 +12,12 @@ function redoHandler(this: {quill: Quill}) {
   this.quill.history.redo();
 }
 
-const TextEditor = () => {
-  const [value, setValue] = useState('');
+type TextEditorProps = {
+  value: string;
+  onChange: (value: string) => void;
+};
+
+const TextEditor = ({ value, onChange }: TextEditorProps) => {
   const quillRef = useRef<ReactQuill>(null);
 
   const modules = {
@@ -69,7 +73,7 @@ const TextEditor = () => {
       <ReactQuill 
         ref={quillRef}
         value={value} 
-        onChange={setValue} 
+        onChange={onChange} 
         modules={modules} 
         className="textBox"
         placeholder='The story begins...'

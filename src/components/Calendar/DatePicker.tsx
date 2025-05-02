@@ -10,7 +10,7 @@ interface CalendarProps {
   onChange: (date: DateValue) => void;
 }
 
-export function DatePicker({ label, value, onChange, }: CalendarProps) {
+export function DatePicker({ label, value, onChange }: CalendarProps) {
   return (
     <Box className={DateClass.calendarWrapper} onClick={(event) => event.stopPropagation()}>
       {label && <Text className={FormClasses.calendarLabel}>{label}</Text>}
@@ -19,6 +19,7 @@ export function DatePicker({ label, value, onChange, }: CalendarProps) {
         placeholder="Select date"
         value={value}
         onChange={onChange}
+        
         valueFormat="YYYY-MM-DD"
         minDate={new Date()}
         className={DateClass.input}
