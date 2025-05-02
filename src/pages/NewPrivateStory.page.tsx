@@ -7,7 +7,7 @@ import { FloatingIndicator, Tabs, Box } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { DatePicker } from "@/components/Calendar/DatePicker";
 import type { DateValue } from '@mantine/dates';
-import { TimePicker } from "@/components/Time/TimePicker";
+import { SetTimer } from "@/components/Time/SetTimer";
 import { DndListHandle } from "@/components/DragNDrop/DndListHandle";
 import { NumberInput } from "@mantine/core";
 import { useListState } from '@mantine/hooks';
@@ -24,6 +24,11 @@ export function NewPrivateStory() {
     controlsRefs[val] = node;
     setControlsRefs(controlsRefs);
   };
+
+
+  const [days, setDays] = useState(0);
+  const [hours, setHours] = useState(0);
+  const [minutes, setMinutes] = useState(0);
 
   const groceries = ['🍎 Apples', '🍌 Bananas', '🥦 Broccoli', '🥕 Carrots', '🍫 Chocolate'];
 
@@ -73,7 +78,16 @@ export function NewPrivateStory() {
       },
        {
         value: 'Set by Time per turn',
-        description: <TimePicker value={time} onChange={setTime} />
+        description: <SetTimer
+        days={days}
+        hours={hours}
+        minutes={minutes}
+        onChange={(d, h, m) => {
+          setDays(d);
+          setHours(h);
+          setMinutes(m);
+        }}
+      />
        }
     ];
 
