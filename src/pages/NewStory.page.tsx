@@ -28,11 +28,12 @@ export function NewStoryPage() {
       <h1 className="h1">Start New Story</h1>
       <Tabs variant="none" value={value} onChange={setValue} >
         <Tabs.List ref={setRootRef} className={FormClasses.list}>
+          
           <Tabs.Tab value="1" ref={setControlRef('1')} className={FormClasses.tab}>
-           Public
+          {value === "1" ? <img src="/Globe.svg" alt="" /> : <img src="/Globe-gray.svg" alt="" />}Public
           </Tabs.Tab>
           <Tabs.Tab value="2" ref={setControlRef('2')} className={FormClasses.tab}>
-            Private
+            {value === "2" ? <img src="/Lock.svg" alt="" /> : <img src="/Lock-gray.svg" alt="" />}Private 
           </Tabs.Tab>
 
           <FloatingIndicator
