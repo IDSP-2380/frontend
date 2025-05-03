@@ -3,9 +3,9 @@ import axios from 'axios';
 import { Form } from 'react-router-dom';
 import { Button, FloatingIndicator, NumberInput, Tabs, TextInput } from '@mantine/core';
 import { ButtonBase } from '@/components/Buttons/ButtonBase';
-import { HeaderMenu } from '@/components/Welcome/HeaderMenu';
-import TextEditor from '@/components/Welcome/TextEditor';
-import FormClasses from '../components/Welcome/Form.module.css';
+import { HeaderMenu } from '@/components/Header/HeaderMenu';
+import TextEditor from '@/components/TextEditor/TextEditor';
+import FormClasses from '../components/StoryForm/Form.module.css';
 
 export function NewPublicStory() {
   const [storyTitle, setStoryTitle] = useState('');
@@ -125,22 +125,28 @@ export function NewPublicStory() {
           </div>
         </div>
 
-        <TextEditor value={linkContent} onChange={setLinkContent} />
+        <TextEditor
+          value={linkContent}
+          onChange={setLinkContent}
+          maxWordCount={Number(maxWordCount)}
+        />
 
-        <ButtonBase
-          disabled={!isFormComplete}
-          onClick={validate}
-          buttonType="secondarySquare"
-          rightSection={
-            isFormComplete ? (
-              <img src="/icons/CaretRight.svg" alt="icon" />
-            ) : (
-              <img src="/icons/CaretRightDisabled.svg" alt="icon" />
-            )
-          }
-        >
-          Submit
-        </ButtonBase>
+        <div className={FormClasses.createProjectButton}>
+          <ButtonBase
+            disabled={!isFormComplete}
+            onClick={validate}
+            buttonType="primary"
+            rightSection={
+              isFormComplete ? (
+                <img src="/icons/CaretRight.svg" alt="icon" />
+              ) : (
+                <img src="/icons/CaretRightDisabled.svg" alt="icon" />
+              )
+            }
+          >
+            Create Project
+          </ButtonBase>
+        </div>
       </form>
     </>
   );
