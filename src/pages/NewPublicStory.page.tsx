@@ -129,8 +129,10 @@ export function NewPublicStory() {
 
           <TextEditor value={linkContent} onChange={setLinkContent} />
 
-          <ButtonBase disabled={!isFormComplete} onClick={validate} buttonType="secondarySquare"  rightSection={isFormComplete ? <img  src='/icons/CaretRight.svg' alt="icon" />: <img  src='/icons/CaretRightDisabled.svg' alt="icon" />}>Submit</ButtonBase >
-
+          <div className={FormClasses.createProjectButton}>
+            <ButtonBase disabled={!isFormComplete} onClick={validate} buttonType="primary" rightSection={isFormComplete ? <img  src='/icons/CaretRight.svg' alt="icon" />: <img  src='/icons/CaretRightDisabled.svg' alt="icon" />}>Create Project</ButtonBase >
+          </div>
+          
         </form>
     </>
   );
