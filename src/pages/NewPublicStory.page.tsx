@@ -16,7 +16,6 @@ export function NewPublicStory() {
 
   const { linkContent, setLinkContent } = usePublicStoryStore();
   
-
   const isFormComplete =
     storyTitle.trim() !== '' && Number(maxWordCount) > 0 && Number(numberOfLinks) > 0;
 
@@ -125,11 +124,7 @@ export function NewPublicStory() {
           </div>
         </div>
 
-        <TextEditor
-          value={linkContent}
-          onChange={setLinkContent}
-          maxWordCount={Number(maxWordCount)}
-        />
+        <TextEditor />
 
         <div className={FormClasses.createProjectButton}>
           <ButtonBase

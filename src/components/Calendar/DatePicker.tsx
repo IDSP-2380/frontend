@@ -3,14 +3,20 @@ import { DateInput } from '@mantine/dates';
 import type { DateValue } from '@mantine/dates';
 import FormClasses from '../StoryForm/Form.module.css';
 import DateClass from './DatePicker.module.css';
+import { usePrivateStoryStore } from '@/stores/privateStoryStore';
 
 interface CalendarProps {
   label?: string;
-  value: DateValue;
-  onChange: (date: DateValue) => void;
+  type: 'start' | 'end'
 }
 
-export function DatePicker({ label, value, onChange }: CalendarProps) {
+export function DatePicker({ label, type }: CalendarProps) {
+
+  const {startDate, endDate, setStartDate, setEndDate} = usePrivateStoryStore()
+
+  const value = type === 'start' ? startDate : endDate;
+  const onChange = type === 'start' ? setStartDate : setEndDate;
+
   return (
     <Box className={DateClass.calendarWrapper} onClick={(event) => event.stopPropagation()}>
       {label && <Text className={FormClasses.calendarLabel}>{label}</Text>}

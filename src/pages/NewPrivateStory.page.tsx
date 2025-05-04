@@ -181,7 +181,7 @@ export function NewPrivateStory() {
             paddingBottom: 12,
           }}
         >
-          <DatePicker value={endDate} onChange={setEndDate} />
+          <DatePicker type='end' />
         </Box>
       ),
     },
@@ -343,7 +343,7 @@ export function NewPrivateStory() {
         </div>
 
         <div className={FormClasses.projectStartDate}>
-          <DatePicker label="Project start date:" value={startDate} onChange={setStartDate} />
+          <DatePicker label="Project start date:" type='start' />
         </div>
 
         <h2 className={FormClasses.projectEndDate}>Project end Date:</h2>
