@@ -6,13 +6,16 @@ import { ButtonBase } from '@/components/Buttons/ButtonBase';
 import { HeaderMenu } from '@/components/Header/HeaderMenu';
 import TextEditor from '@/components/TextEditor/TextEditor';
 import FormClasses from '../components/StoryForm/Form.module.css';
+import { usePublicStoryStore } from '@/stores/publicStoryStore';
+import { useStoryConfigStore } from "@/stores/storyStore"
+
 
 export function NewPublicStory() {
-  const [storyTitle, setStoryTitle] = useState('');
-  const [maxWordCount, setMaxWordCount] = useState<string | number>('');
-  const [numberOfLinks, setNumberOfLinks] = useState<string | number>('');
-  const [linkContent, setLinkContent] = useState('');
+  
+  const { storyTitle, maxWordCount, numberOfLinks, setStoryTitle, setMaxWordCount, setNumberOfLinks } = useStoryConfigStore();
 
+  const { linkContent, setLinkContent } = usePublicStoryStore();
+  
   const isFormComplete =
     storyTitle.trim() !== '' && Number(maxWordCount) > 0 && Number(numberOfLinks) > 0;
 
@@ -25,15 +28,10 @@ export function NewPublicStory() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const payload = {
-      storyTitle,
-      maxWordCount,
-      numberOfLinks,
-      linkContent,
-    };
+    const data = { storyTitle, maxWordCount, numberOfLinks, linkContent };
 
     try {
-      await axios.post('http://localhost:3000/api/stories/create/story/public', payload, {
+      await axios.post('http://localhost:3000/api/stories/create/story/public', data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -48,6 +46,7 @@ export function NewPublicStory() {
       <form onSubmit={handleSubmit} method="post" className={FormClasses.storyForm}>
         <div className={FormClasses.storySettings}>
           <div className={FormClasses.storySettingsInputs}>
+
             <TextInput
               required
               withAsterisk={false}
@@ -125,11 +124,7 @@ export function NewPublicStory() {
           </div>
         </div>
 
-        <TextEditor
-          value={linkContent}
-          onChange={setLinkContent}
-          maxWordCount={Number(maxWordCount)}
-        />
+        <TextEditor />
 
         <div className={FormClasses.createProjectButton}>
           <ButtonBase

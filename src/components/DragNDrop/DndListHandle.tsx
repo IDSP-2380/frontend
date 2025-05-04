@@ -4,24 +4,19 @@ import { Text } from '@mantine/core';
 import { useListState } from '@mantine/hooks';
 import classes from './DndListHandle.module.css';
 import { useEffect } from 'react';
+import { usePrivateStoryStore } from '@/stores/privateStoryStore';
 
 
 type DndListHandleProps = {
     collaboratorList: string[];
 };
 
-export function DndListHandle({collaboratorList}: DndListHandleProps) {
-  const [state, handlers] = useListState(collaboratorList);
-
-  useEffect(() => {
-    const newItems = collaboratorList.filter(item => !state.includes(item));
-    if (newItems.length > 0) {
-      handlers.append(...newItems);
-    }
-  }, [collaboratorList]);
+export function DndListHandle() {
   
 
-  const items = state.map((item, index) => (
+  const { collaboratorList, setCollaboratorsList } = usePrivateStoryStore()
+
+  const items = collaboratorList.map((item, index) => (
     
     <Draggable key={item} index={index} draggableId={item}>
 
@@ -31,14 +26,9 @@ export function DndListHandle({collaboratorList}: DndListHandleProps) {
             <div {...provided.dragHandleProps} className={classes.dragHandle}>
                 <img src="/Move-button.svg" alt="" />
             </div>
-        <div
-          className={classes.item}
-          
-        >
-          
-          <Text className={classes.symbol}>{item}</Text>
-          
-        </div>
+          <div className={classes.item}>
+            <Text className={classes.symbol}>{item}</Text>
+          </div>
         </div>
       )}
     </Draggable>
@@ -46,9 +36,16 @@ export function DndListHandle({collaboratorList}: DndListHandleProps) {
 
   return (
     <DragDropContext
-      onDragEnd={({ destination, source }) =>
-        handlers.reorder({ from: source.index, to: destination?.index || 0 })
-      }
+      onDragEnd={({ destination, source }) =>{
+        
+        if (!destination || source.index === destination.index) return;
+
+        const updated = [...collaboratorList];
+        const [moved] = updated.splice(source.index, 1);
+        updated.splice(destination.index, 0, moved);
+
+        setCollaboratorsList(updated);
+      }}
     >
       <Droppable droppableId="dnd-list" direction="vertical">
         {(provided) => (

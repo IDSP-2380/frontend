@@ -3,8 +3,9 @@ import Quill from 'quill';
 import Delta from 'quill-delta';
 import ReactQuill from 'react-quill';
 import FormClasses from './Form.module.css';
+import { usePublicStoryStore } from '@/stores/publicStoryStore';
+import { useStoryConfigStore } from '@/stores/storyStore';
 
-// Register undo and redo handlers with proper 'this' typing
 function undoHandler(this: { quill: Quill }) {
   this.quill.history.undo();
 }
@@ -13,13 +14,11 @@ function redoHandler(this: { quill: Quill }) {
   this.quill.history.redo();
 }
 
-type TextEditorProps = {
-  value: string;
-  onChange: (value: string) => void;
-  maxWordCount: number;
-};
+const TextEditor = () => {
 
-const TextEditor = ({ value, onChange, maxWordCount }: TextEditorProps) => {
+  const { maxWordCount, setMaxWordCount } = useStoryConfigStore();
+  const { linkContent, setLinkContent} = usePublicStoryStore();
+
   const quillRef = useRef<ReactQuill>(null);
 
   const modules = {
@@ -36,6 +35,11 @@ const TextEditor = ({ value, onChange, maxWordCount }: TextEditorProps) => {
       userOnly: true,
     },
   };
+
+  function getWordCount(html: string): number {
+    const text = html.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').trim();
+    return text === '' ? 0 : text.split(/\s+/).length;  
+  }
 
   return (
     <>
@@ -82,13 +86,16 @@ const TextEditor = ({ value, onChange, maxWordCount }: TextEditorProps) => {
 
         <ReactQuill
           ref={quillRef}
-          value={value}
-          onChange={onChange}
+          value={linkContent}
+          onChange={setLinkContent}
           modules={modules}
           className="textBox"
           placeholder="The story begins..."
         />
-        <input type="hidden" name="linkContent" value={value} />
+
+        <input type="hidden" name="linkContent" value={linkContent} />
+
+        <div className='wordCounter'>Word Count: {getWordCount(linkContent)}/{maxWordCount}</div>
       </div>
     </>
   );

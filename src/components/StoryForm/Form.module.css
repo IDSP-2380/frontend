@@ -58,6 +58,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 1rem;
 }
 
 .storySettings {
@@ -180,7 +181,7 @@
 
 .accordionItem button {
   border-radius: 12px;
-  width: 479px;
+  width: 478px;
 }
 
 .accordionPanel {
@@ -216,8 +217,28 @@
 .bottomBars {
   display: grid;
   gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .projectStartDate {
   margin-bottom: 1rem;
 }
+
+.editorWrapper {
+  position: relative;
+}
+
+
+
+.wordCounter {
+  position: absolute;
+  top: 8px; /* adjust to your preference */
+  right: 12px;
+  background-color: rgba(255, 255, 255, 0.8); /* optional: makes it more readable */
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+  pointer-events: none; /* allows clicking through to the editor */
+  z-index: 1;
+}
+

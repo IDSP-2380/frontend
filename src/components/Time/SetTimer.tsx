@@ -4,6 +4,7 @@ import {
   Text,
   useMantineTheme,
 } from '@mantine/core';
+import { usePrivateStoryStore } from '@/stores/privateStoryStore';
 
 interface SetTimerProps {
   days: number;
@@ -13,6 +14,9 @@ interface SetTimerProps {
 }
 
 export function SetTimer({ days, hours, minutes, onChange }: SetTimerProps) {
+
+  
+
   const theme = useMantineTheme();
 
   const unitStyles = {

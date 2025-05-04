@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Form } from 'react-router-dom';
 import {
   Accordion,
   ActionIcon,
@@ -14,65 +13,49 @@ import {
   TextInput,
   useCombobox,
 } from '@mantine/core';
-import type { DateValue } from '@mantine/dates';
-import { useListState } from '@mantine/hooks';
 import { ButtonBase } from '@/components/Buttons/ButtonBase';
 import { DatePicker } from '@/components/Calendar/DatePicker';
 import { DndListHandle } from '@/components/DragNDrop/DndListHandle';
 import { HeaderMenu } from '@/components/Header/HeaderMenu';
-import TextEditor from '@/components/TextEditor/TextEditor';
 import { SetTimer } from '@/components/Time/SetTimer';
 import FormClasses from '../components/StoryForm/Form.module.css';
+import { usePrivateStoryStore } from '@/stores/privateStoryStore';
+import { useStoryConfigStore } from '@/stores/storyStore';
 
 export function NewPrivateStory() {
-  const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
-  const [collaborator, setCollaborator] = useState('');
   const [value, setValue] = useState<string | null>('1');
-  const [controlsRefs, setControlsRefs] = useState<Record<string, HTMLButtonElement | null>>({});
-  const setControlRef = (val: string) => (node: HTMLButtonElement) => {
-    controlsRefs[val] = node;
-    setControlsRefs(controlsRefs);
-  };
-  const [days, setDays] = useState(0);
-  const [hours, setHours] = useState(0);
-  const [minutes, setMinutes] = useState(0);
 
-  const groceries = ['🍎 Apples', '🍌 Bananas', '🥦 Broccoli', '🥕 Carrots', '🍫 Chocolate'];
-
-  const combobox = useCombobox();
-
-  const shouldFilterOptions = !groceries.some((item) => item === value);
-  const filteredOptions = shouldFilterOptions
-    ? groceries.filter((item) => item.toLowerCase().includes(collaborator.toLowerCase().trim()))
-    : groceries;
-
-  const options = filteredOptions.map((item) => (
-    <Combobox.Option value={item} key={item}>
-      {item}
-    </Combobox.Option>
-  ));
-
-  const [startDate, setStartDate] = useState<DateValue>(null);
-  const [endDate, setEndDate] = useState<DateValue>(null);
   const [error, setError] = useState<string | null>(null);
   const [time, setTime] = useState<string>('');
-  const [isActiveDate, setIsActiveDate] = useState(false);
 
-  const [isActiveTime, setIsActiveTime] = useState(false);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  const [maxWordCount, setMaxWordCount] = useState<string | number>('');
-  const [numberOfLinks, setNumberOfLinks] = useState<string | number>('');
-  const [storyTitle, setStoryTitle] = useState('');
-  const [collaboratorList, handlers] = useListState<string>();
+    const data = { storyTitle, collaboratorList, maxWordCount, numberOfLinks, startDate, endDate, days, hours, minutes };
+
+    try {
+      await axios.post('http://localhost:3000/api/stories/create/story/private', data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    } catch (err) {
+      console.error('Failed to send to backend:', err);
+    }
+  };
+
+  const { storyTitle, maxWordCount, numberOfLinks, setStoryTitle, setMaxWordCount, setNumberOfLinks } = useStoryConfigStore();
+
+  const { collaborator, collaboratorList, startDate, endDate, days, hours, minutes, isActiveDate, isActiveTime, calculatedEndDate,timePerTurn,setCollaborator, setCollaboratorsList, setStartDate, setEndDate, setDays, setHours, setMinutes, setIsActiveDate,setIsActiveTime, setCalculatedEndDate, setTimePerTurn } = usePrivateStoryStore();
 
   const isFormComplete =
-    startDate &&
-    endDate &&
-    days >= 1 &&
-    storyTitle.trim() !== '' &&
-    collaboratorList.length > 0 &&
-    Number(maxWordCount) > 0 &&
-    Number(numberOfLinks) > 0;
+  startDate &&
+  endDate &&
+  days >= 1 &&
+  storyTitle.trim() !== '' &&
+  collaboratorList.length > 0 &&
+  Number(maxWordCount) > 0 &&
+  Number(numberOfLinks) > 0;
 
   const validate = () => {
     if (
@@ -99,10 +82,97 @@ export function NewPrivateStory() {
     }
   };
 
-  const theGroceries = [
-    {
-      value: 'Set by date',
-      description: (
+  function calculateTimePerTurn() {
+    if (!startDate || !endDate || !collaboratorList.length || !numberOfLinks) {
+      return { days: 0, hours: 0, minutes: 0 };
+    }
+
+    const startDateTime = new Date(startDate).getTime()
+    const endDateTime = new Date(endDate).getTime();
+    const totalProjectTime = endDateTime - startDateTime;
+    
+    const turnsPerCollaborator = Math.ceil(Number(numberOfLinks) / collaboratorList.length);
+
+    const timePerTurnMs = totalProjectTime / (turnsPerCollaborator * collaboratorList.length);
+
+    const timePerTurnDays = Math.floor(timePerTurnMs / (1000 * 60 * 60 * 24));
+    const timePerTurnHours = Math.floor((timePerTurnMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const timePerTurnMinutes = Math.floor((timePerTurnMs % (1000 * 60 * 60)) / (1000 * 60));
+
+    return { days: timePerTurnDays, hours: timePerTurnHours, minutes: timePerTurnMinutes };
+  }
+  
+  function calculateEndDate() {
+    if (!startDate || !collaboratorList.length || !Number(numberOfLinks) || 
+        (!days && !hours && !minutes)) {
+      return null;
+    }
+    
+    const timePerTurnMs = days * 24 * 60 * 60 * 1000 + hours * 60 * 60 * 1000 + minutes * 60 * 1000;
+
+    const totalTurns = Number(numberOfLinks);
+
+    const totalProjectTimeMs = timePerTurnMs * totalTurns;
+
+    const startDateTime = new Date(startDate).getTime();
+    const endDateTime = startDateTime + totalProjectTimeMs;
+
+    return new Date(endDateTime);
+  }
+  
+  // when in date mode and date changes, update the time per turn
+  useEffect(() => {
+    if (isActiveDate && startDate && endDate && collaboratorList.length && Number(numberOfLinks)) {
+      const { days: d, hours: h, minutes: m } = calculateTimePerTurn();
+      
+      if (d !== days || h !== hours || m !== minutes) {
+        setTimePerTurn({ days: d, hours: h, minutes: m });
+        setDays(d);
+        setHours(h);
+        setMinutes(m);
+      }
+    }
+  }, [ isActiveDate, startDate, endDate, collaboratorList.length, numberOfLinks ]); 
+  
+  // when in time mode and time values change, update end date
+  useEffect(() => {
+    if (isActiveTime && startDate && collaboratorList.length && Number(numberOfLinks) && 
+        (days || hours || minutes)) {
+      const newCalculatedEndDate = calculateEndDate();
+      
+      if (newCalculatedEndDate) {
+        setEndDate(newCalculatedEndDate);  
+        setCalculatedEndDate(newCalculatedEndDate);
+      }
+
+      setTimePerTurn({ days, hours, minutes });
+
+    }
+  }, [isActiveTime, startDate, days, hours, minutes, collaboratorList.length, numberOfLinks ]);
+  
+
+  const groceries = ['🍎 Apples', '🍌 Bananas', '🥦 Broccoli', '🥕 Carrots', '🍫 Chocolate'];
+
+  const combobox = useCombobox();
+
+  const shouldFilterOptions = !groceries.some((item) => item === value);
+  const filteredOptions = shouldFilterOptions
+    ? groceries.filter((item) => item.toLowerCase().includes(collaborator.toLowerCase().trim()))
+    : groceries;
+
+  const options = filteredOptions.map((item) => (
+    <Combobox.Option value={item} key={item}>
+      {item}
+    </Combobox.Option>
+  ));
+
+  function addUserToCollaborators(person: string) {
+    if (!collaboratorList.includes(person) && person.trim().length !== 0 && groceries.includes(person)) {
+      setCollaboratorsList([...collaboratorList, person]);
+    }
+  }
+
+  const theGroceries = [ { value: 'Set by date', description: (
         <Box
           style={{
             display: 'flex',
@@ -111,13 +181,11 @@ export function NewPrivateStory() {
             paddingBottom: 12,
           }}
         >
-          <DatePicker value={endDate} onChange={setEndDate} />
+          <DatePicker type='end' />
         </Box>
       ),
     },
-    {
-      value: 'Set by Time per turn',
-      description: (
+    { value: 'Set by Time per turn', description: (
         <SetTimer
           days={days}
           hours={hours}
@@ -139,133 +207,12 @@ export function NewPrivateStory() {
     </Accordion.Item>
   ));
 
-  function addUserToCollaborators(thing: string) {
-    if (!collaboratorList.includes(thing)) {
-      handlers.append(thing);
-    }
-  }
-
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const payload = {
-      storyTitle,
-      collaboratorList,
-      maxWordCount,
-      numberOfLinks,
-      startDate,
-      endDate,
-      days,
-      hours,
-      minutes,
-    };
-
-    try {
-      await axios.post('http://localhost:3000/api/stories/create/story/private', payload, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-    } catch (err) {
-      console.error('Failed to send to backend:', err);
-    }
-  };
-
-  const [timePerTurn, setTimePerTurn] = useState({ days: 0, hours: 0, minutes: 0 });
-
-  function calculateTimePerTurn() {
-    if (!startDate || !endDate || collaboratorList.length === 0 || numberOfLinks === 0) {
-      return { days: 0, hours: 0, minutes: 0 };
-    }
-
-    const startDateTime = new Date(startDate).getTime();
-    const endDateTime = new Date(endDate).getTime();
-    const totalProjectTime = endDateTime - startDateTime;
-
-    const turnsPerCollaborator = Math.ceil(Number(numberOfLinks) / collaboratorList.length);
-
-    const timePerTurnMs = totalProjectTime / (turnsPerCollaborator * collaboratorList.length);
-
-    const timePerTurnDays = Math.floor(timePerTurnMs / (1000 * 60 * 60 * 24));
-    const timePerTurnHours = Math.floor((timePerTurnMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const timePerTurnMinutes = Math.floor((timePerTurnMs % (1000 * 60 * 60)) / (1000 * 60));
-
-    return { days: timePerTurnDays, hours: timePerTurnHours, minutes: timePerTurnMinutes };
-  }
-
-  useEffect(() => {
-    if (startDate && endDate && collaboratorList.length > 0 && Number(numberOfLinks) > 0) {
-      const result = calculateTimePerTurn();
-      setTimePerTurn(result);
-    }
-  }, [startDate, endDate, collaboratorList, numberOfLinks]);
-
-  const [calculatedEndDate, setCalculatedEndDate] = useState<Date | null>(null);
-
-  function calculateEndDate() {
-    if (
-      !startDate ||
-      collaboratorList.length === 0 ||
-      Number(numberOfLinks) <= 0 ||
-      (days <= 0 && hours <= 0 && minutes <= 0)
-    ) {
-      return null;
-    }
-
-    const timePerTurnMs = days * 24 * 60 * 60 * 1000 + hours * 60 * 60 * 1000 + minutes * 60 * 1000;
-
-    const totalTurns = Number(numberOfLinks);
-
-    const totalProjectTimeMs = timePerTurnMs * totalTurns;
-
-    const startDateTime = new Date(startDate).getTime();
-    const endDateTime = startDateTime + totalProjectTimeMs;
-
-    return new Date(endDateTime);
-  }
-
-  useEffect(() => {
-    if (isActiveTime && startDate && calculatedEndDate) {
-      setEndDate(calculatedEndDate);
-    }
-  }, [isActiveTime, calculatedEndDate, startDate]);
-
-  useEffect(() => {
-    if (
-      startDate &&
-      collaboratorList.length > 0 &&
-      Number(numberOfLinks) > 0 &&
-      (days > 0 || hours > 0 || minutes > 0)
-    ) {
-      const result = calculateEndDate();
-      setCalculatedEndDate(result);
-    }
-  }, [startDate, days, hours, minutes, collaboratorList.length, numberOfLinks, isActiveTime]);
-
-  useEffect(() => {
-    if (
-      isActiveDate &&
-      startDate &&
-      endDate &&
-      collaboratorList.length > 0 &&
-      Number(numberOfLinks) > 0
-    ) {
-      const result = calculateTimePerTurn();
-      setDays(result.days);
-      setHours(result.hours);
-      setMinutes(result.minutes);
-    } else if (isActiveTime && startDate && calculatedEndDate) {
-      setEndDate(calculatedEndDate);
-    }
-  }, [isActiveDate, isActiveTime]);
-
   return (
     <>
       <form onSubmit={handleSubmit} method="post" className={FormClasses.storyForm}>
         <div className={FormClasses.storySettings}>
           <div className={FormClasses.storySettingsInputs}>
+            
             <TextInput
               required
               withAsterisk={false}
@@ -345,7 +292,7 @@ export function NewPrivateStory() {
             </Combobox>
 
             <div className={FormClasses.listTitle}>Writing order</div>
-            {collaboratorList && <DndListHandle collaboratorList={collaboratorList} />}
+            {collaboratorList && <DndListHandle  />}
 
             <NumberInput
               required
@@ -396,7 +343,7 @@ export function NewPrivateStory() {
         </div>
 
         <div className={FormClasses.projectStartDate}>
-          <DatePicker label="Project start date:" value={startDate} onChange={setStartDate} />
+          <DatePicker label="Project start date:" type='start' />
         </div>
 
         <h2 className={FormClasses.projectEndDate}>Project end Date:</h2>
@@ -404,7 +351,7 @@ export function NewPrivateStory() {
         <div className={FormClasses.bottomBars}>
           <Accordion
             className={`${FormClasses.projectEndDate} ${FormClasses.endDate}`}
-            onClick={() => setIsActiveDate(!isActiveDate)}
+            onClick={() => {setIsActiveDate(!isActiveDate)}}
           >
             {items[0]}
           </Accordion>
@@ -425,7 +372,8 @@ export function NewPrivateStory() {
 
           <div className={`${FormClasses.setEndDate} ${isActiveTime ? '' : FormClasses.noDisplay}`}>
             <p>Based on time per turn, project end date will be...</p>
-            <span>{calculatedEndDate ? calculatedEndDate.toLocaleDateString() : 'N/A'}</span>
+            <span>{calculatedEndDate ? 
+                  calculatedEndDate.toLocaleDateString('en-CA') : 'N/A'}</span>
           </div>
         </div>
 
