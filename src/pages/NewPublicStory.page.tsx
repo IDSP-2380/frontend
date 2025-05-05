@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { Form } from 'react-router-dom';
+import { Form, useNavigate } from 'react-router-dom';
 import { Button, FloatingIndicator, NumberInput, Tabs, TextInput } from '@mantine/core';
 import { ButtonBase } from '@/components/Buttons/ButtonBase';
 import { HeaderMenu } from '@/components/Header/HeaderMenu';
@@ -11,6 +11,8 @@ import { useStoryConfigStore } from "@/stores/storyStore"
 
 
 export function NewPublicStory() {
+
+  const navigate = useNavigate();
   
   const { storyTitle, maxWordCount, numberOfLinks, setStoryTitle, setMaxWordCount, setNumberOfLinks } = useStoryConfigStore();
 
@@ -36,6 +38,10 @@ export function NewPublicStory() {
           'Content-Type': 'application/json',
         },
       });
+
+      navigate("/project")
+
+
     } catch (err) {
       console.error('Failed to send to backend:', err);
     }

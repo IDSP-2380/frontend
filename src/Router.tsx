@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { HomePage } from './pages/Home.page';
 import { NewProject } from './pages/NewProject.page';
 import { NewStoryPage } from './pages/NewStory.page';
+import { NewStoryCreation } from './pages/NewStoryCreation.page';
 import { ProtectedRoute } from './pages/ProtectedRoute';
 import SignInPage from './pages/SignIn.page';
 import SignUpPage from './pages/SignUp.page';
@@ -27,6 +28,14 @@ const router = createBrowserRouter([
         <UserTest />
       </ProtectedRoute>
     ),
+  },
+  {
+    path: '/project',
+    element: <NewProject />,
+  },
+  {
+    path: '/story',
+    element: <NewStoryCreation />,
   },
 ]);
 

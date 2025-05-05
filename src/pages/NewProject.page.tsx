@@ -1,7 +1,3 @@
-
-
-
-
 export function NewProject() {
 
   return (
