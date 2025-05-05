@@ -1,8 +1,8 @@
-import { SignedIn, SignedOut } from '@clerk/clerk-react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { HomePage } from './pages/Home.page';
 import { NewProject } from './pages/NewProject.page';
 import { NewStoryPage } from './pages/NewStory.page';
+import { ProtectedRoute } from './pages/ProtectedRoute';
 import SignInPage from './pages/SignIn.page';
 import SignUpPage from './pages/SignUp.page';
 import UserTest from './pages/UserTest.Page';
@@ -11,9 +11,9 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: (
-      <SignedIn>
+      <ProtectedRoute>
         <HomePage />
-      </SignedIn>
+      </ProtectedRoute>
     ),
   },
   { path: '/create/story', element: <NewStoryPage /> },
