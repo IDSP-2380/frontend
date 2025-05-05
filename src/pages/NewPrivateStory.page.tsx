@@ -21,8 +21,12 @@ import { SetTimer } from '@/components/Time/SetTimer';
 import FormClasses from '../components/StoryForm/Form.module.css';
 import { usePrivateStoryStore } from '@/stores/privateStoryStore';
 import { useStoryConfigStore } from '@/stores/storyStore';
+import { useNavigate } from 'react-router-dom';
 
 export function NewPrivateStory() {
+
+  const navigate = useNavigate();
+
   const [value, setValue] = useState<string | null>('1');
 
   const [error, setError] = useState<string | null>(null);
@@ -39,6 +43,9 @@ export function NewPrivateStory() {
           'Content-Type': 'application/json',
         },
       });
+
+      navigate("/story");
+      
     } catch (err) {
       console.error('Failed to send to backend:', err);
     }
