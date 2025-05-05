@@ -20,7 +20,14 @@ const router = createBrowserRouter([
   { path: '/project', element: <NewProject /> },
   { path: '/sign-in/*', element: <SignInPage /> },
   { path: '/sign-up/*', element: <SignUpPage /> },
-  { path: '/user/test', element: <UserTest /> },
+  {
+    path: '/user/test',
+    element: (
+      <ProtectedRoute>
+        <UserTest />
+      </ProtectedRoute>
+    ),
+  },
 ]);
 
 export function Router() {

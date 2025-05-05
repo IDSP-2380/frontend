@@ -26,13 +26,8 @@ export default function UserTest() {
 
   return (
     <>
-      <SignedIn>
-        <h1>Test protected page</h1>
-        {data ? <pre>{JSON.stringify(data, null, 2)}</pre> : <p>loading data</p>}
-      </SignedIn>
-      <SignedOut>
-        <h1>Must be signed in</h1>
-      </SignedOut>
+      <h1>Test protected page</h1>
+      {data ? <pre>{JSON.stringify(data, null, 2)}</pre> : <p>loading data</p>}
     </>
   );
 }
