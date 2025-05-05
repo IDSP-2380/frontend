@@ -5,7 +5,7 @@ export default function SignUpPage() {
   return (
     <>
       <SignedOut>
-        <SignUp routing="path" path="/sign-up" signInUrl={import.meta.env.VITE_CLERK_SIGN_IN_URL} />
+        <SignUp routing="hash" signInUrl={import.meta.env.VITE_CLERK_SIGN_IN_URL} />
       </SignedOut>
       <SignedIn>
         <Navigate to="/" />
