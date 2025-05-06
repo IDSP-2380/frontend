@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
+import { useAuth } from '@clerk/clerk-react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import {
   Accordion,
   ActionIcon,
@@ -18,13 +20,11 @@ import { DatePicker } from '@/components/Calendar/DatePicker';
 import { DndListHandle } from '@/components/DragNDrop/DndListHandle';
 import { HeaderMenu } from '@/components/Header/HeaderMenu';
 import { SetTimer } from '@/components/Time/SetTimer';
-import FormClasses from '../components/StoryForm/Form.module.css';
 import { usePrivateStoryStore } from '@/stores/privateStoryStore';
 import { useStoryConfigStore } from '@/stores/storyStore';
-import { useNavigate } from 'react-router-dom';
+import FormClasses from '../components/StoryForm/Form.module.css';
 
 export function NewPrivateStory() {
-
   const navigate = useNavigate();
 
   const [value, setValue] = useState<string | null>('1');
@@ -35,34 +35,75 @@ export function NewPrivateStory() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const data = { storyTitle, collaboratorList, maxWordCount, numberOfLinks, startDate, endDate, days, hours, minutes };
+    const data = {
+      storyTitle,
+      collaboratorList,
+      maxWordCount,
+      numberOfLinks,
+      startDate,
+      endDate,
+      days,
+      hours,
+      minutes,
+    };
 
     try {
+      validate();
       await axios.post('http://localhost:3000/api/stories/create/story/private', data, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
 
-      navigate("/story");
-      
+      console.log('BFORE NAV');
+      navigate('/story');
     } catch (err) {
       console.error('Failed to send to backend:', err);
     }
   };
 
-  const { storyTitle, maxWordCount, numberOfLinks, setStoryTitle, setMaxWordCount, setNumberOfLinks } = useStoryConfigStore();
+  const {
+    storyTitle,
+    maxWordCount,
+    numberOfLinks,
+    setStoryTitle,
+    setMaxWordCount,
+    setNumberOfLinks,
+  } = useStoryConfigStore();
 
-  const { collaborator, collaboratorList, startDate, endDate, days, hours, minutes, isActiveDate, isActiveTime, calculatedEndDate,timePerTurn,setCollaborator, setCollaboratorsList, setStartDate, setEndDate, setDays, setHours, setMinutes, setIsActiveDate,setIsActiveTime, setCalculatedEndDate, setTimePerTurn } = usePrivateStoryStore();
+  const {
+    collaborator,
+    collaboratorList,
+    startDate,
+    endDate,
+    days,
+    hours,
+    minutes,
+    isActiveDate,
+    isActiveTime,
+    calculatedEndDate,
+    timePerTurn,
+    setCollaborator,
+    setCollaboratorsList,
+    setStartDate,
+    setEndDate,
+    setDays,
+    setHours,
+    setMinutes,
+    setIsActiveDate,
+    setIsActiveTime,
+    setCalculatedEndDate,
+    setTimePerTurn,
+  } = usePrivateStoryStore();
 
   const isFormComplete =
-  startDate &&
-  endDate &&
-  days >= 1 &&
-  storyTitle.trim() !== '' &&
-  collaboratorList.length > 0 &&
-  Number(maxWordCount) > 0 &&
-  Number(numberOfLinks) > 0;
+    startDate &&
+    endDate &&
+    days >= 1 &&
+    storyTitle.trim() !== '' &&
+    collaboratorList.length > 0 &&
+    Number(maxWordCount) > 0 &&
+    Number(numberOfLinks) > 0;
 
   const validate = () => {
     if (
@@ -79,10 +120,16 @@ export function NewPrivateStory() {
 
     if (!startDate || !endDate) {
       setError('Both dates must be selected');
+      throw new Error('Both dates must be selected');
+      console.log(error);
     } else if (startDate < today) {
       setError('Start date must be today or later');
+      throw new Error('Start date must be today or later');
+      console.log(error);
     } else if (startDate > endDate) {
       setError('Start date must be before end date');
+      throw new Error('Start date must be before end date');
+      console.log(error);
     } else {
       setError(null);
       console.log('Selected Time:', time);
@@ -94,10 +141,10 @@ export function NewPrivateStory() {
       return { days: 0, hours: 0, minutes: 0 };
     }
 
-    const startDateTime = new Date(startDate).getTime()
+    const startDateTime = new Date(startDate).getTime();
     const endDateTime = new Date(endDate).getTime();
     const totalProjectTime = endDateTime - startDateTime;
-    
+
     const turnsPerCollaborator = Math.ceil(Number(numberOfLinks) / collaboratorList.length);
 
     const timePerTurnMs = totalProjectTime / (turnsPerCollaborator * collaboratorList.length);
@@ -108,13 +155,17 @@ export function NewPrivateStory() {
 
     return { days: timePerTurnDays, hours: timePerTurnHours, minutes: timePerTurnMinutes };
   }
-  
+
   function calculateEndDate() {
-    if (!startDate || !collaboratorList.length || !Number(numberOfLinks) || 
-        (!days && !hours && !minutes)) {
+    if (
+      !startDate ||
+      !collaboratorList.length ||
+      !Number(numberOfLinks) ||
+      (!days && !hours && !minutes)
+    ) {
       return null;
     }
-    
+
     const timePerTurnMs = days * 24 * 60 * 60 * 1000 + hours * 60 * 60 * 1000 + minutes * 60 * 1000;
 
     const totalTurns = Number(numberOfLinks);
@@ -126,12 +177,12 @@ export function NewPrivateStory() {
 
     return new Date(endDateTime);
   }
-  
+
   // when in date mode and date changes, update the time per turn
   useEffect(() => {
     if (isActiveDate && startDate && endDate && collaboratorList.length && Number(numberOfLinks)) {
       const { days: d, hours: h, minutes: m } = calculateTimePerTurn();
-      
+
       if (d !== days || h !== hours || m !== minutes) {
         setTimePerTurn({ days: d, hours: h, minutes: m });
         setDays(d);
@@ -139,47 +190,108 @@ export function NewPrivateStory() {
         setMinutes(m);
       }
     }
-  }, [ isActiveDate, startDate, endDate, collaboratorList.length, numberOfLinks ]); 
-  
+  }, [isActiveDate, startDate, endDate, collaboratorList.length, numberOfLinks]);
+
   // when in time mode and time values change, update end date
   useEffect(() => {
-    if (isActiveTime && startDate && collaboratorList.length && Number(numberOfLinks) && 
-        (days || hours || minutes)) {
+    if (
+      isActiveTime &&
+      startDate &&
+      collaboratorList.length &&
+      Number(numberOfLinks) &&
+      (days || hours || minutes)
+    ) {
       const newCalculatedEndDate = calculateEndDate();
-      
+
       if (newCalculatedEndDate) {
-        setEndDate(newCalculatedEndDate);  
+        setEndDate(newCalculatedEndDate);
         setCalculatedEndDate(newCalculatedEndDate);
       }
 
       setTimePerTurn({ days, hours, minutes });
-
     }
-  }, [isActiveTime, startDate, days, hours, minutes, collaboratorList.length, numberOfLinks ]);
-  
+  }, [isActiveTime, startDate, days, hours, minutes, collaboratorList.length, numberOfLinks]);
 
-  const groceries = ['🍎 Apples', '🍌 Bananas', '🥦 Broccoli', '🥕 Carrots', '🍫 Chocolate'];
+  const { getToken } = useAuth();
+
+  type User = {
+    id: string;
+    passwordEnabled: boolean;
+    totpEnabled: boolean;
+    backupCodeEnabled: boolean;
+    twoFactorEnabled: boolean;
+    banned: boolean;
+    locked: boolean;
+    createdAt: number;
+    updatedAt: number;
+    imageUrl: string;
+    hasImage: boolean;
+    primaryEmailAddressId: string;
+    primaryPhoneNumberId: string | null;
+    primaryWeb3WalletId: string | null;
+    lastSignInAt: number;
+    externalId: string | null;
+    username: string;
+    firstName: string | null;
+    lastName: string | null;
+    publicMetadata: Record<string, unknown>;
+    privateMetadata: Record<string, unknown>;
+    unsafeMetadata: Record<string, unknown>;
+    emailAddresses: unknown[];
+  };
+
+  const [users, setUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = await getToken();
+        const res = await axios.get('http://localhost:3000/api/user/get-all-users', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const usersData = res.data.users.data as User[];
+
+        setUsers(usersData);
+      } catch (err) {
+        console.error('Failed to fetch protected data', err);
+      }
+    };
+
+    fetchUserData();
+  }, [getToken]);
+
+  const usernames = users?.map((user) => user.username) ?? [];
 
   const combobox = useCombobox();
 
-  const shouldFilterOptions = !groceries.some((item) => item === value);
-  const filteredOptions = shouldFilterOptions
-    ? groceries.filter((item) => item.toLowerCase().includes(collaborator.toLowerCase().trim()))
-    : groceries;
+  const shouldFilterOptions = !usernames.some((person) => person === value);
 
-  const options = filteredOptions.map((item) => (
-    <Combobox.Option value={item} key={item}>
-      {item}
+  const filteredOptions = shouldFilterOptions
+    ? usernames.filter((name) => name.toLowerCase().includes(collaborator.toLowerCase().trim()))
+    : usernames;
+
+  const options = filteredOptions.map((name) => (
+    <Combobox.Option value={name} key={name}>
+      {name}
     </Combobox.Option>
   ));
 
   function addUserToCollaborators(person: string) {
-    if (!collaboratorList.includes(person) && person.trim().length !== 0 && groceries.includes(person)) {
+    if (
+      !collaboratorList.includes(person) &&
+      person.trim().length !== 0 &&
+      usernames.includes(person)
+    ) {
       setCollaboratorsList([...collaboratorList, person]);
     }
   }
 
-  const theGroceries = [ { value: 'Set by date', description: (
+  const theGroceries = [
+    {
+      value: 'Set by date',
+      description: (
         <Box
           style={{
             display: 'flex',
@@ -188,11 +300,13 @@ export function NewPrivateStory() {
             paddingBottom: 12,
           }}
         >
-          <DatePicker type='end' />
+          <DatePicker type="end" />
         </Box>
       ),
     },
-    { value: 'Set by Time per turn', description: (
+    {
+      value: 'Set by Time per turn',
+      description: (
         <SetTimer
           days={days}
           hours={hours}
@@ -219,7 +333,6 @@ export function NewPrivateStory() {
       <form onSubmit={handleSubmit} method="post" className={FormClasses.storyForm}>
         <div className={FormClasses.storySettings}>
           <div className={FormClasses.storySettingsInputs}>
-            
             <TextInput
               required
               withAsterisk={false}
@@ -299,7 +412,7 @@ export function NewPrivateStory() {
             </Combobox>
 
             <div className={FormClasses.listTitle}>Writing order</div>
-            {collaboratorList && <DndListHandle  />}
+            {collaboratorList && <DndListHandle />}
 
             <NumberInput
               required
@@ -350,7 +463,7 @@ export function NewPrivateStory() {
         </div>
 
         <div className={FormClasses.projectStartDate}>
-          <DatePicker label="Project start date:" type='start' />
+          <DatePicker label="Project start date:" type="start" />
         </div>
 
         <h2 className={FormClasses.projectEndDate}>Project end Date:</h2>
@@ -358,7 +471,9 @@ export function NewPrivateStory() {
         <div className={FormClasses.bottomBars}>
           <Accordion
             className={`${FormClasses.projectEndDate} ${FormClasses.endDate}`}
-            onClick={() => {setIsActiveDate(!isActiveDate)}}
+            onClick={() => {
+              setIsActiveDate(!isActiveDate);
+            }}
           >
             {items[0]}
           </Accordion>
@@ -379,8 +494,7 @@ export function NewPrivateStory() {
 
           <div className={`${FormClasses.setEndDate} ${isActiveTime ? '' : FormClasses.noDisplay}`}>
             <p>Based on time per turn, project end date will be...</p>
-            <span>{calculatedEndDate ? 
-                  calculatedEndDate.toLocaleDateString('en-CA') : 'N/A'}</span>
+            <span>{calculatedEndDate ? calculatedEndDate.toLocaleDateString('en-CA') : 'N/A'}</span>
           </div>
         </div>
 
