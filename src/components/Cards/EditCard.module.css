@@ -11,4 +11,11 @@
   margin-top: 0;
   padding: 0 1rem;
   color: var(--primary-500);
+  text-align: right;
+
+  font-family: Merriweather;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 2rem;
 }
