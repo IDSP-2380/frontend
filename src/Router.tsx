@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { EditorPage } from './pages/Editor.page';
 import { HomePage } from './pages/Home.page';
 import { NewProject } from './pages/NewProject.page';
 import { NewStoryPage } from './pages/NewStory.page';
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
   {
     path: '/story',
     element: <NewStoryCreation />,
+  },
+  {
+    path: '/edit',
+    element: <EditorPage />,
   },
 ]);
 
