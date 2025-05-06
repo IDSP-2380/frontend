@@ -216,27 +216,10 @@ export function NewPrivateStory() {
 
   type User = {
     id: string;
-    passwordEnabled: boolean;
-    totpEnabled: boolean;
-    backupCodeEnabled: boolean;
-    twoFactorEnabled: boolean;
-    banned: boolean;
-    locked: boolean;
-    createdAt: number;
-    updatedAt: number;
     imageUrl: string;
-    hasImage: boolean;
-    primaryEmailAddressId: string;
-    primaryPhoneNumberId: string | null;
-    primaryWeb3WalletId: string | null;
-    lastSignInAt: number;
-    externalId: string | null;
     username: string;
     firstName: string | null;
     lastName: string | null;
-    publicMetadata: Record<string, unknown>;
-    privateMetadata: Record<string, unknown>;
-    unsafeMetadata: Record<string, unknown>;
     emailAddresses: unknown[];
   };
 
