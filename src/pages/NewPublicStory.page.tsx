@@ -39,6 +39,7 @@ export function NewPublicStory() {
         },
       });
 
+      console.log("PUBLIC NAV")
       navigate("/project")
 
 
