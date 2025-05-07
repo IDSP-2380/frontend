@@ -1,8 +1,26 @@
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mantine/core';
-import { Story } from '@/stores/homeStore';
 import { ButtonBase } from '../Buttons/ButtonBase';
 import StoryCardStyles from './StoryCard.module.css';
+
+interface IStoryCard {
+  title: string;
+  preview: string;
+  collaborators?: number;
+  chains?: number;
+  longestChain?: number;
+  chainLength?: number;
+  draftingLink?: number;
+  currentTurn?: number;
+  totalTurns?: number;
+  status: string;
+  statusIcon?: string;
+  updated?: string;
+  primaryPath: string;
+  primaryButtonLabel: string;
+  secondaryPath?: string;
+  secondaryButtonLabel?: string;
+}
 
 export default function StoryCard({
   title,
@@ -21,7 +39,7 @@ export default function StoryCard({
   primaryButtonLabel,
   secondaryPath,
   secondaryButtonLabel,
-}: Story) {
+}: IStoryCard) {
   const navigate = useNavigate();
   return (
     <Box className={StoryCardStyles.StoryCard}>

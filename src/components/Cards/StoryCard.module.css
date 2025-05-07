@@ -39,10 +39,8 @@
 .CardFooter {
   display: flex;
   justify-content: space-between;
-  width: 100%;
   align-items: flex-end;
   padding-top: 8px;
-  align-self: flex-end;
 }
 
 .UpdatedAt {
@@ -84,4 +82,5 @@
 .Buttons {
   display: flex;
   gap: 16px;
+  margin-left: auto;
 }
