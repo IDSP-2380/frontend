@@ -8,13 +8,13 @@ import classes from './DndListHandle.module.css';
 import { Button } from '@mantine/core';
 
 export function DndListHandle() {
-  const { collaboratorList, setCollaboratorsList} = usePrivateStoryStore();
+  const { contributors, setCollaboratorsList} = usePrivateStoryStore();
 
   function removeCollaborator(person: string) {
-    setCollaboratorsList(collaboratorList.filter((p) => p !== person));
+    setCollaboratorsList(contributors.filter((p) => p !== person));
   }
 
-  const items = collaboratorList.map((item, index) => (
+  const items = contributors.map((item, index) => (
     <Draggable key={item} index={index} draggableId={item}>
       {(provided, snapshot) => (
         <div
@@ -40,7 +40,7 @@ export function DndListHandle() {
       onDragEnd={({ destination, source }) => {
         if (!destination || source.index === destination.index) return;
 
-        const updated = [...collaboratorList];
+        const updated = [...contributors];
         const [moved] = updated.splice(source.index, 1);
         updated.splice(destination.index, 0, moved);
 
