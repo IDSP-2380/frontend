@@ -37,7 +37,7 @@ export function NewPrivateStory() {
 
     const data = {
       storyTitle,
-      collaboratorList,
+      contributors,
       maxWordCount,
       numberOfLinks,
       startDate,
@@ -55,8 +55,8 @@ export function NewPrivateStory() {
         },
       });
 
-      console.log('BFORE NAV');
       navigate('/story');
+
     } catch (err) {
       console.error('Failed to send to backend:', err);
     }
@@ -69,11 +69,13 @@ export function NewPrivateStory() {
     setStoryTitle,
     setMaxWordCount,
     setNumberOfLinks,
+    
   } = useStoryConfigStore();
+
 
   const {
     collaborator,
-    collaboratorList,
+    contributors,
     startDate,
     endDate,
     days,
@@ -96,19 +98,20 @@ export function NewPrivateStory() {
     setTimePerTurn,
   } = usePrivateStoryStore();
 
+
   const isFormComplete =
     startDate &&
     endDate &&
     days >= 1 &&
     storyTitle.trim() !== '' &&
-    collaboratorList.length > 0 &&
+    contributors.length > 0 &&
     Number(maxWordCount) > 0 &&
     Number(numberOfLinks) > 0;
 
   const validate = () => {
     if (
       storyTitle.trim() === '' ||
-      collaboratorList.length === 0 ||
+      contributors.length === 0 ||
       maxWordCount === 0 ||
       numberOfLinks === 0
     ) {
@@ -137,7 +140,7 @@ export function NewPrivateStory() {
   };
 
   function calculateTimePerTurn() {
-    if (!startDate || !endDate || !collaboratorList.length || !numberOfLinks) {
+    if (!startDate || !endDate || !contributors.length || !numberOfLinks) {
       return { days: 0, hours: 0, minutes: 0 };
     }
 
@@ -145,9 +148,9 @@ export function NewPrivateStory() {
     const endDateTime = new Date(endDate).getTime();
     const totalProjectTime = endDateTime - startDateTime;
 
-    const turnsPerCollaborator = Math.ceil(Number(numberOfLinks) / collaboratorList.length);
+    const turnsPerCollaborator = Math.ceil(Number(numberOfLinks) / contributors.length);
 
-    const timePerTurnMs = totalProjectTime / (turnsPerCollaborator * collaboratorList.length);
+    const timePerTurnMs = totalProjectTime / (turnsPerCollaborator * contributors.length);
 
     const timePerTurnDays = Math.floor(timePerTurnMs / (1000 * 60 * 60 * 24));
     const timePerTurnHours = Math.floor((timePerTurnMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -159,7 +162,7 @@ export function NewPrivateStory() {
   function calculateEndDate() {
     if (
       !startDate ||
-      !collaboratorList.length ||
+      !contributors.length ||
       !Number(numberOfLinks) ||
       (!days && !hours && !minutes)
     ) {
@@ -180,7 +183,7 @@ export function NewPrivateStory() {
 
   // when in date mode and date changes, update the time per turn
   useEffect(() => {
-    if (isActiveDate && startDate && endDate && collaboratorList.length && Number(numberOfLinks)) {
+    if (isActiveDate && startDate && endDate && contributors.length && Number(numberOfLinks)) {
       const { days: d, hours: h, minutes: m } = calculateTimePerTurn();
 
       if (d !== days || h !== hours || m !== minutes) {
@@ -190,14 +193,14 @@ export function NewPrivateStory() {
         setMinutes(m);
       }
     }
-  }, [isActiveDate, startDate, endDate, collaboratorList.length, numberOfLinks]);
+  }, [isActiveDate, startDate, endDate, contributors.length, numberOfLinks]);
 
   // when in time mode and time values change, update end date
   useEffect(() => {
     if (
       isActiveTime &&
       startDate &&
-      collaboratorList.length &&
+      contributors.length &&
       Number(numberOfLinks) &&
       (days || hours || minutes)
     ) {
@@ -210,7 +213,7 @@ export function NewPrivateStory() {
 
       setTimePerTurn({ days, hours, minutes });
     }
-  }, [isActiveTime, startDate, days, hours, minutes, collaboratorList.length, numberOfLinks]);
+  }, [isActiveTime, startDate, days, hours, minutes, contributors.length, numberOfLinks]);
 
   const { getToken } = useAuth();
 
@@ -263,11 +266,11 @@ export function NewPrivateStory() {
 
   function addUserToCollaborators(person: string) {
     if (
-      !collaboratorList.includes(person) &&
+      !contributors.includes(person) &&
       person.trim().length !== 0 &&
       usernames.includes(person)
     ) {
-      setCollaboratorsList([...collaboratorList, person]);
+      setCollaboratorsList([...contributors, person]);
     }
   }
 
@@ -310,6 +313,7 @@ export function NewPrivateStory() {
       <Accordion.Panel className={FormClasses.accordionPanel}>{item.description}</Accordion.Panel>
     </Accordion.Item>
   ));
+  
 
   return (
     <>
@@ -395,7 +399,7 @@ export function NewPrivateStory() {
             </Combobox>
 
             <div className={FormClasses.listTitle}>Writing order</div>
-            {collaboratorList && <DndListHandle />}
+            {contributors && <DndListHandle />}
 
             <NumberInput
               required

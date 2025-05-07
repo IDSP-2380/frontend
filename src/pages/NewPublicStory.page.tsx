@@ -16,22 +16,23 @@ export function NewPublicStory() {
   
   const { storyTitle, maxWordCount, numberOfLinks, setStoryTitle, setMaxWordCount, setNumberOfLinks } = useStoryConfigStore();
 
+  
   const { linkContent, setLinkContent } = usePublicStoryStore();
   
   const isFormComplete =
-    storyTitle.trim() !== '' && Number(maxWordCount) > 0 && Number(numberOfLinks) > 0;
-
+  storyTitle.trim() !== '' && Number(maxWordCount) > 0 && Number(numberOfLinks) > 0;
+  
   const validate = () => {
     if (storyTitle.trim() === '' || maxWordCount === 0 || numberOfLinks === 0) {
       throw new Error('fill out all fields');
     }
   };
-
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const data = { storyTitle, maxWordCount, numberOfLinks, linkContent };
-
+    
+    const data = { storyTitle, maxWordCount, numberOfLinks, linkContent, status };
+    
     try {
       await axios.post('http://localhost:3000/api/stories/create/story/public', data, {
         headers: {
