@@ -1,0 +1,20 @@
+.SearchBar {
+  width: 426px;
+  padding: 8px 0;
+}
+
+.SearchInput {
+  border-radius: 8px;
+  border: 1px solid var(--background-paper-200);
+  font-size: var(--font-size-S);
+  color: var(--neutral-900);
+  line-height: var(--font-line-height-S);
+  font-weight: var(--font-weight-regular);
+}
+
+.SearchInput::placeholder {
+  font-size: var(--font-size-S);
+  color: var(--neutral-300);
+  line-height: var(--font-line-height-S);
+  font-weight: var(--font-weight-regular);
+}

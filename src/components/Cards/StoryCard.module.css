@@ -26,9 +26,7 @@
   gap: 36px;
 }
 
-.Contributors,
-.Chains,
-.Links {
+.VerticalCenter {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -41,8 +39,10 @@
 .CardFooter {
   display: flex;
   justify-content: space-between;
+  width: 100%;
   align-items: flex-end;
   padding-top: 8px;
+  align-self: flex-end;
 }
 
 .UpdatedAt {
@@ -75,7 +75,13 @@
 
 .FilteredStories {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   gap: 16px;
   margin: 16px 0;
+}
+
+.Buttons {
+  display: flex;
+  gap: 16px;
 }

@@ -1,0 +1,23 @@
+.SelectBar {
+  padding: 8px 0;
+}
+
+.SelectInput {
+  border-radius: 8px;
+  border: 1px solid var(--primary-500);
+  font-size: var(--font-size-S);
+  color: var(--neutral-900);
+  line-height: var(--font-line-height-S);
+  font-weight: var(--font-weight-regular);
+  padding: 8px 16px;
+}
+
+.RootClass {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.WrapperClass {
+  width: 216px;
+}

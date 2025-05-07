@@ -7,12 +7,20 @@ import StoryCardStyles from './StoryCard.module.css';
 export default function StoryCard({
   title,
   preview,
-  contributors,
+  collaborators,
   chains,
   longestChain,
   chainLength,
+  draftingLink,
+  currentTurn,
+  totalTurns,
   status,
+  statusIcon,
   updated,
+  primaryPath,
+  primaryButtonLabel,
+  secondaryPath,
+  secondaryButtonLabel,
 }: Story) {
   const navigate = useNavigate();
   return (
@@ -20,35 +28,69 @@ export default function StoryCard({
       <h2 className={StoryCardStyles.Title}>{title}</h2>
       <div className={StoryCardStyles.StoryInfo}>
         <span className={StoryCardStyles.MainInfo}>
-          <span className={StoryCardStyles.Contributors}>
-            <img src="/icons/Collaborators.svg" />
-            {contributors}
-          </span>
-          <span className={StoryCardStyles.Chains}>
-            <img src="/icons/GitFork.svg" />
-            {chains}
-          </span>
-          <span className={StoryCardStyles.Links}>
-            <img src="/icons/Link.svg" />
-            {longestChain} / {chainLength} Links until completed
-          </span>
+          {collaborators && (
+            <span className={StoryCardStyles.VerticalCenter}>
+              <img src="/icons/Collaborators.svg" />
+              {collaborators}
+            </span>
+          )}
+          {chains && (
+            <span className={StoryCardStyles.VerticalCenter}>
+              <img src="/icons/GitFork.svg" />
+              {chains}
+            </span>
+          )}
+          {longestChain && (
+            <span className={StoryCardStyles.VerticalCenter}>
+              <img src="/icons/Link.svg" />
+              {longestChain} / {chainLength} Links until completed
+            </span>
+          )}
+          {draftingLink && (
+            <span className={StoryCardStyles.VerticalCenter}>
+              <img src="/icons/Link.svg" />
+              Drafting Link {draftingLink} of {chainLength}
+            </span>
+          )}
+          {currentTurn && (
+            <span className={StoryCardStyles.VerticalCenter}>
+              <img src="/icons/Link.svg" />
+              Currently on Turn {currentTurn} of {totalTurns}
+            </span>
+          )}
         </span>
-        <span className="Status">
-          <span className={StoryCardStyles.StatusLabel}>Status: </span>
+        <span className={StoryCardStyles.VerticalCenter}>
+          {statusIcon && <img src={statusIcon} />}
+          {(status === 'Ongoing' || status === 'Completed') && (
+            <span className={StoryCardStyles.StatusLabel}>Status: </span>
+          )}
           {status}
         </span>
       </div>
       <p className={StoryCardStyles.Preview}>{preview}</p>
       <div className={StoryCardStyles.CardFooter}>
-        <span className={StoryCardStyles.UpdatedAt}>Last updated {updated}</span>
-        <ButtonBase
-          onClick={() => navigate('/Story')}
-          rightSection={<img src="/icons/CaretRightPrimary.svg" />}
-          buttonType="secondaryDim"
-          style={{ width: '163px' }}
-        >
-          View story
-        </ButtonBase>
+        {(status === 'Ongoing' || status === 'Completed') && (
+          <span className={StoryCardStyles.UpdatedAt}>Last updated {updated}</span>
+        )}
+        <span className={StoryCardStyles.Buttons}>
+          {secondaryPath && (
+            <ButtonBase
+              onClick={() => navigate(secondaryPath)}
+              buttonType="secondaryNeutral"
+              style={{ width: 'fit-content' }}
+            >
+              {secondaryButtonLabel}
+            </ButtonBase>
+          )}
+          <ButtonBase
+            onClick={() => navigate(primaryPath)}
+            rightSection={<img src="/icons/CaretRightPrimary.svg" />}
+            buttonType="secondaryDim"
+            style={{ width: 'fit-content' }}
+          >
+            {primaryButtonLabel}
+          </ButtonBase>
+        </span>
       </div>
     </Box>
   );

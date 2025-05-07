@@ -1,4 +1,5 @@
 import { Autocomplete } from '@mantine/core';
+import SearchStyles from './Search.module.css';
 
 const largeData = Array(100_000)
   .fill(0)
@@ -11,7 +12,8 @@ export default function SearchBar() {
       limit={5}
       data={largeData}
       rightSection={<img src="/icons/Search.svg" alt="active dropdown icon" />}
-      // styles={}
+      className={SearchStyles.SearchBar}
+      classNames={{ input: SearchStyles.SearchInput }}
     />
   );
 }

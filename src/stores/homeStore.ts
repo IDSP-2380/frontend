@@ -3,12 +3,20 @@ import { create } from 'zustand';
 export interface Story {
   title: string;
   preview: string;
-  contributors: number;
-  chains: number;
-  longestChain: number;
-  chainLength: number;
+  collaborators?: number;
+  chains?: number;
+  longestChain?: number;
+  chainLength?: number;
+  draftingLink?: number;
+  currentTurn?: number;
+  totalTurns?: number;
   status: string;
-  updated: string;
+  statusIcon?: string;
+  updated?: string;
+  primaryPath: string;
+  primaryButtonLabel: string;
+  secondaryPath?: string;
+  secondaryButtonLabel?: string;
 }
 
 interface HomeState {
