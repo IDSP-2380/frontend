@@ -5,34 +5,38 @@ import { Button, FloatingIndicator, NumberInput, Tabs, TextInput } from '@mantin
 import { ButtonBase } from '@/components/Buttons/ButtonBase';
 import { HeaderMenu } from '@/components/Header/HeaderMenu';
 import TextEditor from '@/components/TextEditor/TextEditor';
-import FormClasses from '../components/StoryForm/Form.module.css';
 import { usePublicStoryStore } from '@/stores/publicStoryStore';
-import { useStoryConfigStore } from "@/stores/storyStore"
-
+import { useStoryConfigStore } from '@/stores/storyStore';
+import FormClasses from '../components/StoryForm/Form.module.css';
 
 export function NewPublicStory() {
-
   const navigate = useNavigate();
-  
-  const { storyTitle, maxWordCount, numberOfLinks, setStoryTitle, setMaxWordCount, setNumberOfLinks } = useStoryConfigStore();
 
-  
+  const {
+    storyTitle,
+    maxWordCount,
+    numberOfLinks,
+    setStoryTitle,
+    setMaxWordCount,
+    setNumberOfLinks,
+  } = useStoryConfigStore();
+
   const { linkContent, setLinkContent } = usePublicStoryStore();
-  
+
   const isFormComplete =
-  storyTitle.trim() !== '' && Number(maxWordCount) > 0 && Number(numberOfLinks) > 0;
-  
+    storyTitle.trim() !== '' && Number(maxWordCount) > 0 && Number(numberOfLinks) > 0;
+
   const validate = () => {
     if (storyTitle.trim() === '' || maxWordCount === 0 || numberOfLinks === 0) {
       throw new Error('fill out all fields');
     }
   };
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const data = { storyTitle, maxWordCount, numberOfLinks, linkContent, status };
-    
+
     try {
       await axios.post('http://localhost:3000/api/stories/create/story/public', data, {
         headers: {
@@ -40,10 +44,8 @@ export function NewPublicStory() {
         },
       });
 
-      console.log("PUBLIC NAV")
-      navigate("/project")
-
-
+      console.log('PUBLIC NAV');
+      navigate('/project');
     } catch (err) {
       console.error('Failed to send to backend:', err);
     }
@@ -54,7 +56,6 @@ export function NewPublicStory() {
       <form onSubmit={handleSubmit} method="post" className={FormClasses.storyForm}>
         <div className={FormClasses.storySettings}>
           <div className={FormClasses.storySettingsInputs}>
-
             <TextInput
               required
               withAsterisk={false}
@@ -132,7 +133,7 @@ export function NewPublicStory() {
           </div>
         </div>
 
-        <TextEditor />
+        <TextEditor heading="Start Your Story" />
 
         <div className={FormClasses.createProjectButton}>
           <ButtonBase
