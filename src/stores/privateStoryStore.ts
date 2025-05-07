@@ -9,7 +9,7 @@ interface TimePerTurn {
 
 interface PrivateStoryState {
     collaborator: string;
-    collaboratorList: string[],
+    contributors: string[],
     startDate: DateValue,
     endDate: DateValue,
     days: number,
@@ -34,7 +34,7 @@ interface PrivateStoryState {
 
 export const usePrivateStoryStore = create<PrivateStoryState>((set) => ({
     collaborator: '',
-    collaboratorList: [],
+    contributors: [],
     startDate: null,
     endDate: null,
     days: 0,
@@ -46,7 +46,7 @@ export const usePrivateStoryStore = create<PrivateStoryState>((set) => ({
     timePerTurn: {days: 0, hours: 0, minutes: 0},
 
     setCollaborator: (person: string) => set({ collaborator: person }),
-    setCollaboratorsList: (list: string[]) => set({collaboratorList: list}),
+    setCollaboratorsList: (list: string[]) => set({contributors: list}),
     setStartDate: (date: DateValue) => set({ startDate: date }),
     setEndDate: (date: DateValue) => set({ endDate: date }),
     setDays: (days: number) => set({ days }),

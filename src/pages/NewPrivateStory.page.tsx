@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useAuth } from '@clerk/clerk-react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -36,7 +37,7 @@ export function NewPrivateStory() {
 
     const data = {
       storyTitle,
-      collaboratorList,
+      contributors,
       maxWordCount,
       numberOfLinks,
       startDate,
@@ -47,6 +48,7 @@ export function NewPrivateStory() {
     };
 
     try {
+      validate();
       await axios.post('http://localhost:3000/api/stories/create/story/private', data, {
         headers: {
           'Content-Type': 'application/json',
@@ -70,7 +72,7 @@ export function NewPrivateStory() {
 
   const {
     collaborator,
-    collaboratorList,
+    contributors,
     startDate,
     endDate,
     days,
@@ -98,14 +100,14 @@ export function NewPrivateStory() {
     endDate &&
     days >= 1 &&
     storyTitle.trim() !== '' &&
-    collaboratorList.length > 0 &&
+    contributors.length > 0 &&
     Number(maxWordCount) > 0 &&
     Number(numberOfLinks) > 0;
 
   const validate = () => {
     if (
       storyTitle.trim() === '' ||
-      collaboratorList.length === 0 ||
+      contributors.length === 0 ||
       maxWordCount === 0 ||
       numberOfLinks === 0
     ) {
@@ -117,10 +119,16 @@ export function NewPrivateStory() {
 
     if (!startDate || !endDate) {
       setError('Both dates must be selected');
+      throw new Error('Both dates must be selected');
+      console.log(error);
     } else if (startDate < today) {
       setError('Start date must be today or later');
+      throw new Error('Start date must be today or later');
+      console.log(error);
     } else if (startDate > endDate) {
       setError('Start date must be before end date');
+      throw new Error('Start date must be before end date');
+      console.log(error);
     } else {
       setError(null);
       console.log('Selected Time:', time);
@@ -128,7 +136,7 @@ export function NewPrivateStory() {
   };
 
   function calculateTimePerTurn() {
-    if (!startDate || !endDate || !collaboratorList.length || !numberOfLinks) {
+    if (!startDate || !endDate || !contributors.length || !numberOfLinks) {
       return { days: 0, hours: 0, minutes: 0 };
     }
 
@@ -136,9 +144,9 @@ export function NewPrivateStory() {
     const endDateTime = new Date(endDate).getTime();
     const totalProjectTime = endDateTime - startDateTime;
 
-    const turnsPerCollaborator = Math.ceil(Number(numberOfLinks) / collaboratorList.length);
+    const turnsPerCollaborator = Math.ceil(Number(numberOfLinks) / contributors.length);
 
-    const timePerTurnMs = totalProjectTime / (turnsPerCollaborator * collaboratorList.length);
+    const timePerTurnMs = totalProjectTime / (turnsPerCollaborator * contributors.length);
 
     const timePerTurnDays = Math.floor(timePerTurnMs / (1000 * 60 * 60 * 24));
     const timePerTurnHours = Math.floor((timePerTurnMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -150,7 +158,7 @@ export function NewPrivateStory() {
   function calculateEndDate() {
     if (
       !startDate ||
-      !collaboratorList.length ||
+      !contributors.length ||
       !Number(numberOfLinks) ||
       (!days && !hours && !minutes)
     ) {
@@ -171,7 +179,7 @@ export function NewPrivateStory() {
 
   // when in date mode and date changes, update the time per turn
   useEffect(() => {
-    if (isActiveDate && startDate && endDate && collaboratorList.length && Number(numberOfLinks)) {
+    if (isActiveDate && startDate && endDate && contributors.length && Number(numberOfLinks)) {
       const { days: d, hours: h, minutes: m } = calculateTimePerTurn();
 
       if (d !== days || h !== hours || m !== minutes) {
@@ -181,14 +189,14 @@ export function NewPrivateStory() {
         setMinutes(m);
       }
     }
-  }, [isActiveDate, startDate, endDate, collaboratorList.length, numberOfLinks]);
+  }, [isActiveDate, startDate, endDate, contributors.length, numberOfLinks]);
 
   // when in time mode and time values change, update end date
   useEffect(() => {
     if (
       isActiveTime &&
       startDate &&
-      collaboratorList.length &&
+      contributors.length &&
       Number(numberOfLinks) &&
       (days || hours || minutes)
     ) {
@@ -201,30 +209,64 @@ export function NewPrivateStory() {
 
       setTimePerTurn({ days, hours, minutes });
     }
-  }, [isActiveTime, startDate, days, hours, minutes, collaboratorList.length, numberOfLinks]);
+  }, [isActiveTime, startDate, days, hours, minutes, contributors.length, numberOfLinks]);
 
-  const groceries = ['🍎 Apples', '🍌 Bananas', '🥦 Broccoli', '🥕 Carrots', '🍫 Chocolate'];
+  const { getToken } = useAuth();
+
+  type User = {
+    id: string;
+    imageUrl: string;
+    username: string;
+    firstName: string | null;
+    lastName: string | null;
+    emailAddresses: unknown[];
+  };
+
+  const [users, setUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = await getToken();
+        const res = await axios.get('http://localhost:3000/api/user/get-all-users', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const usersData = res.data.users.data as User[];
+
+        setUsers(usersData);
+      } catch (err) {
+        console.error('Failed to fetch protected data', err);
+      }
+    };
+
+    fetchUserData();
+  }, [getToken]);
+
+  const usernames = users?.map((user) => user.username) ?? [];
 
   const combobox = useCombobox();
 
-  const shouldFilterOptions = !groceries.some((item) => item === value);
-  const filteredOptions = shouldFilterOptions
-    ? groceries.filter((item) => item.toLowerCase().includes(collaborator.toLowerCase().trim()))
-    : groceries;
+  const shouldFilterOptions = !usernames.some((person) => person === value);
 
-  const options = filteredOptions.map((item) => (
-    <Combobox.Option value={item} key={item}>
-      {item}
+  const filteredOptions = shouldFilterOptions
+    ? usernames.filter((name) => name.toLowerCase().includes(collaborator.toLowerCase().trim()))
+    : usernames;
+
+  const options = filteredOptions.map((name) => (
+    <Combobox.Option value={name} key={name}>
+      {name}
     </Combobox.Option>
   ));
 
   function addUserToCollaborators(person: string) {
     if (
-      !collaboratorList.includes(person) &&
+      !contributors.includes(person) &&
       person.trim().length !== 0 &&
-      groceries.includes(person)
+      usernames.includes(person)
     ) {
-      setCollaboratorsList([...collaboratorList, person]);
+      setCollaboratorsList([...contributors, person]);
     }
   }
 
@@ -352,7 +394,7 @@ export function NewPrivateStory() {
             </Combobox>
 
             <div className={FormClasses.listTitle}>Writing order</div>
-            {collaboratorList && <DndListHandle />}
+            {contributors && <DndListHandle />}
 
             <NumberInput
               required
