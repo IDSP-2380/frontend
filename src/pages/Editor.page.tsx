@@ -1,5 +1,6 @@
 import { Box, Flex, Text } from '@mantine/core';
 import EditCard from '@/components/Cards/EditCard';
+import EditClasses from '@/components/Cards/EditCard.module.css';
 import TextEditor from '@/components/TextEditor/TextEditor';
 
 export function EditorPage() {
@@ -35,7 +36,10 @@ export function EditorPage() {
           return <EditCard linkNumber={(index + 1).toString()} linkContent={story.content} />;
         })}
 
-        <TextEditor />
+        <Flex>
+          <Text className={EditClasses.numberText}>{testData.length + 1}</Text>
+          <TextEditor />
+        </Flex>
       </Flex>
     </Box>
   );
