@@ -12,11 +12,7 @@ import UserTest from './pages/UserTest.Page';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: (
-      <ProtectedRoute>
-        <HomePage />
-      </ProtectedRoute>
-    ),
+    element: <HomePage />,
   },
   { path: '/create/story', element: <NewStoryPage /> },
   { path: '/project', element: <NewProject /> },

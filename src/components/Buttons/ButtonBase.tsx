@@ -1,20 +1,27 @@
-
-import { Button } from '@mantine/core';
-import { ReactNode, CSSProperties } from 'react';
-import { useMantineTheme } from '@mantine/core';
+import { CSSProperties, ReactNode } from 'react';
+import { Button, useMantineTheme } from '@mantine/core';
 import styles from './ButtonBase.module.css';
 
-type buttonNames = 'primary' | 'primaryBig' | 'primaryWhite' | 'primaryWhiteBig' | 'secondaryWhite' | 'secondaryDim' | 'secondarySquare'
+type buttonNames =
+  | 'primary'
+  | 'primaryBig'
+  | 'primaryWhite'
+  | 'primaryWhiteBig'
+  | 'secondaryWhite'
+  | 'secondaryDim'
+  | 'secondarySquare'
+  | 'secondaryNeutral';
 
 const buttonClassMapping = {
-    primary: styles.primary,
-    primaryBig: styles.primaryBig,
-    primaryWhite: styles.primaryWhite,
-    primaryWhiteBig: styles.primaryWhiteBig,
-    secondaryWhite: styles.secondaryWhite,
-    secondaryDim: styles.secondaryDim,
-    secondarySquare: styles.secondarySquare
-}
+  primary: styles.primary,
+  primaryBig: styles.primaryBig,
+  primaryWhite: styles.primaryWhite,
+  primaryWhiteBig: styles.primaryWhiteBig,
+  secondaryWhite: styles.secondaryWhite,
+  secondaryDim: styles.secondaryDim,
+  secondarySquare: styles.secondarySquare,
+  secondaryNeutral: styles.secondaryNeutral,
+};
 
 interface buttonProps {
   onClick: () => void;
@@ -44,8 +51,8 @@ export function ButtonBase({
       rightSection={rightSection}
       disabled={disabled}
       className={buttonClassMapping[buttonType]}
-      style={{  ...style }}
-      type='submit'
+      style={{ ...style }}
+      type="submit"
       classNames={{
         root: `${styles.buttonRoot} ${disabled ? styles.disabled : styles.enabled}`,
         section: styles.sectionIcon,
