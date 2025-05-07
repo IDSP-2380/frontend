@@ -1,86 +1,37 @@
 import { useState } from 'react';
-import { useClerk } from '@clerk/clerk-react';
-import { Text } from '@mantine/core';
-import type { DateValue } from '@mantine/dates';
-import { ButtonBase } from '@/components/Buttons/ButtonBase';
-import { DatePicker } from '@/components/Calendar/DatePicker';
-import { SetTimer } from '@/components/Time/SetTimer';
+import StoryCard from '@/components/Cards/StoryCard';
+import SearchBar from '@/components/Search/SearchBar';
+import SelectDropdown from '@/components/SelectDropdown/SelectDropdown';
+import HomeTabs from '@/components/Tabs/HomeTabs';
+import StoryCardStyles from '../components/Cards/StoryCard.module.css';
 
 export function HomePage() {
-  const [startDate, setStartDate] = useState<DateValue>(null);
-  const [endDate, setEndDate] = useState<DateValue>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [time, setTime] = useState<string | undefined>(undefined);
-
-  const [days, setDays] = useState(0);
-  const [hours, setHours] = useState(0);
-  const [minutes, setMinutes] = useState(0);
-
-  const isFormComplete = startDate && endDate && days >= 1;
-
-  const validate = () => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    if (!startDate || !endDate) {
-      setError('Both dates must be selected');
-    } else if (startDate < today) {
-      setError('Start date must be today or later');
-    } else if (startDate > endDate) {
-      setError('Start date must be before end date');
-    } else {
-      setError(null);
-    }
-  };
-
-  // clerk sign out test
-  const { signOut } = useClerk();
-
-  const handleSignOut = () => {
-    signOut({ redirectUrl: '/sign-in' });
-  };
-
   return (
     <>
-      {error && <Text c="red">{error}</Text>}
-      <SetTimer
-        days={days}
-        hours={hours}
-        minutes={minutes}
-        onChange={(d, h, m) => {
-          setDays(d);
-          setHours(h);
-          setMinutes(m);
-        }}
+      <HomeTabs />
+      <SearchBar />
+      <SelectDropdown
+        label={'Sort by:'}
+        options={[
+          'Recently Updated',
+          'Oldest Story',
+          'Most Liked',
+          'Longest Chain',
+          'Shortest Chain',
+        ]}
       />
-      <ButtonBase
-        disabled={!isFormComplete}
-        onClick={validate}
-        buttonType="secondarySquare"
-        rightSection={
-          isFormComplete ? (
-            <img src="/icons/CaretRight.svg" alt="icon" />
-          ) : (
-            <img src="/icons/CaretRightDisabled.svg" alt="icon" />
-          )
-        }
-      >
-        Edit
-      </ButtonBase>
-
-      <ButtonBase
-        onClick={handleSignOut}
-        buttonType="primaryBig"
-        rightSection={
-          isFormComplete ? (
-            <img src="/icons/CaretRight.svg" alt="icon" />
-          ) : (
-            <img src="/icons/CaretRightDisabled.svg" alt="icon" />
-          )
-        }
-      >
-        Sign out
-      </ButtonBase>
+      <div className={StoryCardStyles.FilteredStories}>
+        <StoryCard
+          title="The key in the Vines"
+          contributors={4}
+          chains={4}
+          longestChain={4}
+          chainLength={7}
+          status="ongoing"
+          preview="Mira stumbled on the key by accident, buried in the thick vines behind her grandmother’s cottage. It was silver, cool to the touch, and shaped like a crescent moon. Her grandmother had always warned her to stay out of the old garden—said it was “too hungry.” But the key pulsed in her palm like a heartbeat. Something wanted to be found. Mira brushed dirt from the key’s teeth. A soft wind stirred the leaves, and somewhere in the brush, something clicked."
+          updated="April 20, 2025"
+        />
+      </div>
     </>
   );
 }

@@ -1,0 +1,81 @@
+.StoryCard {
+  display: flex;
+  flex-direction: column;
+  width: 760px;
+  padding: 20px;
+  gap: 8px;
+  border-radius: 12px;
+  border: 1.25px solid var(--background-paper-50);
+  background: var(--neutral-white);
+}
+
+.StoryInfo {
+  display: flex;
+  justify-content: space-between;
+  align-self: stretch;
+  align-items: center;
+  color: var(--primary-400);
+  font-family: var(--opensans);
+  font-size: var(--font-size-XS);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--font-line-height-XS);
+}
+
+.MainInfo {
+  display: flex;
+  gap: 36px;
+}
+
+.Contributors,
+.Chains,
+.Links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.StatusLabel {
+  font-weight: var(--font-weight-semi-bold);
+}
+
+.CardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-top: 8px;
+}
+
+.UpdatedAt {
+  color: var(--primary-400);
+  font-family: var(--opensans);
+  font-size: var(--font-size-XS);
+  font-weight: var(--font-weight-regular);
+}
+
+.Title {
+  font-size: var(--font-size-XL);
+  font-weight: var(--font-weight-regular);
+  color: black;
+  margin: 0;
+}
+
+.Preview {
+  margin: 0;
+  color: var(--neutral-600);
+  font-size: var(--font-size-S);
+  line-height: var(--font-line-height-S);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  line-clamp: 3;
+  box-orient: vertical;
+  text-overflow: ellipsis;
+}
+
+.FilteredStories {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 16px 0;
+}

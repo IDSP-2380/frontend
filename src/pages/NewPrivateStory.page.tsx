@@ -55,8 +55,7 @@ export function NewPrivateStory() {
         },
       });
 
-      navigate('/story');
-
+      navigate('/newStoryCreation');
     } catch (err) {
       console.error('Failed to send to backend:', err);
     }
@@ -69,9 +68,7 @@ export function NewPrivateStory() {
     setStoryTitle,
     setMaxWordCount,
     setNumberOfLinks,
-    
   } = useStoryConfigStore();
-
 
   const {
     collaborator,
@@ -97,7 +94,6 @@ export function NewPrivateStory() {
     setCalculatedEndDate,
     setTimePerTurn,
   } = usePrivateStoryStore();
-
 
   const isFormComplete =
     startDate &&
@@ -313,7 +309,6 @@ export function NewPrivateStory() {
       <Accordion.Panel className={FormClasses.accordionPanel}>{item.description}</Accordion.Panel>
     </Accordion.Item>
   ));
-  
 
   return (
     <>
