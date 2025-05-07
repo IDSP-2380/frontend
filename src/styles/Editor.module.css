@@ -1,0 +1,8 @@
+.dropDown {
+  display: flex;
+  padding-left: 3rem;
+}
+
+.textContainer {
+  display: flex;
+}

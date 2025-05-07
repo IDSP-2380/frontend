@@ -1,7 +1,9 @@
 import { Box, Flex, Text } from '@mantine/core';
 import EditCard from '@/components/Cards/EditCard';
 import EditClasses from '@/components/Cards/EditCard.module.css';
+import SelectDropdown from '@/components/SelectDropdown/SelectDropdown';
 import TextEditor from '@/components/TextEditor/TextEditor';
+import EditorStyle from '@/styles/Editor.module.css';
 
 export function EditorPage() {
   const testData = [
@@ -27,6 +29,15 @@ export function EditorPage() {
     },
   ];
 
+  const options = [
+    'Introduction',
+    'Rising Action',
+    'Conflict',
+    'Climax',
+    'Falling Action',
+    'Conclusion',
+  ];
+
   return (
     <Box maw={'44.187rem'} m="auto">
       <Flex direction="column" justify="center" align="center" gap={'1rem'}>
@@ -36,9 +47,14 @@ export function EditorPage() {
           return <EditCard linkNumber={(index + 1).toString()} linkContent={story.content} />;
         })}
 
-        <Flex>
-          <Text className={EditClasses.numberText}>{testData.length + 1}</Text>
-          <TextEditor />
+        <Flex direction="column">
+          <Box className={EditorStyle.dropDown}>
+            <SelectDropdown label="Stage" options={options} />
+          </Box>
+          <Box className={EditorStyle.textContainer}>
+            <Text className={EditClasses.numberText}>{testData.length + 1}</Text>
+            <TextEditor />
+          </Box>
         </Flex>
       </Flex>
     </Box>
