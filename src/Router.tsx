@@ -6,6 +6,7 @@ import { NewStoryCreation } from './pages/NewStoryCreation.page';
 import { ProtectedRoute } from './pages/ProtectedRoute';
 import SignInPage from './pages/SignIn.page';
 import SignUpPage from './pages/SignUp.page';
+import { Story } from './pages/Story.page';
 import UserTest from './pages/UserTest.Page';
 
 const router = createBrowserRouter([
@@ -34,8 +35,12 @@ const router = createBrowserRouter([
     element: <NewProject />,
   },
   {
-    path: '/story',
+    path: '/newStoryCreation',
     element: <NewStoryCreation />,
+  },
+  {
+    path: '/story',
+    element: <Story />,
   },
 ]);
 
