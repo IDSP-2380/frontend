@@ -22,11 +22,19 @@ export function NewStoryPage() {
       <Tabs variant="none" value={value} onChange={setValue}>
         <Tabs.List ref={setRootRef} className={FormClasses.list}>
           <Tabs.Tab value="1" ref={setControlRef('1')} className={FormClasses.tab}>
-            {value === '1' ? <img src="/Globe.svg" alt="" /> : <img src="/Globe-gray.svg" alt="" />}
+            {value === '1' ? (
+              <img src="/icons/Globe.svg" alt="" />
+            ) : (
+              <img src="/icons/Globe-gray.svg" alt="" />
+            )}
             Public
           </Tabs.Tab>
           <Tabs.Tab value="2" ref={setControlRef('2')} className={FormClasses.tab}>
-            {value === '2' ? <img src="/Lock.svg" alt="" /> : <img src="/Lock-gray.svg" alt="" />}
+            {value === '2' ? (
+              <img src="/icons/Lock.svg" alt="" />
+            ) : (
+              <img src="/icons/Lock-gray.svg" alt="" />
+            )}
             Private
           </Tabs.Tab>
 

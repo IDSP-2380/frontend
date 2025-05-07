@@ -1,0 +1,51 @@
+.Root {
+  padding: 0 32px;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.TabList {
+  border-bottom: 1px solid var(--background-paper-100);
+  padding-bottom: 8px;
+  display: flex;
+  justify-content: center;
+  width: 792px;
+}
+
+.TabLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: var(--font-size-M);
+  line-height: var(--font-line-height-S);
+  font-weight: var(--font-weight-semi-bold);
+}
+
+.Tab {
+  display: flex;
+  justify-content: center;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  width: 232px;
+  color: var(--background-paper-200);
+
+  &[data-active] {
+    border-radius: 12px;
+    border: 1px solid var(--primary-300);
+    background-color: var(--primary-50);
+    color: var(--primary-500);
+  }
+}
+
+.TabDivider {
+  width: 2px;
+  background-color: var(--background-paper-100);
+}
+
+.TabDiv {
+  display: flex;
+  align-items: center;
+}
