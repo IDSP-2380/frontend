@@ -1,6 +1,10 @@
+import FormClasses from '../components/StoryForm/Form.module.css';
+
 export function NewStoryCreation() {
 
     return (
-      <h1>Private story created!</h1>
+      <div className={FormClasses.timeLeft}>
+        
+      </div>
     );
   }

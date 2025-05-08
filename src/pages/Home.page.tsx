@@ -1,7 +1,7 @@
 import { SignedIn, SignedOut } from '@clerk/clerk-react';
 import StoryCard from '@/components/Cards/StoryCard';
 import StoryFilters from '@/components/StoryFilters/StoryFilters';
-import Tabs from '@/components/Tabs/Tabs';
+import HomeTabs from '@/components/Tabs/Tabs';
 import { useFilterStore } from '@/stores/filterStore';
 import StoryCardStyles from '../components/Cards/StoryCard.module.css';
 import StoryFilterStyles from '../components/StoryFilters/StoryFilters.module.css';
@@ -11,7 +11,7 @@ export function HomePage() {
   return (
     <>
       <div className={HomeStyles.TabsWrapper}>
-        <Tabs
+        <HomeTabs
           icon1Active="/icons/ListNumbers_active.svg"
           icon2Active="/icons/BookOpenText_active.svg"
           icon3Active="/icons/Book_active.svg"

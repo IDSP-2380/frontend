@@ -8,6 +8,7 @@ import SignInPage from './pages/SignIn.page';
 import SignUpPage from './pages/SignUp.page';
 import { Story } from './pages/Story.page';
 import UserTest from './pages/UserTest.Page';
+import { StoriesAndDrafts } from './pages/StoriesAndDrafts.page';
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
   {
     path: '/story',
     element: <Story />,
+  },
+  {
+    path: '/stories-and-drafts',
+    element: <StoriesAndDrafts />,
   },
 ]);
 
