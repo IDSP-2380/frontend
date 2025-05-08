@@ -23,7 +23,7 @@ export function NewPublicStory() {
   storyTitle.trim() !== '' && Number(maxWordCount) > 0 && Number(numberOfLinks) > 0;
   
   const validate = () => {
-    if (storyTitle.trim() === '' || maxWordCount === 0 || numberOfLinks === 0) {
+    if (storyTitle.trim() === '' || maxWordCount === 0 || numberOfLinks === 0 || linkContent.trim() === '') {
       throw new Error('fill out all fields');
     }
   };

@@ -68,10 +68,6 @@ export function StoriesAndDrafts() {
     getStories();
   }, []);
 
-
-
-  
-
   return (
     <>
       <HeaderMenu />
@@ -97,11 +93,13 @@ export function StoriesAndDrafts() {
         </div>
         <h2>In progress</h2>
         <div className={StoryCardStyles.FilteredStories}>
-        {storyData.map((story) => (
+        {storyData
+        .filter((story) => story.status === "ongoing")
+        .map((story) => (
             <StoryCard
             title={story.title}
             chainLength={story.chains.length}
-            draftingLink={4}
+            draftingLink={1}
             status={story.isPublic ? "Public" : "Private"}
             statusIcon="/icons/Globe.svg"
             preview={story.chains[0]?.links[0]?.content}
@@ -115,18 +113,22 @@ export function StoriesAndDrafts() {
 
         <h2>Completed</h2>
         <div className={StoryCardStyles.FilteredStories}>
-          <StoryCard
-            title="The key in the Vines"
-            collaborators={4}
-            chains={4}
-            longestChain={4}
-            chainLength={7}
-            status="Ongoing"
-            preview="Mira stumbled on the key by accident, buried in the thick vines behind her grandmother’s cottage. It was silver, cool to the touch, and shaped like a crescent moon. Her grandmother had always warned her to stay out of the old garden—said it was “too hungry.” But the key pulsed in her palm like a heartbeat. Something wanted to be found. Mira brushed dirt from the key’s teeth. A soft wind stirred the leaves, and somewhere in the brush, something clicked."
-            updated="April 20, 2025"
+        {storyData
+        .filter((story) => story.status === "completed")
+        .map((story) => (
+            <StoryCard
+            title={story.title}
+            chainLength={story.chains.length}
+            draftingLink={1}
+            status={story.isPublic ? "Public" : "Private"}
+            statusIcon="/icons/Globe.svg"
+            preview={story.chains[0]?.links[0]?.content}
             primaryPath="/story"
-            primaryButtonLabel="View story"
-          />
+            primaryButtonLabel="Go to editor"
+            secondaryPath="/story"
+            secondaryButtonLabel="View story"
+            />
+        ))}
         </div>
       </main>
     </>
