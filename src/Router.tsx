@@ -10,6 +10,8 @@ import SignUpPage from './pages/SignUp.page';
 import { Story } from './pages/Story.page';
 import UserTest from './pages/UserTest.Page';
 
+// import Test from './pages/Test.page';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -42,6 +44,11 @@ const router = createBrowserRouter([
   {
     path: '/story',
     element: <Story />,
+  },
+
+  {
+    path: '/testpage',
+    // element: <Test />,
   },
 ]);
 

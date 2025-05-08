@@ -1,8 +1,10 @@
 import { Box, Flex, Text } from '@mantine/core';
+import { ButtonBase } from '@/components/Buttons/ButtonBase';
 import EditCard from '@/components/Cards/EditCard';
 import EditClasses from '@/components/Cards/EditCard.module.css';
 import SelectDropdown from '@/components/SelectDropdown/SelectDropdown';
 import TextEditor from '@/components/TextEditor/TextEditor';
+import { usePublicStoryStore } from '@/stores/publicStoryStore';
 import EditorStyle from '@/styles/Editor.module.css';
 
 export function EditorPage() {
@@ -38,6 +40,8 @@ export function EditorPage() {
     'Conclusion',
   ];
 
+  const { linkContent, setLinkContent } = usePublicStoryStore();
+
   return (
     <Box maw={'44.187rem'} m="auto">
       <Flex direction="column" justify="center" align="center" gap={'1rem'}>
@@ -56,6 +60,29 @@ export function EditorPage() {
             <TextEditor />
           </Box>
         </Flex>
+        <Box className={EditorStyle.buttonContainer}>
+          <ButtonBase
+            onClick={() => {}}
+            leftSection={<img src="/icons/CaretLeft.svg" alt="icon" />}
+            buttonType="primaryWhite"
+          >
+            Back
+          </ButtonBase>
+          <ButtonBase
+            disabled={!linkContent}
+            onClick={() => {}}
+            rightSection={
+              linkContent ? (
+                <img src="/icons/CaretRight.svg" alt="icon" />
+              ) : (
+                <img src="/icons/CaretRightDisabled.svg" alt="icon" />
+              )
+            }
+            buttonType="primary"
+          >
+            Post Inklink
+          </ButtonBase>
+        </Box>
       </Flex>
     </Box>
   );
