@@ -7,6 +7,7 @@ import { NewStoryCreation } from './pages/NewStoryCreation.page';
 import { ProtectedRoute } from './pages/ProtectedRoute';
 import SignInPage from './pages/SignIn.page';
 import SignUpPage from './pages/SignUp.page';
+import { StoriesAndDrafts } from './pages/StoriesAndDrafts.page';
 import { Story } from './pages/Story.page';
 import UserTest from './pages/UserTest.Page';
 
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
   {
     path: '/testpage',
     // element: <Test />,
+  },
+  {
+    path: '/stories-and-drafts',
+    element: <StoriesAndDrafts />,
   },
 ]);
 
