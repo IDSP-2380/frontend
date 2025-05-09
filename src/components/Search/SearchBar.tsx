@@ -1,19 +1,17 @@
-import { Autocomplete } from '@mantine/core';
+import { Input } from '@mantine/core';
+import { useHomeStore } from '@/stores/homeStore';
 import SearchStyles from './Search.module.css';
 
-const largeData = Array(100_000)
-  .fill(0)
-  .map((_, index) => `Option ${index}`);
-
 export default function SearchBar() {
+  const { search, setSearch } = useHomeStore();
   return (
-    <Autocomplete
+    <Input
       placeholder="Search by title or username..."
-      limit={5}
-      data={largeData}
       rightSection={<img src="/icons/Search.svg" alt="active dropdown icon" />}
       className={SearchStyles.SearchBar}
       classNames={{ input: SearchStyles.SearchInput }}
+      name="search"
+      onChange={(event) => setSearch(event.currentTarget.value)}
     />
   );
 }

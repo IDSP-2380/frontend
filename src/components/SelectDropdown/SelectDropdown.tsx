@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Select } from '@mantine/core';
+import { useHomeStore } from '@/stores/homeStore';
 import SelectStyles from './SelectDropdown.module.css';
 
 interface SelectDropdownProps {
@@ -8,8 +9,8 @@ interface SelectDropdownProps {
 }
 
 export default function SelectDropdown({ label, options }: SelectDropdownProps) {
-  const [value, setValue] = useState<string | null>('');
   const [isActive, setIsActive] = useState<boolean>(false);
+  const { select, setSelect } = useHomeStore();
 
   return (
     <Select
@@ -22,7 +23,7 @@ export default function SelectDropdown({ label, options }: SelectDropdownProps) 
       label={label}
       onDropdownOpen={() => setIsActive(true)}
       onDropdownClose={() => setIsActive(false)}
-      onOptionSubmit={setValue}
+      onOptionSubmit={setSelect}
       defaultValue={'Recently Updated'}
       data={options}
       withCheckIcon={false}
@@ -33,6 +34,7 @@ export default function SelectDropdown({ label, options }: SelectDropdownProps) 
           <img src="/icons/CaretDown_inactive.svg" alt="active dropdown icon" />
         )
       }
+      name="select"
     />
   );
 }

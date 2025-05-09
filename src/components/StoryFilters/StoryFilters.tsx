@@ -12,9 +12,9 @@ export default function StoryFilters() {
         options={[
           'Recently Updated',
           'Oldest Story',
-          'Most Liked',
-          'Longest Chain',
-          'Shortest Chain',
+          // 'Most Liked',
+          // 'Longest Chain',
+          // 'Shortest Chain',
         ]}
       />
     </div>
