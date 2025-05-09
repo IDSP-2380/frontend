@@ -4,5 +4,8 @@ services:
     runtime: static
     repo: https://github.com/IDSP-2380/frontend
     branch: dev
-    buildCommand: yarn build
+    buildCommand: |
+      rm -rf /opt/render/.bun
+      yarn install
+      yarn build
     staticPublishPath: dist
