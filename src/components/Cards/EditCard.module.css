@@ -1,0 +1,25 @@
+.cardBorder {
+  border-radius: 12px;
+  border: 1px solid var(--Paper-50, #eeebe7);
+  background: var(--Paper, #fdf9f4);
+
+  display: flex;
+  padding: 0.5rem 1rem 0.75rem 1rem;
+}
+
+.numberText {
+  margin-top: 0;
+  padding: 0 1rem;
+  color: var(--primary-500);
+  text-align: right;
+
+  font-family: Merriweather;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 2rem;
+}
+
+.cardWidth {
+  min-width: 100%;
+}

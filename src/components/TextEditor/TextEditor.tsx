@@ -2,9 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import Quill from 'quill';
 import Delta from 'quill-delta';
 import ReactQuill from 'react-quill';
-import FormClasses from './Form.module.css';
 import { usePublicStoryStore } from '@/stores/publicStoryStore';
 import { useStoryConfigStore } from '@/stores/storyStore';
+import FormClasses from './Form.module.css';
+
+interface TextEditorProps {
+  heading?: string;
+}
 
 function undoHandler(this: { quill: Quill }) {
   this.quill.history.undo();
@@ -14,10 +18,9 @@ function redoHandler(this: { quill: Quill }) {
   this.quill.history.redo();
 }
 
-const TextEditor = () => {
-
+const TextEditor = ({ heading }: TextEditorProps) => {
   const { maxWordCount, setMaxWordCount } = useStoryConfigStore();
-  const { linkContent, setLinkContent} = usePublicStoryStore();
+  const { linkContent, setLinkContent } = usePublicStoryStore();
 
   const quillRef = useRef<ReactQuill>(null);
 
@@ -37,13 +40,16 @@ const TextEditor = () => {
   };
 
   function getWordCount(html: string): number {
-    const text = html.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').trim();
-    return text === '' ? 0 : text.split(/\s+/).length;  
+    const text = html
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&nbsp;/g, ' ')
+      .trim();
+    return text === '' ? 0 : text.split(/\s+/).length;
   }
 
   return (
     <>
-      <h2 className="h2">Start your story</h2>
+      <h2 className="h2">{heading}</h2>
       <div className="textEditorDiv">
         <div id="toolbar" className="ql-toolbar">
           <button className="ql-undo toolbar-item">
@@ -95,7 +101,9 @@ const TextEditor = () => {
 
         <input type="hidden" name="linkContent" value={linkContent} />
 
-        <div className='wordCounter'>Word Count: {getWordCount(linkContent)}/{maxWordCount}</div>
+        <div className="wordCounter">
+          Word Count: {getWordCount(linkContent)}/{maxWordCount}
+        </div>
       </div>
     </>
   );

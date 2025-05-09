@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { EditorPage } from './pages/Editor.page';
 import { HomePage } from './pages/Home.page';
 import { NewProject } from './pages/NewProject.page';
 import { NewStoryPage } from './pages/NewStory.page';
@@ -6,9 +7,11 @@ import { NewStoryCreation } from './pages/NewStoryCreation.page';
 import { ProtectedRoute } from './pages/ProtectedRoute';
 import SignInPage from './pages/SignIn.page';
 import SignUpPage from './pages/SignUp.page';
+import { StoriesAndDrafts } from './pages/StoriesAndDrafts.page';
 import { Story } from './pages/Story.page';
 import UserTest from './pages/UserTest.Page';
-import { StoriesAndDrafts } from './pages/StoriesAndDrafts.page';
+
+// import Test from './pages/Test.page';
 
 const router = createBrowserRouter([
   {
@@ -36,8 +39,17 @@ const router = createBrowserRouter([
     element: <NewStoryCreation />,
   },
   {
+    path: '/edit',
+    element: <EditorPage />,
+  },
+  {
     path: '/story',
     element: <Story />,
+  },
+
+  {
+    path: '/testpage',
+    // element: <Test />,
   },
   {
     path: '/stories-and-drafts',
