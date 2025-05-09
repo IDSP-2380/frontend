@@ -6,7 +6,6 @@ import EditClasses from '@/components/Cards/EditCard.module.css';
 import SelectDropdown from '@/components/SelectDropdown/SelectDropdown';
 import TextEditor from '@/components/TextEditor/TextEditor';
 import { useStory } from '@/hooks/useStory';
-import { ILink } from '@/stores/filterStore';
 import { usePublicStoryStore } from '@/stores/publicStoryStore';
 import { ILink } from '@/stores/storyStore';
 import EditorStyle from '@/styles/Editor.module.css';
