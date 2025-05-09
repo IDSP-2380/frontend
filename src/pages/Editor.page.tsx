@@ -6,6 +6,7 @@ import EditClasses from '@/components/Cards/EditCard.module.css';
 import SelectDropdown from '@/components/SelectDropdown/SelectDropdown';
 import TextEditor from '@/components/TextEditor/TextEditor';
 import { useStory } from '@/hooks/useStory';
+import { ILink } from '@/stores/filterStore';
 import { usePublicStoryStore } from '@/stores/publicStoryStore';
 import EditorStyle from '@/styles/Editor.module.css';
 
@@ -44,8 +45,8 @@ export function EditorPage({ storyId }: { storyId: string }) {
 
   const { linkContent, setLinkContent } = usePublicStoryStore();
 
-  const testId = '681d2dcc9e9f42f406593dc4';
-  const { story, loading } = useStory(testId);
+  console.log('EditorPage received storyId:', storyId);
+  const { story, loading } = useStory(storyId);
 
   console.log(story);
 
@@ -55,7 +56,7 @@ export function EditorPage({ storyId }: { storyId: string }) {
         {story && <Text size="xl">{story.title}</Text>}
 
         {story?.chains.map((chain, chainIndex) =>
-          chain.links.map((link, linkIndex: number) => (
+          chain.links.map((link: ILink, linkIndex: number) => (
             <EditCard
               key={`${chainIndex}-${linkIndex}`}
               linkNumber={(linkIndex + 1).toString()}
