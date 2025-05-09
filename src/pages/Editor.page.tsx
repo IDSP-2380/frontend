@@ -7,6 +7,7 @@ import SelectDropdown from '@/components/SelectDropdown/SelectDropdown';
 import TextEditor from '@/components/TextEditor/TextEditor';
 import { useStory } from '@/hooks/useStory';
 import { usePublicStoryStore } from '@/stores/publicStoryStore';
+import { ILink } from '@/stores/storyStore';
 import EditorStyle from '@/styles/Editor.module.css';
 
 export function EditorPage({ storyId }: { storyId: string }) {
@@ -55,7 +56,7 @@ export function EditorPage({ storyId }: { storyId: string }) {
         {story && <Text size="xl">{story.title}</Text>}
 
         {story?.chains.map((chain, chainIndex) =>
-          chain.links.map((link, linkIndex: number) => (
+          chain.links.map((link: ILink, linkIndex: number) => (
             <EditCard
               key={`${chainIndex}-${linkIndex}`}
               linkNumber={(linkIndex + 1).toString()}

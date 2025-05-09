@@ -46,7 +46,7 @@ export default function StoryCard({
       <h2 className={StoryCardStyles.Title}>{title}</h2>
       <div className={StoryCardStyles.StoryInfo}>
         <span className={StoryCardStyles.MainInfo}>
-          {collaborators && (
+          {collaborators !== null && (
             <span className={StoryCardStyles.VerticalCenter}>
               <img src="/icons/Collaborators.svg" />
               {collaborators}

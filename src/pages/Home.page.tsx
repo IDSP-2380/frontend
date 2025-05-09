@@ -1,35 +1,19 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { SignedIn, SignedOut } from '@clerk/clerk-react';
-import axios from 'axios';
+import { Box } from '@mantine/core';
+import { api } from '@/api/axios';
 import StoryCard from '@/components/Cards/StoryCard';
 import StoryFilters from '@/components/StoryFilters/StoryFilters';
 import HomeTabs from '@/components/Tabs/Tabs';
+import useHome from '@/hooks/useHome';
 import { useHomeStore } from '@/stores/homeStore';
+import { IStory } from '@/stores/storyStore';
 import StoryCardStyles from '../components/Cards/StoryCard.module.css';
 import StoryFilterStyles from '../components/StoryFilters/StoryFilters.module.css';
 import HomeStyles from '../styles/home.module.css';
 
 export function HomePage() {
-  const { activeTab, search, select, stories, setStories } = useHomeStore();
-
-  useEffect(() => {
-    const fetchStories = async () => {
-      try {
-        const stories = await axios.get('http://localhost:3000/api/stories/filter', {
-          params: {
-            activeTab,
-            search,
-            select,
-          },
-        });
-        setStories(stories.data);
-      } catch (err) {
-        console.error('Failed to fetch stories:', err);
-      }
-    };
-
-    fetchStories();
-  }, [activeTab, search, select]);
+  const { activeTab, stories } = useHome();
 
   return (
     <>
@@ -51,8 +35,29 @@ export function HomePage() {
         </div>
       </div>
       <main className={HomeStyles.Main}>
-        <div className={StoryCardStyles.FilteredStories}>
-          <StoryCard
+        <Box className={StoryCardStyles.FilteredStories}>
+          {stories.map((story) => {
+            const options: Intl.DateTimeFormatOptions = {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            };
+            return (
+              <StoryCard
+                title={story.title}
+                collaborators={story.contributors.length}
+                chains={story.chains.length}
+                longestChain={Math.max(...story.chains.map((chain) => chain.links.length))}
+                chainLength={story.numberOfLinks}
+                status={story.status}
+                preview={story.chains[0].links[0].content}
+                updated={new Date(story.updatedAt).toLocaleDateString(undefined, options)}
+                primaryPath="/story"
+                primaryButtonLabel="View story"
+              />
+            );
+          })}
+          {/* <StoryCard
             title="The key in the Vines"
             collaborators={4}
             chains={4}
@@ -63,8 +68,8 @@ export function HomePage() {
             updated="April 20, 2025"
             primaryPath="/story"
             primaryButtonLabel="View story"
-          />
-        </div>
+          /> */}
+        </Box>
       </main>
     </>
   );
