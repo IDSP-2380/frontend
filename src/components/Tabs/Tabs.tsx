@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Tabs } from '@mantine/core';
+import { useHomeStore } from '@/stores/homeStore';
 import TabStyles from './Tabs.module.css';
 
 interface HomeTabsProps {
@@ -12,9 +13,9 @@ interface HomeTabsProps {
   label1: string;
   label2: string;
   label3: string;
-  panel1: string;
-  panel2: string;
-  panel3: string;
+  panel1?: string;
+  panel2?: string;
+  panel3?: string;
 }
 
 export default function HomeTabs({
@@ -31,7 +32,7 @@ export default function HomeTabs({
   panel2,
   panel3,
 }: HomeTabsProps) {
-  const [activeTab, setActiveTab] = useState<string | null>(label1);
+  const { activeTab, setActiveTab } = useHomeStore();
 
   return (
     <Tabs
