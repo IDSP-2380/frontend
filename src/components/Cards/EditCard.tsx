@@ -8,7 +8,7 @@ interface EditCardProps {
 
 export default function EditCard({ linkNumber, linkContent }: EditCardProps) {
   return (
-    <Box>
+    <Box className={EditClasses.cardWidth}>
       <Flex>
         <Text className={EditClasses.numberText}>{linkNumber}</Text>
         <Box className={EditClasses.cardBorder}>{linkContent}</Box>

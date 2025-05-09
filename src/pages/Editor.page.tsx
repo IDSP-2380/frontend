@@ -1,13 +1,15 @@
+import { ClerkDegraded } from '@clerk/clerk-react';
 import { Box, Flex, Text } from '@mantine/core';
 import { ButtonBase } from '@/components/Buttons/ButtonBase';
 import EditCard from '@/components/Cards/EditCard';
 import EditClasses from '@/components/Cards/EditCard.module.css';
 import SelectDropdown from '@/components/SelectDropdown/SelectDropdown';
 import TextEditor from '@/components/TextEditor/TextEditor';
+import { useStory } from '@/hooks/useStory';
 import { usePublicStoryStore } from '@/stores/publicStoryStore';
 import EditorStyle from '@/styles/Editor.module.css';
 
-export function EditorPage() {
+export function EditorPage({ storyId }: { storyId: string }) {
   const testData = [
     {
       content:
@@ -42,21 +44,32 @@ export function EditorPage() {
 
   const { linkContent, setLinkContent } = usePublicStoryStore();
 
+  const testId = '681d2dcc9e9f42f406593dc4';
+  const { story, loading } = useStory(testId);
+
+  console.log(story);
+
   return (
     <Box maw={'44.187rem'} m="auto">
       <Flex direction="column" justify="center" align="center" gap={'1rem'}>
-        <Text size="xl">Story title goes here or some shit</Text>
+        {story && <Text size="xl">{story.title}</Text>}
 
-        {testData.map((story, index) => {
-          return <EditCard linkNumber={(index + 1).toString()} linkContent={story.content} />;
-        })}
+        {story?.chains.map((chain, chainIndex) =>
+          chain.links.map((link, linkIndex: number) => (
+            <EditCard
+              key={`${chainIndex}-${linkIndex}`}
+              linkNumber={(linkIndex + 1).toString()}
+              linkContent={link.content}
+            />
+          ))
+        )}
 
         <Flex direction="column">
           <Box className={EditorStyle.dropDown}>
             <SelectDropdown label="Stage" options={options} />
           </Box>
           <Box className={EditorStyle.textContainer}>
-            <Text className={EditClasses.numberText}>{testData.length + 1}</Text>
+            <Text className={EditClasses.numberText}>{story?.chains.length! + 1}</Text>
             <TextEditor />
           </Box>
         </Flex>
