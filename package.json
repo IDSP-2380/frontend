@@ -18,8 +18,8 @@
     "test": "npm run typecheck && npm run prettier && npm run lint && npm run vitest && npm run build",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build",
-    "render-install": "echo 'Using custom install' && yarn install",
-    "render-build": "yarn build"
+    "render-install": "echo 'Using custom install' && npm install",
+    "render-build": "npm run build"
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.31.0",
