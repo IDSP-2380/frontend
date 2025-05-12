@@ -465,21 +465,24 @@ span {
   position: relative;
 }
 
-.reactQuill :global(.ql-container) {
-  height: 136px;
-  border-top-right-radius: 12px;
-  border-top-left-radius: 12px;
-  border: none;
-  border: 1px solid var(--cobalt-200, #9EACDD);
-}
-
-.reactQuill :global(.ql-editor) {
+.reactQuill {
   height: 100%;
   overflow-y: auto;
-  border-top-right-radius: 12px;
-  border-top-left-radius: 12px;
+  border-radius: 12px;
   border: none;
   background-color: var(--primary-50);
+  border: 1px solid var(--primary-200, #9EACDD);
+}
+
+.reactQuill p {
+  font-family: var(--opensans);
+  font-size: var(--font-size-S);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--font-line-height-S);
+  margin-top: 0;
+  padding-top: 12px;
+  padding-left: 16px;
+  color: var(--neutral-500);
 }
 
 .textEditorNumber {
