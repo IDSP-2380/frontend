@@ -6,9 +6,19 @@ import { useListState } from '@mantine/hooks';
 import { usePrivateStoryStore } from '@/stores/privateStoryStore';
 import classes from './DndListHandle.module.css';
 import { Button } from '@mantine/core';
+import { useUser } from '@clerk/clerk-react';
+
 
 export function DndListHandle() {
   const { contributors, setCollaboratorsList} = usePrivateStoryStore();
+
+  const { user } = useUser();
+
+  useEffect(() => {
+    if (user?.username && !contributors.includes(user.username)) {
+      setCollaboratorsList([user.username, ...contributors]);
+    }
+  }, [user?.username, contributors, setCollaboratorsList]);
 
   function removeCollaborator(person: string) {
     setCollaboratorsList(contributors.filter((p) => p !== person));

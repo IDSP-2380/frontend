@@ -8,6 +8,7 @@ import FormClasses from './Form.module.css';
 
 interface TextEditorProps {
   heading?: string;
+
 }
 
 function undoHandler(this: { quill: Quill }) {
