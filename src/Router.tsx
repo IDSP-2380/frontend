@@ -40,7 +40,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/edit',
-    element: <EditorPage storyId="681d2dcc9e9f42f406593dc4" />,
+    element: <EditorPage storyId="681e95296238b0a831ca8317" />,
   },
   {
     path: '/story',

@@ -11,29 +11,6 @@ import { ILink } from '@/stores/storyStore';
 import EditorStyle from '@/styles/Editor.module.css';
 
 export function EditorPage({ storyId }: { storyId: string }) {
-  const testData = [
-    {
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus incidunt ipsa soluta delectus debitis excepturi provident neque numquam, minus omnis nihil, sit praesentium aperiam! Consequatur provident accusamus eum sequi atque.',
-    },
-    {
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus incidunt ipsa soluta delectus debitis excepturi provident neque numquam, minus omnis nihil, sit praesentium aperiam! Consequatur provident accusamus eum sequi atque.',
-    },
-    {
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus incidunt ipsa soluta delectus debitis excepturi provident neque numquam, minus omnis nihil, sit praesentium aperiam! Consequatur provident accusamus eum sequi atque.',
-    },
-    {
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus incidunt ipsa soluta delectus debitis excepturi provident neque numquam, minus omnis nihil, sit praesentium aperiam! Consequatur provident accusamus eum sequi atque.',
-    },
-    {
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus incidunt ipsa soluta delectus debitis excepturi provident neque numquam, minus omnis nihil, sit praesentium aperiam! Consequatur provident accusamus eum sequi atque.',
-    },
-  ];
-
   const options = [
     'Introduction',
     'Rising Action',
@@ -51,53 +28,56 @@ export function EditorPage({ storyId }: { storyId: string }) {
   console.log(story);
 
   return (
-    <Box maw={'44.187rem'} m="auto">
-      <Flex direction="column" justify="center" align="center" gap={'1rem'}>
-        {story && <Text size="xl">{story.title}</Text>}
+    <form method="post">
+      {' '}
+      <Box maw={'44.187rem'} m="auto">
+        <Flex direction="column" justify="center" align="center" gap={'1rem'}>
+          {story && <Text size="xl">{story.title}</Text>}
 
-        {story?.chains.map((chain, chainIndex) =>
-          chain.links.map((link: ILink, linkIndex: number) => (
-            <EditCard
-              key={`${chainIndex}-${linkIndex}`}
-              linkNumber={(linkIndex + 1).toString()}
-              linkContent={link.content}
-            />
-          ))
-        )}
+          {story?.chains.map((chain, chainIndex) =>
+            chain.links.map((link: ILink, linkIndex: number) => (
+              <EditCard
+                key={`${chainIndex}-${linkIndex}`}
+                linkNumber={(linkIndex + 1).toString()}
+                linkContent={link.content}
+              />
+            ))
+          )}
 
-        <Flex direction="column">
-          <Box className={EditorStyle.dropDown}>
-            <SelectDropdown label="Stage" options={options} />
-          </Box>
-          <Box className={EditorStyle.textContainer}>
-            <Text className={EditClasses.numberText}>{story?.chains.length! + 1}</Text>
-            <TextEditor />
+          <Flex direction="column">
+            <Box className={EditorStyle.dropDown}>
+              <SelectDropdown label="Stage" options={options} />
+            </Box>
+            <Box className={EditorStyle.textContainer}>
+              <Text className={EditClasses.numberText}>{story?.chains.length! + 1}</Text>
+              <TextEditor />
+            </Box>
+          </Flex>
+          <Box className={EditorStyle.buttonContainer}>
+            <ButtonBase
+              onClick={() => {}}
+              leftSection={<img src="/icons/CaretLeft.svg" alt="icon" />}
+              buttonType="primaryWhite"
+            >
+              Back
+            </ButtonBase>
+            <ButtonBase
+              disabled={!linkContent}
+              onClick={() => {}}
+              rightSection={
+                linkContent ? (
+                  <img src="/icons/CaretRight.svg" alt="icon" />
+                ) : (
+                  <img src="/icons/CaretRightDisabled.svg" alt="icon" />
+                )
+              }
+              buttonType="primary"
+            >
+              Post Inklink
+            </ButtonBase>
           </Box>
         </Flex>
-        <Box className={EditorStyle.buttonContainer}>
-          <ButtonBase
-            onClick={() => {}}
-            leftSection={<img src="/icons/CaretLeft.svg" alt="icon" />}
-            buttonType="primaryWhite"
-          >
-            Back
-          </ButtonBase>
-          <ButtonBase
-            disabled={!linkContent}
-            onClick={() => {}}
-            rightSection={
-              linkContent ? (
-                <img src="/icons/CaretRight.svg" alt="icon" />
-              ) : (
-                <img src="/icons/CaretRightDisabled.svg" alt="icon" />
-              )
-            }
-            buttonType="primary"
-          >
-            Post Inklink
-          </ButtonBase>
-        </Box>
-      </Flex>
-    </Box>
+      </Box>
+    </form>
   );
 }
