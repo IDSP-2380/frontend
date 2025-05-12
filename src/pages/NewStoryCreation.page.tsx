@@ -6,7 +6,7 @@ import FormClasses from '../components/StoryForm/Form.module.css';
 import { useParams } from 'react-router-dom';
 import { useStory } from '@/hooks/useStory';
 import { usePrivateStoryStore } from '@/stores/privateStoryStore';
-
+import { useNavigate } from 'react-router-dom';
 
 
 export function NewStoryCreation() {
@@ -18,6 +18,8 @@ let story;
 if (id) {
   story = useStory(id)
 }
+
+const navigate = useNavigate()
 
 const { contributors } = usePrivateStoryStore();
 
@@ -110,11 +112,11 @@ const { contributors } = usePrivateStoryStore();
         <h2>To be submitted</h2>
         <div className={FormClasses.textEditor}>
           <p className={FormClasses.textEditorNumber}>1</p>
-          <ReactQuill
+          <div
             className={FormClasses.reactQuill}
-            modules={{ toolbar: false }}
             style={{ height: 136, width: 712 }}
-          />
+            onClick={() => navigate("/edit/:id")}
+          ><p>Tap to start writing</p> </div>
           <div className={FormClasses.editButton}>
           <ButtonBase
             buttonType="secondarySquare"
@@ -124,6 +126,7 @@ const { contributors } = usePrivateStoryStore();
           >
             Edit
           </ButtonBase>
+          <div>{story?.story?.chains[0]?.link[0]?.stage}</div>
           </div>
         </div>
       </div>
