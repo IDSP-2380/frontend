@@ -1,20 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useAuth } from '@clerk/clerk-react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import {
-  Accordion,
-  ActionIcon,
-  Box,
-  Button,
-  Combobox,
-  ComboboxFooter,
-  FloatingIndicator,
-  NumberInput,
-  Tabs,
-  TextInput,
-  useCombobox,
-} from '@mantine/core';
+import { Accordion, Box, Button, Combobox, ComboboxFooter,  NumberInput, TextInput, useCombobox } from '@mantine/core';
 import { ButtonBase } from '@/components/Buttons/ButtonBase';
 import { DatePicker } from '@/components/Calendar/DatePicker';
 import { DndListHandle } from '@/components/DragNDrop/DndListHandle';
@@ -23,41 +8,21 @@ import { SetTimer } from '@/components/Time/SetTimer';
 import { usePrivateStoryStore } from '@/stores/privateStoryStore';
 import { useStoryConfigStore } from '@/stores/storyStore';
 import FormClasses from '../components/StoryForm/Form.module.css';
+import useNewPrivateStory from '@/hooks/useNewPrivateStory';
 
 export function NewPrivateStory() {
-  const navigate = useNavigate();
 
   const [value, setValue] = useState<string | null>('1');
 
   const [error, setError] = useState<string | null>(null);
   const [time, setTime] = useState<string>('');
 
+  const { submitStory } = useNewPrivateStory()
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const data = {
-      storyTitle,
-      contributors,
-      maxWordCount,
-      numberOfLinks,
-      startDate,
-      endDate,
-      days,
-      hours,
-      minutes,
-    };
-
-    try {
-      validate();
-      await axios.post('http://localhost:3000/api/stories/create/story/private', data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      navigate('/newStoryCreation');
-    } catch (err) {
-      console.error('Failed to send to backend:', err);
+    if (isFormComplete) {
+      await submitStory();
     }
   };
 
@@ -82,6 +47,7 @@ export function NewPrivateStory() {
     isActiveTime,
     calculatedEndDate,
     timePerTurn,
+    users,
     setCollaborator,
     setCollaboratorsList,
     setStartDate,
@@ -93,6 +59,7 @@ export function NewPrivateStory() {
     setIsActiveTime,
     setCalculatedEndDate,
     setTimePerTurn,
+    setUsers
   } = usePrivateStoryStore();
 
   const isFormComplete =
@@ -211,39 +178,6 @@ export function NewPrivateStory() {
     }
   }, [isActiveTime, startDate, days, hours, minutes, contributors.length, numberOfLinks]);
 
-  const { getToken } = useAuth();
-
-  type User = {
-    id: string;
-    imageUrl: string;
-    username: string;
-    firstName: string | null;
-    lastName: string | null;
-    emailAddresses: unknown[];
-  };
-
-  const [users, setUsers] = useState<User[]>([]);
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const token = await getToken();
-        const res = await axios.get('http://localhost:3000/api/user/get-all-users', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const usersData = res.data.users.data as User[];
-
-        setUsers(usersData);
-      } catch (err) {
-        console.error('Failed to fetch protected data', err);
-      }
-    };
-
-    fetchUserData();
-  }, [getToken]);
-
   const usernames = users?.map((user) => user.username) ?? [];
 
   const combobox = useCombobox();
@@ -270,7 +204,7 @@ export function NewPrivateStory() {
     }
   }
 
-  const theGroceries = [
+  const accordionItems = [
     {
       value: 'Set by date',
       description: (
@@ -303,7 +237,7 @@ export function NewPrivateStory() {
     },
   ];
 
-  const items = theGroceries.map((item) => (
+  const items = accordionItems.map((item) => (
     <Accordion.Item key={item.value} value={item.value} className={FormClasses.accordionItem}>
       <Accordion.Control>{item.value}</Accordion.Control>
       <Accordion.Panel className={FormClasses.accordionPanel}>{item.description}</Accordion.Panel>

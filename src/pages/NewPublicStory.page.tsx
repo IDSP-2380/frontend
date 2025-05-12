@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { Form, useNavigate } from 'react-router-dom';
-import { Button, FloatingIndicator, NumberInput, Tabs, TextInput } from '@mantine/core';
+import { Button, FloatingIndicator, NumberInput, TextInput } from '@mantine/core';
 import { ButtonBase } from '@/components/Buttons/ButtonBase';
 import { HeaderMenu } from '@/components/Header/HeaderMenu';
 import TextEditor from '@/components/TextEditor/TextEditor';
 import { usePublicStoryStore } from '@/stores/publicStoryStore';
 import { useStoryConfigStore } from '@/stores/storyStore';
 import FormClasses from '../components/StoryForm/Form.module.css';
+import useNewPublicStory from '@/hooks/useNewPublicStory';
 
 export function NewPublicStory() {
-  const navigate = useNavigate();
 
   const {
     storyTitle,
@@ -21,7 +21,6 @@ export function NewPublicStory() {
     setNumberOfLinks,
   } = useStoryConfigStore();
 
-  const { linkContent, setLinkContent } = usePublicStoryStore();
 
   const isFormComplete =
     storyTitle.trim() !== '' && Number(maxWordCount) > 0 && Number(numberOfLinks) > 0;
@@ -32,24 +31,15 @@ export function NewPublicStory() {
     }
   };
 
+  const { submitStory } = useNewPublicStory()
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const data = { storyTitle, maxWordCount, numberOfLinks, linkContent, status };
-
-    try {
-      await axios.post('http://localhost:3000/api/stories/create/story/public', data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      console.log('PUBLIC NAV');
-      navigate('/project');
-    } catch (err) {
-      console.error('Failed to send to backend:', err);
+    if (isFormComplete) {
+      await submitStory();
     }
   };
+
 
   return (
     <>
