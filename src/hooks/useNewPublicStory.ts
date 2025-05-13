@@ -1,8 +1,9 @@
+import { useAuth, useUser } from '@clerk/clerk-react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { api } from '@/api/axios';
 import { usePublicStoryStore } from '@/stores/publicStoryStore';
 import { useStoryConfigStore } from '@/stores/storyStore';
-import { useUser } from '@clerk/clerk-react';
 
 export default function useNewPublicStory() {
   const navigate = useNavigate();
@@ -11,25 +12,25 @@ export default function useNewPublicStory() {
 
   const { storyTitle, maxWordCount, numberOfLinks } = useStoryConfigStore();
 
-  const user = useUser();
-
-  const username = user.user?.username
-
-  console.log(user.user?.username)
-
+  const { getToken } = useAuth();
   const submitStory = async () => {
     const data = {
       storyTitle,
       maxWordCount,
       numberOfLinks,
       linkContent,
-      username
     };
 
     try {
-      await api.post('stories/create/story/public', {
-        data,
+      const token = await getToken();
+      console.log('before api');
+      await api.post('stories/create/story/public', data, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
       });
+      console.log('after api');
       navigate('/project');
       return true;
     } catch (err) {
