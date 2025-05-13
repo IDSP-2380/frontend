@@ -42,7 +42,7 @@ const router = createBrowserRouter([
     path: '/edit',
     element: (
       <ProtectedRoute>
-        <EditorPage storyId="681e95296238b0a831ca8317" />,
+        <EditorPage storyId="6822917199fdcaf4b4d3f7d1" />,
       </ProtectedRoute>
     ),
   },
