@@ -10,11 +10,7 @@ export function Story() {
 
   const { id } = useParams();
 
-  let story;
-
-  if (id) {
-    story = useStory(id);
-  }
+  const { story } = useStory(id!);
 
   return (
     <>
@@ -31,7 +27,7 @@ export function Story() {
             Back
           </ButtonBase>
 
-          <h1>Story!</h1>
+          <h1>{story?.title}</h1>
 
           <ButtonBase
             buttonType="secondaryNeutral"
@@ -45,16 +41,16 @@ export function Story() {
 
         <div className={StoryClasses.linkInfo}>
           <div className={StoryClasses.contributors}>
-            <img src="/icons/Collaborators.svg" /> <p>1 contributors</p>
+            <img src="/icons/Collaborators.svg" /> <p>{story?.contributors.length} contributors</p>
           </div>
 
           <div className={StoryClasses.status}>
             <p>Status:</p>
-            <p>Ongoing</p>
+            <p>{story?.status}</p>
           </div>
 
           <div className={StoryClasses.chain}>
-            <img src="/icons/GitFork.svg" /> 1 Chain
+            <img src="/icons/GitFork.svg" /> {story?.chains.length} Chain
           </div>
 
           <ButtonBase
@@ -66,13 +62,13 @@ export function Story() {
           </ButtonBase>
         </div>
 
-        {story?.story?.chains[0]?.links.map((link: ILink, index: number) => (
+        {story?.chains[0]?.links.map((link: ILink, index: number) => (
           <div className={StoryClasses.tapToEdit}>
             <div className={StoryClasses.textEditor}>
               <p className={StoryClasses.textEditorNumber}>{index + 1}</p>
               <div
                 className={StoryClasses.reactQuill}
-                style={{ height: 136, width: 712 }}
+                style={{ height: 136, width: 659 }}
                 onClick={() => navigate('/edit/:id')}
               >
                 <p>{link.content.replace('<p>', '').replace('</p>', '')}</p>
@@ -97,7 +93,9 @@ export function Story() {
                     : ''}</p>
                 </div>
                 <div className={StoryClasses.stage}>
+                  <div className={StoryClasses.stageDiv}>
                   <p>{link.stage}</p>
+                  </div>
                 </div>
               </div>
             </div>

@@ -76,7 +76,7 @@
   position: absolute;
   top: 95px;
   bottom: 0px;
-  left: 60px;
+  left: 110px;
   z-index: 1;
 }
 
@@ -100,4 +100,19 @@
     font-size: var(--font-size-XS);
     font-weight: var(--font-weight-regular);
     line-height: var(--font-size-L);
+}
+
+.stage {
+  position: absolute;
+  top: -10px;
+  left: 540px;
+}
+
+.stageDiv p {
+  border-radius: 999px;
+  border: 1px solid var(--primary-100);
+  background-color: var(--background-paper);
+  width: 106px;
+  height: 28px;
+  padding: 1px 7px 0px 7px ;
 }
