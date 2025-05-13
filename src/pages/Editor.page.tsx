@@ -1,4 +1,6 @@
-import { ClerkDegraded } from '@clerk/clerk-react';
+import { useAuth } from '@clerk/clerk-react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { Box, Flex, Text } from '@mantine/core';
 import { ButtonBase } from '@/components/Buttons/ButtonBase';
 import EditCard from '@/components/Cards/EditCard';
@@ -6,11 +8,14 @@ import EditClasses from '@/components/Cards/EditCard.module.css';
 import SelectDropdown from '@/components/SelectDropdown/SelectDropdown';
 import TextEditor from '@/components/TextEditor/TextEditor';
 import { useStory } from '@/hooks/useStory';
+import { useHomeStore } from '@/stores/homeStore';
 import { usePublicStoryStore } from '@/stores/publicStoryStore';
 import { ILink } from '@/stores/storyStore';
 import EditorStyle from '@/styles/Editor.module.css';
 
 export function EditorPage({ storyId }: { storyId: string }) {
+  const navigate = useNavigate();
+
   const options = [
     'Introduction',
     'Rising Action',
@@ -22,13 +27,41 @@ export function EditorPage({ storyId }: { storyId: string }) {
 
   const { linkContent, setLinkContent } = usePublicStoryStore();
 
-  console.log('EditorPage received storyId:', storyId);
-  const { story, loading } = useStory(storyId);
-
+  const { story, loading, refetch } = useStory(storyId);
   console.log(story);
+  const { select } = useHomeStore();
+
+  const { getToken } = useAuth();
+
+  console.log(story?.chains[0].links.length);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const data = { linkContent, select };
+
+    console.log(linkContent + 'SADFKASDFASKDFJASJKDFAKJD');
+
+    console.log(select);
+
+    try {
+      const token = await getToken();
+
+      await axios.post(`http://localhost:3000/api/stories/create/story/link/${storyId}`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      await refetch();
+      navigate('/project');
+    } catch (err) {
+      console.error('Failed to send to backend:', err);
+    }
+  };
 
   return (
-    <form method="post">
+    <form onSubmit={handleSubmit} method="post">
       {' '}
       <Box maw={'44.187rem'} m="auto">
         <Flex direction="column" justify="center" align="center" gap={'1rem'}>
@@ -49,7 +82,9 @@ export function EditorPage({ storyId }: { storyId: string }) {
               <SelectDropdown label="Stage" options={options} />
             </Box>
             <Box className={EditorStyle.textContainer}>
-              <Text className={EditClasses.numberText}>{story?.chains.length! + 1}</Text>
+              <Text className={EditClasses.numberText}>
+                {story?.chains[0].links.length ? story?.chains[0].links.length + 1 : 1}
+              </Text>
               <TextEditor />
             </Box>
           </Flex>
