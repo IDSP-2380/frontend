@@ -46,11 +46,11 @@ const router = createBrowserRouter([
     element: <NewStoryCreation />,
   },
   {
-    path: '/edit',
+    path: '/edit/:id',
     element: <EditorPage storyId="681d2dcc9e9f42f406593dc4" />,
   },
   {
-    path: '/story',
+    path: '/story/:id',
     element: <Story />,
   },
 

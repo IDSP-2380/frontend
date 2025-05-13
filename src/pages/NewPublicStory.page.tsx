@@ -9,8 +9,13 @@ import { usePublicStoryStore } from '@/stores/publicStoryStore';
 import { useStoryConfigStore } from '@/stores/storyStore';
 import FormClasses from '../components/StoryForm/Form.module.css';
 import useNewPublicStory from '@/hooks/useNewPublicStory';
+import { useParams } from 'react-router-dom';
+import { useStory } from '@/hooks/useStory';
+import { ILink } from '@/stores/storyStore';
 
 export function NewPublicStory() {
+
+  
 
   const {
     storyTitle,
@@ -125,7 +130,7 @@ export function NewPublicStory() {
 
         <TextEditor heading="Start Your Story" />
 
-        <div className={FormClasses.createProjectButton}>
+          <div className={FormClasses.createProjectButton}>
           <ButtonBase
             disabled={!isFormComplete}
             onClick={validate}
@@ -141,6 +146,7 @@ export function NewPublicStory() {
             Create Project
           </ButtonBase>
         </div>
+        
       </form>
     </>
   );

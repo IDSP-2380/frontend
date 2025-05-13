@@ -24,14 +24,16 @@ export default function useNewPublicStory() {
     try {
       const token = await getToken();
       console.log('before api');
-      await api.post('stories/create/story/public', data, {
+      const story = await api.post('stories/create/story/public', data, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
       });
+
+      const id = story.data.theStory._id
       console.log('after api');
-      navigate('/project');
+      navigate(`/story/${id}`);
       return true;
     } catch (err) {
       console.error('Failed to send to backend:', err);

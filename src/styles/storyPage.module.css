@@ -1,0 +1,103 @@
+.titleAndButtons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.titleAndButtons h1 {
+  color: var(--neutral-900);
+  font-family: var(--merriweather);
+  font-size: var(--font-line-height-S);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--font-line-height-L);
+}
+
+.linkInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.contributors {
+  display: flex;
+  gap: 6px;
+}
+
+.status {
+  display: flex;
+  gap: 6px;
+}
+
+.chain {
+  display: flex;
+  gap: 6px;
+}
+
+.textEditor {
+  width: 760px;
+  height: 136px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: relative;
+}
+
+.textEditorNumber {
+  color: var(--primary-500);
+  font-family: var(--merriweather);
+  font-size: var(--font-size-XL);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--font-line-height-L);
+}
+
+.reactQuill {
+  height: 100%;
+  overflow-y: auto;
+  border-radius: 12px;
+  border: none;
+  background-color: var(--primary-50);
+  border: 1px solid var(--primary-200, #9eacdd);
+}
+
+.reactQuill p {
+  font-family: var(--opensans);
+  font-size: var(--font-size-S);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--font-line-height-S);
+  margin-top: 0;
+  padding-top: 12px;
+  padding-left: 16px;
+  color: var(--neutral-500);
+}
+
+.editButton {
+  position: absolute;
+  top: 95px;
+  bottom: 0px;
+  left: 60px;
+  z-index: 1;
+}
+
+.tapToEdit {
+    display: flex;
+    justify-content: center;
+}
+
+.storyPageDiv {
+    margin: auto;
+}
+
+.dateField {
+    position: absolute;
+    top: -10px;
+    bottom: 50px;
+    z-index: 1;
+    left: 90px;
+    white-space: nowrap;
+    color: var(--primary-400);
+    font-size: var(--font-size-XS);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--font-size-L);
+}
