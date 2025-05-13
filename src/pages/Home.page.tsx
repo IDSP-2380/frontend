@@ -42,20 +42,25 @@ export function HomePage() {
               month: 'long',
               day: 'numeric',
             };
-            return (
-              <StoryCard
-                title={story.title}
-                collaborators={story.contributors.length}
-                chains={story.chains.length}
-                longestChain={Math.max(...story?.chains?.map((chain) => chain?.links?.length || 0), 0)}
-                chainLength={story.numberOfLinks}
-                status={story.status}
-                preview={story.chains[0]?.links[0]?.content || 'No preview available'}
-                updated={new Date(story.updatedAt).toLocaleDateString(undefined, options)}
-                primaryPath="/story"
-                primaryButtonLabel="View story"
-              />
-            );
+            if (story.isPublished) {
+              return (
+                <StoryCard
+                  key={story._id}
+                  title={story.title}
+                  collaborators={story.contributors.length}
+                  chains={story.chains.length}
+                  longestChain={Math.max(
+                    ...story?.chains?.map((chain) => chain?.links?.length || 0)
+                  )}
+                  chainLength={story.numberOfLinks}
+                  status={story.status}
+                  preview={story.chains[0]?.links[0]?.content || 'No preview available'}
+                  updated={new Date(story.updatedAt).toLocaleDateString(undefined, options)}
+                  primaryPath="/story"
+                  primaryButtonLabel="View story"
+                />
+              );
+            }
           })}
         </Box>
       </main>

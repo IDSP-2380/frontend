@@ -46,19 +46,19 @@ export default function StoryCard({
       <h2 className={StoryCardStyles.Title}>{title}</h2>
       <div className={StoryCardStyles.StoryInfo}>
         <span className={StoryCardStyles.MainInfo}>
-          {collaborators !== null && (
+          {collaborators !== undefined && (
             <span className={StoryCardStyles.VerticalCenter}>
               <img src="/icons/Collaborators.svg" />
               {collaborators}
             </span>
           )}
-          {chains && (
+          {chains !== undefined && (
             <span className={StoryCardStyles.VerticalCenter}>
               <img src="/icons/GitFork.svg" />
               {chains}
             </span>
           )}
-          {longestChain && (
+          {longestChain !== undefined && (
             <span className={StoryCardStyles.VerticalCenter}>
               <img src="/icons/Link.svg" />
               {longestChain} / {chainLength} Links until completed
