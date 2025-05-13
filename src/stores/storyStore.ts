@@ -26,6 +26,7 @@ export interface IStory {
   chains: IChain[];
   maxWordCount: number;
   numberOfLinks: number;
+  isPublished: boolean;
   startDate?: Date;
   endDate?: Date;
   writingOrder?: string[];
