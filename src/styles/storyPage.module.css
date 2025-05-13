@@ -17,6 +17,22 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
+  gap: 100px;
+  margin-bottom: 1rem;
+}
+
+.contributorsAndStatus {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+}
+
+.contributorsAndStatusAndChain {
+  display: flex;
+  width: 585px;
+  justify-content: space-between;
+  
 }
 
 .contributors {

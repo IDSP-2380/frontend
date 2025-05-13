@@ -40,20 +40,22 @@ export function Story() {
         </div>
 
         <div className={StoryClasses.linkInfo}>
-          <div className={StoryClasses.contributorsAndStatus}>
-            <div className={StoryClasses.contributors}>
-              <img src="/icons/Collaborators.svg" />{' '}
-              <p>{story?.contributors.length} contributors</p>
+          <div className={StoryClasses.contributorsAndStatusAndChain}>
+            <div className={StoryClasses.contributorsAndStatus}>
+              <div className={StoryClasses.contributors}>
+                <img src="/icons/Collaborators.svg" />{' '}
+                <p>{story?.contributors.length} contributors</p>
+              </div>
+
+              <div className={StoryClasses.status}>
+                <p>Status:</p>
+                <p>{story?.status}</p>
+              </div>
             </div>
 
-            <div className={StoryClasses.status}>
-              <p>Status:</p>
-              <p>{story?.status}</p>
+            <div className={StoryClasses.chain}>
+              <img src="/icons/GitFork.svg" /> <p>{story?.chains.length} Chain</p>
             </div>
-          </div>
-
-          <div className={StoryClasses.chain}>
-            <img src="/icons/GitFork.svg" /> {story?.chains.length} Chain
           </div>
 
           <ButtonBase
