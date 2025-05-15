@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { api } from '@/api/axios';
-import { IStory } from '@/types/story';
+import { IStory } from '@/stores/storyStore';
 
 export function useStory(storyId: string) {
   const [story, setStory] = useState<IStory | null>(null);

@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ButtonBase } from '@/components/Buttons/ButtonBase';
 import { HeaderMenu } from '@/components/Header/HeaderMenu';
 import { useStory } from '@/hooks/useStory';
-import { ILink } from '@/stores/storyStore';
+import { ILink, IStory } from '@/stores/storyStore';
 import StoryClasses from '../styles/storyPage.module.css';
 
 export function Story() {
@@ -40,13 +40,16 @@ export function Story() {
         </div>
 
         <div className={StoryClasses.linkInfo}>
-          <div className={StoryClasses.contributors}>
-            <img src="/icons/Collaborators.svg" /> <p>{story?.contributors.length} contributors</p>
-          </div>
+          <div className={StoryClasses.contributorsAndStatus}>
+            <div className={StoryClasses.contributors}>
+              <img src="/icons/Collaborators.svg" />{' '}
+              <p>{story?.contributors.length} contributors</p>
+            </div>
 
-          <div className={StoryClasses.status}>
-            <p>Status:</p>
-            <p>{story?.status}</p>
+            <div className={StoryClasses.status}>
+              <p>Status:</p>
+              <p>{story?.status}</p>
+            </div>
           </div>
 
           <div className={StoryClasses.chain}>
@@ -69,32 +72,34 @@ export function Story() {
               <div
                 className={StoryClasses.reactQuill}
                 style={{ height: 136, width: 659 }}
-                onClick={() => navigate('/edit/:id')}
+                onClick={() => navigate(`/edit/${story._id}/${link._id}`)}
               >
                 <p>{link.content.replace('<p>', '').replace('</p>', '')}</p>
               </div>
               <div className={StoryClasses.editButton}>
                 <ButtonBase
                   buttonType="secondarySquare"
-                  onClick={() => navigate(`/edit/${link._id}`)}
+                  onClick={() => navigate(`/edit/${story._id}/${link._id}`)}
                   style={{ width: 'fit-content' }}
                   rightSection={<img src="/icons/PencilSimpleLine.svg" />}
                 >
                   Edit
                 </ButtonBase>
                 <div className={StoryClasses.dateField}>
-                  <p>Posted{' '}
-                  {link.createdAt
-                    ? new Date(link.createdAt).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })
-                    : ''}</p>
+                  <p>
+                    Posted{' '}
+                    {link.createdAt
+                      ? new Date(link.createdAt).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                        })
+                      : ''}
+                  </p>
                 </div>
                 <div className={StoryClasses.stage}>
                   <div className={StoryClasses.stageDiv}>
-                  <p>{link.stage}</p>
+                    <p>{link.stage}</p>
                   </div>
                 </div>
               </div>
