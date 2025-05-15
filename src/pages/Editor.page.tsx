@@ -1,26 +1,19 @@
-import { useAuth } from '@clerk/clerk-react';
-import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Box, Flex, Text } from '@mantine/core';
 import { ButtonBase } from '@/components/Buttons/ButtonBase';
 import EditCard from '@/components/Cards/EditCard';
 import EditClasses from '@/components/Cards/EditCard.module.css';
 import SelectDropdown from '@/components/SelectDropdown/SelectDropdown';
 import TextEditor from '@/components/TextEditor/TextEditor';
+import useEdit from '@/hooks/useEdit';
 import { useStory } from '@/hooks/useStory';
-import { useHomeStore } from '@/stores/homeStore';
 import { usePublicStoryStore } from '@/stores/publicStoryStore';
 import { ILink } from '@/stores/storyStore';
 import EditorStyle from '@/styles/Editor.module.css';
 
 export function EditorPage() {
-  const navigate = useNavigate();
-
   const { id, linkId } = useParams();
-
-  // if (id) {
-  //   story = useStory(id);
-  // }
+  const { editLink } = useEdit(id, linkId);
 
   const options = [
     'Introduction',
@@ -34,32 +27,11 @@ export function EditorPage() {
   const { linkContent, setLinkContent } = usePublicStoryStore();
 
   const { story, loading } = useStory(id!);
-  const { select } = useHomeStore();
-
-  const { getToken } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const data = { linkContent, select };
-
-    try {
-      const token = await getToken();
-
-      await axios.post(
-        `http://localhost:3000/api/stories/create/story/link/${id}/${linkId}`,
-        data,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      navigate('/project');
-    } catch (err) {
-      console.error('Failed to send to backend:', err);
-    }
+    await editLink();
   };
 
   return (
