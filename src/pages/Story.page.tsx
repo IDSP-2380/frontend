@@ -72,14 +72,14 @@ export function Story() {
               <div
                 className={StoryClasses.reactQuill}
                 style={{ height: 136, width: 659 }}
-                onClick={() => navigate('/edit/:id')}
+                onClick={() => navigate(`/edit/${story._id}/${link._id}`)}
               >
                 <p>{link.content.replace('<p>', '').replace('</p>', '')}</p>
               </div>
               <div className={StoryClasses.editButton}>
                 <ButtonBase
                   buttonType="secondarySquare"
-                  onClick={() => navigate(`/edit/${story._id}/${link._id}/`)}
+                  onClick={() => navigate(`/edit/${story._id}/${link._id}`)}
                   style={{ width: 'fit-content' }}
                   rightSection={<img src="/icons/PencilSimpleLine.svg" />}
                 >
