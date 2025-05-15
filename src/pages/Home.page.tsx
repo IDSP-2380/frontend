@@ -1,13 +1,10 @@
-import { useEffect } from 'react';
 import { SignedIn, SignedOut } from '@clerk/clerk-react';
 import { Box } from '@mantine/core';
-import { api } from '@/api/axios';
 import StoryCard from '@/components/Cards/StoryCard';
+import { HeaderMenu } from '@/components/Header/HeaderMenu';
 import StoryFilters from '@/components/StoryFilters/StoryFilters';
 import HomeTabs from '@/components/Tabs/Tabs';
 import useHome from '@/hooks/useHome';
-import { useHomeStore } from '@/stores/homeStore';
-import { IStory } from '@/stores/storyStore';
 import StoryCardStyles from '../components/Cards/StoryCard.module.css';
 import StoryFilterStyles from '../components/StoryFilters/StoryFilters.module.css';
 import HomeStyles from '../styles/home.module.css';
@@ -17,6 +14,7 @@ export function HomePage() {
 
   return (
     <>
+      <HeaderMenu />
       <div className={HomeStyles.TabsWrapper}>
         <HomeTabs
           icon1Active="/icons/ListNumbers_active.svg"

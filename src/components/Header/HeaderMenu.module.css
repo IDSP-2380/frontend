@@ -1,32 +1,28 @@
-.header {
-  height: 56px;
-  margin-bottom: 120px;
+.Header {
+  height: 72px;
   background-color: var(--background-paper);
   border-bottom: 1px solid var(--neutral-900);
 }
 
 .inner {
-  height: 56px;
+  height: 72px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .link {
-  display: block;
-  line-height: 1;
-  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   border-radius: var(--mantine-radius-sm);
   text-decoration: none;
-  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-0));
-  font-size: var(--mantine-font-size-sm);
-  font-weight: 500;
-
-  @mixin hover {
-    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
-  }
+  color: var(--neutral-900);
+  font-size: var(--font-size-S);
+  font-weight: var(--font-weight-semi-bold);
 }
 
-.linkLabel {
-  margin-right: 5px;
+.Links {
+  display: flex;
+  gap: 16px;
 }
