@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { SignedIn, SignedOut, useUser } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, Burger, Container, Group, Image } from '@mantine/core';
@@ -9,7 +8,6 @@ import classes from './HeaderMenu.module.css';
 export function HeaderMenu() {
   const navigate = useNavigate();
   const { user } = useUser();
-  console.log(user);
 
   const links = [
     {
@@ -47,19 +45,9 @@ export function HeaderMenu() {
   ];
 
   const [opened, { toggle }] = useDisclosure(false);
-  const [active, setActive] = useState(links[0].link);
 
   const items = links.map((link) => (
-    <a
-      key={link.id}
-      href={link.link}
-      className={classes.link}
-      data-active={active === link.link || undefined}
-      onClick={(event) => {
-        event.preventDefault();
-        setActive(link.link);
-      }}
-    >
+    <a key={link.id} href={link.link} className={classes.link}>
       {link.label}
     </a>
   ));
@@ -67,7 +55,9 @@ export function HeaderMenu() {
   return (
     <header className={classes.Header}>
       <Container size="md" className={classes.inner}>
-        <img src="/icons/Logo.svg" width={'123px'} />
+        <a href="/">
+          <img src="/icons/Logo.svg" width={'123px'} />
+        </a>
         <Group gap={5} visibleFrom="xs" className={classes.Links}>
           {items}
         </Group>
