@@ -7,7 +7,14 @@ import { theme } from './theme';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ClerkProvider publishableKey={import.meta.env.VITE_CLERK_PUBLISHABLE_KEY}>
+    <ClerkProvider
+      publishableKey={import.meta.env.VITE_CLERK_PUBLISHABLE_KEY}
+      appearance={{
+        layout: {
+          logoImageUrl: '/icons/Logo.svg',
+        },
+      }}
+    >
       <MantineProvider theme={theme}>
         <App />
       </MantineProvider>
