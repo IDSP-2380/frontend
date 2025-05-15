@@ -1,83 +1,78 @@
-// import { IconChevronDown } from '@tabler/icons-react';
-import { Burger, Center, Container, Group, Menu } from '@mantine/core';
+import { useState } from 'react';
+import { SignedIn, SignedOut, useUser } from '@clerk/clerk-react';
+import { useNavigate } from 'react-router-dom';
+import { Avatar, Burger, Container, Group, Image } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-// import { MantineLogo } from '@mantinex/mantine-logo';
+import { ButtonBase } from '../Buttons/ButtonBase';
 import classes from './HeaderMenu.module.css';
 
-const links = [
-  { link: '/about', label: 'Features' },
-  {
-    link: '#1',
-    label: 'Learn',
-    links: [
-      { link: '/docs', label: 'Documentation' },
-      { link: '/resources', label: 'Resources' },
-      { link: '/community', label: 'Community' },
-      { link: '/blog', label: 'Blog' },
-    ],
-  },
-  { link: '/about', label: 'About' },
-  { link: '/pricing', label: 'Pricing' },
-  {
-    link: '#2',
-    label: 'Support',
-    links: [
-      { link: '/faq', label: 'FAQ' },
-      { link: '/demo', label: 'Book a demo' },
-      { link: '/forums', label: 'Forums' },
-    ],
-  },
-];
-
 export function HeaderMenu() {
+  const navigate = useNavigate();
+  const { user } = useUser();
+  console.log(user);
+
+  const links = [
+    {
+      id: 'user',
+      link: '/stories-and-drafts',
+      label: (
+        <SignedIn>
+          <span>{user?.username}</span>
+          <Avatar src={user?.imageUrl} size={'40px'} radius={'xl'} className={classes.Avatar} />
+        </SignedIn>
+      ),
+    },
+    {
+      id: 'login',
+      link: '/sign-in/*',
+      label: (
+        <SignedOut>
+          <ButtonBase
+            onClick={() => navigate('/sign-in/*')}
+            rightSection={<img src="icons/User.svg" />}
+            buttonType="secondaryNeutral"
+          >
+            Log in
+          </ButtonBase>
+        </SignedOut>
+      ),
+    },
+    {
+      id: 'notifications',
+      link: '',
+      label: <img src="icons/Bell.svg" alt="notifications" />,
+    },
+    { id: 'settings', link: '', label: <img src="icons/Gear.svg" alt="notifications" /> },
+    { id: 'help', link: '', label: <img src="icons/Help.svg" alt="notifications" /> },
+  ];
+
   const [opened, { toggle }] = useDisclosure(false);
+  const [active, setActive] = useState(links[0].link);
 
-  const items = links.map((link) => {
-    const menuItems = link.links?.map((item) => (
-      <Menu.Item key={item.link}>{item.label}</Menu.Item>
-    ));
-
-    if (menuItems) {
-      return (
-        <Menu key={link.label} trigger="hover" transitionProps={{ exitDuration: 0 }} withinPortal>
-          <Menu.Target>
-            <a
-              href={link.link}
-              className={classes.link}
-              onClick={(event) => event.preventDefault()}
-            >
-              <Center>
-                <span className={classes.linkLabel}>{link.label}</span>
-              </Center>
-            </a>
-          </Menu.Target>
-          <Menu.Dropdown>{menuItems}</Menu.Dropdown>
-        </Menu>
-      );
-    }
-
-    return (
-      <a
-        key={link.label}
-        href={link.link}
-        className={classes.link}
-        onClick={(event) => event.preventDefault()}
-      >
-        {link.label}
-      </a>
-    );
-  });
+  const items = links.map((link) => (
+    <a
+      key={link.id}
+      href={link.link}
+      className={classes.link}
+      data-active={active === link.link || undefined}
+      onClick={(event) => {
+        event.preventDefault();
+        setActive(link.link);
+      }}
+    >
+      {link.label}
+    </a>
+  ));
 
   return (
-    <header className={classes.header}>
-      <Container size="md">
-        <div className={classes.inner}>
-          {/* <MantineLogo size={28} /> */}
-          <Group gap={5} visibleFrom="sm">
-            {items}
-          </Group>
-          <Burger opened={opened} onClick={toggle} size="sm" hiddenFrom="sm" />
-        </div>
+    <header className={classes.Header}>
+      <Container size="md" className={classes.inner}>
+        <img src="icons/Logo.svg" width={'123px'} />
+        <Group gap={5} visibleFrom="xs" className={classes.Links}>
+          {items}
+        </Group>
+
+        <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
       </Container>
     </header>
   );
