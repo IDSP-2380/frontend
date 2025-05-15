@@ -79,7 +79,7 @@ export function Story() {
                 <div
                   className={StoryClasses.reactQuill}
                   style={{ height: 136, width: 659 }}
-                  onClick={() => navigate('/edit/:id')}
+                  onClick={() => navigate(`/edit/${story?._id}/${link._id}`)}
                 >
                   <p>{link.content.replace('<p>', '').replace('</p>', '')}</p>
                 </div>
@@ -128,7 +128,6 @@ export function Story() {
                 <div
                   className={StoryClasses.reactQuillLogged}
                   style={{ height: 136, width: 659 }}
-                  onClick={() => navigate('/edit/:id')}
                 >
                   <p>{link.content.replace('<p>', '').replace('</p>', '')}</p>
                 </div>
