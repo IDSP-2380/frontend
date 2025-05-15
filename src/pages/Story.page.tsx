@@ -4,6 +4,7 @@ import { HeaderMenu } from '@/components/Header/HeaderMenu';
 import { useStory } from '@/hooks/useStory';
 import { ILink, IStory } from '@/stores/storyStore';
 import StoryClasses from '../styles/storyPage.module.css';
+import { useUser } from '@clerk/clerk-react';
 
 export function Story() {
   const navigate = useNavigate();
@@ -11,6 +12,8 @@ export function Story() {
   const { id } = useParams();
 
   const { story } = useStory(id!);
+
+  const { user } = useUser();
 
   return (
     <>
@@ -66,8 +69,9 @@ export function Story() {
             Chain Map
           </ButtonBase>
         </div>
-
+        
         {story?.chains[0]?.links.map((link: ILink, index: number) => (
+          user?.username === link.author ? (
           <div className={StoryClasses.tapToEdit}>
             <div className={StoryClasses.textEditor}>
               <p className={StoryClasses.textEditorNumber}>{index + 1}</p>
@@ -107,7 +111,38 @@ export function Story() {
               </div>
             </div>
           </div>
-        ))}
+        ) : (<div className={StoryClasses.tapToEdit}>
+          <div className={StoryClasses.textEditor}>
+            <p className={StoryClasses.textEditorNumber}>{index + 1}</p>
+            <div
+              className={StoryClasses.reactQuill}
+              style={{ height: 136, width: 659 }}
+              onClick={() => navigate('/edit/:id')}
+            >
+              <p>{link.content.replace('<p>', '').replace('</p>', '')}</p>
+            </div>
+            <div className={StoryClasses.editButton}>
+              
+              <div className={StoryClasses.dateField}>
+                <p>
+                  Posted{' '}
+                  {link.createdAt
+                    ? new Date(link.createdAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })
+                    : ''}
+                </p>
+              </div>
+              <div className={StoryClasses.stage}>
+                <div className={StoryClasses.stageDiv}>
+                  <p>{link.stage}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>) ))}
       </div>
     </>
   );
