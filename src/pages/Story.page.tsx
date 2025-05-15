@@ -86,7 +86,7 @@ export function Story() {
                 <div className={StoryClasses.editButton}>
                   <ButtonBase
                     buttonType="secondarySquare"
-                    onClick={() => navigate(`/edit/${link._id}/`)}
+                    onClick={() => navigate(`/edit/${story?._id}/${link._id}`)}
                     style={{ width: 'fit-content' }}
                     rightSection={<img src="/icons/PencilSimpleLine.svg" />}
                   >

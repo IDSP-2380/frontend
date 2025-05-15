@@ -46,8 +46,7 @@ const router = createBrowserRouter([
     element: <NewStoryCreation />,
   },
   {
-
-    path: '/edit/:id',
+    path: '/edit/:id/:linkId?',
     element: (
       <ProtectedRoute>
         <EditorPage />,
