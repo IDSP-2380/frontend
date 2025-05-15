@@ -29,7 +29,7 @@ export function HeaderMenu() {
         <SignedOut>
           <ButtonBase
             onClick={() => navigate('/sign-in/*')}
-            rightSection={<img src="icons/User.svg" />}
+            rightSection={<img src="/icons/User.svg" />}
             buttonType="secondaryNeutral"
           >
             Log in
@@ -40,10 +40,10 @@ export function HeaderMenu() {
     {
       id: 'notifications',
       link: '',
-      label: <img src="icons/Bell.svg" alt="notifications" />,
+      label: <img src="/icons/Bell.svg" alt="notifications" />,
     },
-    { id: 'settings', link: '', label: <img src="icons/Gear.svg" alt="notifications" /> },
-    { id: 'help', link: '', label: <img src="icons/Help.svg" alt="notifications" /> },
+    { id: 'settings', link: '', label: <img src="/icons/Gear.svg" alt="notifications" /> },
+    { id: 'help', link: '', label: <img src="/icons/Help.svg" alt="notifications" /> },
   ];
 
   const [opened, { toggle }] = useDisclosure(false);
@@ -67,7 +67,7 @@ export function HeaderMenu() {
   return (
     <header className={classes.Header}>
       <Container size="md" className={classes.inner}>
-        <img src="icons/Logo.svg" width={'123px'} />
+        <img src="/icons/Logo.svg" width={'123px'} />
         <Group gap={5} visibleFrom="xs" className={classes.Links}>
           {items}
         </Group>

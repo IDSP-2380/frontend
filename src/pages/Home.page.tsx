@@ -54,7 +54,7 @@ export function HomePage() {
                   status={story.status}
                   preview={story.chains[0]?.links[0]?.content || 'No preview available'}
                   updated={new Date(story.updatedAt).toLocaleDateString(undefined, options)}
-                  primaryPath="/story"
+                  primaryPath={`/story/${story._id}`}
                   primaryButtonLabel="View story"
                 />
               );

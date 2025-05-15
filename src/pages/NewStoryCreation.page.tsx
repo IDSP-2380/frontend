@@ -126,7 +126,7 @@ const { contributors } = usePrivateStoryStore();
           >
             Edit
           </ButtonBase>
-          <div>{story?.story?.chains[0]?.link[0]?.stage}</div>
+          <div>{story?.story?.chains[0]?.links[0]?.stage}</div>
           </div>
         </div>
       </div>
