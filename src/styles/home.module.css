@@ -1,3 +1,8 @@
+.Wrapper {
+  width: 1024px;
+  margin: 0 auto;
+  position: relative;
+}
 .Main {
   width: 760px;
   margin: 0 auto;
@@ -6,4 +11,13 @@
 .TabsWrapper {
   width: 760px;
   margin: 0 auto;
+}
+
+.Buttons {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  bottom: 40px;
+  left: calc(50% - 512px + 48px);
+  gap: 16px;
 }
