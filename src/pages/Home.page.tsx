@@ -31,7 +31,7 @@ export function HomePage() {
             label2="Ongoing"
             label3="Completed"
           />
-          <input type="hidden" name="activeTab" value={activeTab ? activeTab : ''} />
+          {/* <input type="hidden" name="activeTab" value={activeTab ? activeTab : ''} /> */}
           <div className={StoryFilterStyles.StoryFilterHeader}>
             <StoryFilters />
           </div>
