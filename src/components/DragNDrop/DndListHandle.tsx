@@ -1,16 +1,14 @@
 import { useEffect } from 'react';
+import { useUser } from '@clerk/clerk-react';
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
 import cx from 'clsx';
-import { Text } from '@mantine/core';
+import { Button, Text } from '@mantine/core';
 import { useListState } from '@mantine/hooks';
 import { usePrivateStoryStore } from '@/stores/privateStoryStore';
 import classes from './DndListHandle.module.css';
-import { Button } from '@mantine/core';
-import { useUser } from '@clerk/clerk-react';
-
 
 export function DndListHandle() {
-  const { contributors, setCollaboratorsList} = usePrivateStoryStore();
+  const { contributors, setCollaboratorsList } = usePrivateStoryStore();
 
   const { user } = useUser();
 
@@ -24,26 +22,44 @@ export function DndListHandle() {
     setCollaboratorsList(contributors.filter((p) => p !== person));
   }
 
-  const items = contributors.map((item, index) => (
-    <Draggable key={item} index={index} draggableId={item}>
-      {(provided, snapshot) => (
-        <div
-          className={cx(classes.dragAndDropItem, { [classes.itemDragging]: snapshot.isDragging })}
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-        >
-          <div {...provided.dragHandleProps} className={classes.dragHandle}>
-            <img src="/Move-button.svg" alt="" />
+  const items = contributors.map((item, index) => {
+    
+    const isCurrentUser = item === user?.username;
+    
+    return (
+      <Draggable key={item} index={index} draggableId={item}>
+        {(provided, snapshot) => (
+          <div
+            className={cx(classes.dragAndDropItem, { [classes.itemDragging]: snapshot.isDragging })}
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+          >
+            <div {...provided.dragHandleProps} className={classes.dragHandle}>
+              <img src="/Move-button.svg" alt="" />
+            </div>
+            <div className={cx(
+              classes.item, 
+              { [classes.currentUserItem]: isCurrentUser }
+            )}>
+              <div className={classes.userInfo}>
+                <img
+                  src={user?.imageUrl}
+                  alt={`${item}'s avatar`}
+                  className={classes.avatar}
+                  style={{ width: 48, height: 48, borderRadius: '48px', marginRight: 8 }}
+                />
+                <Text className={classes.symbol}>{item}</Text>
+              </div>
+              
+              <Button onClick={() => removeCollaborator(item)} className={classes.itemButton}>
+                <img src="/icons/X.svg" alt="" />
+              </Button>
+            </div>
           </div>
-          <div className={classes.item}>
-            
-            <Text className={classes.symbol}>{item}</Text>
-            <Button onClick={() => removeCollaborator(item)} className={classes.itemButton}><img src="/icons/X.svg" alt="" /></Button>
-          </div>
-        </div>
-      )}
-    </Draggable>
-  ));
+        )}
+      </Draggable>
+    );
+  });
 
   return (
     <DragDropContext

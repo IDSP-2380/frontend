@@ -7,6 +7,7 @@ interface TimePerTurn {
   minutes: number;
 }
 
+
 export interface User {
   id: string;
   imageUrl: string;
