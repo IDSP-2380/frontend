@@ -1,47 +1,80 @@
 .item {
-    display: flex;
-    align-items: center;
-    border-radius: var(--mantine-radius-md);
-    border: 1px solid var(--background-paper-200);
-    padding: var(--mantine-spacing-sm) var(--mantine-spacing-xl);
-    padding-left: calc(var(--mantine-spacing-xl) - var(--mantine-spacing-md));
-    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-5));
-    margin: 8px 0;
-    flex-grow: 1;
-    justify-content: space-between;
-  }
-
-  .itemButton {
-    background-color: white;
-    border: none;
-  }
-
-  .itemButton:hover {
-    color: white;
-    background-color: white;
-  }
-
- 
-  
-  .symbol {
-    font-size: 30px;
-    font-weight: 700;
-    width: 60px;
-  }
-  
-  .dragHandle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    color: light-dark(var(--mantine-color-gray-6), var(--mantine-color-dark-1));
-    padding-left: var(--mantine-spacing-md);
-    padding-right: var(--mantine-spacing-md);
-  }
-
-.dragAndDropItem {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  border-radius: var(--mantine-radius-md);
+  border: 1px solid var(--background-paper-200);
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-xl);
+  padding-left: calc(var(--mantine-spacing-xl) - var(--mantine-spacing-md));
+  background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-5));
+  margin: 8px 0;
+  flex: 1;
+  justify-content: space-between;
 }
 
+.itemButton {
+  background-color: white;
+  border: none;
+  display: flex;
+  padding-left: 0.5rem;
+}
+
+.itemButton:hover {
+  color: white;
+  background-color: white;
+}
+
+input {
+  margin-left: 12px;
+}
+
+.currentUserItem {
+  background-color: var(--primary-50);
+  border: 1px solid var(--primary-300);
+}
+
+.currentUserItem .itemButton {
+  display: none;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: max-content;
+}
+
+.currentUserItem .symbol {
+  font-size: var(--font-size-M);
+  font-weight: var(--font-weight-semi-bold);
+  max-width: 200px;
+  margin-left: 12px;
+  font-family: var(--opensans);
+  line-height: var(--font-line-height-S);
+  color: var(--primary-500)
+}
+
+.symbol {
+  font-size: var(--font-size-M);
+  font-weight: var(--font-weight-regular);
+  max-width: 200px;
+  margin-left: 12px;
+  font-family: var(--opensans);
+  line-height: var(--font-line-height-S);
+
+}
+
+.dragHandle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: light-dark(var(--mantine-color-gray-6), var(--mantine-color-dark-1));
+  padding-left: var(--mantine-spacing-md);
+  padding-right: var(--mantine-spacing-md);
+}
+
+.dragAndDropItem {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
