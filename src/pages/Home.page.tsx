@@ -87,7 +87,7 @@ export function HomePage() {
             <SignedOut>
               <ButtonBase
                 buttonType="primary"
-                onClick={() => navigate('/sign-in/*')}
+                onClick={() => navigate('/sign-in')}
                 style={{ width: 'fit-content', padding: '12px 24px' }}
               >
                 Log in to start writing!

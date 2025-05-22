@@ -1,3 +1,4 @@
+import { useUser } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Divider } from '@mantine/core';
 import { ButtonBase } from '@/components/Buttons/ButtonBase';
@@ -14,6 +15,7 @@ import StoryDraftsStyles from '../styles/storyDrafts.module.css';
 export function StoriesAndDrafts() {
   const { activeTab, stories } = useHome();
   const navigate = useNavigate();
+  const { user } = useUser();
 
   return (
     <>
@@ -39,34 +41,40 @@ export function StoriesAndDrafts() {
           <h2>In progress</h2>
           <div className={StoryCardStyles.FilteredStories}>
             {stories.map((story) => {
-              if (story.isPublic) {
-                return (
-                  <StoryCard
-                    title={story.title}
-                    chainLength={story.chains.length}
-                    draftingLink={story.chains[0]?.links?.length}
-                    status="Public"
-                    statusIcon="/icons/Globe.svg"
-                    preview={story.chains[0]?.links[0]?.content}
-                    primaryPath={`/edit/${story._id}`}
-                    primaryButtonLabel="Go to editor"
-                    secondaryPath={`/story/${story._id}`}
-                    secondaryButtonLabel="View story"
-                  />
-                );
-              } else {
-                return (
-                  <StoryCard
-                    title={story.title}
-                    currentTurn={(story.chains[0]?.links?.length + 1) | 1}
-                    totalTurns={story.numberOfLinks}
-                    status="Private"
-                    statusIcon="/icons/Lock.svg"
-                    preview={story.chains[0]?.links[0]?.content}
-                    primaryPath={`/newStoryCreation/${story._id}`}
-                    primaryButtonLabel="Go to project page"
-                  />
-                );
+              for (const chain of story.chains) {
+                for (const link of chain.links) {
+                  if (link.author === user?.username && link.isDraft) {
+                    if (story.isPublic) {
+                      return (
+                        <StoryCard
+                          title={story.title}
+                          chainLength={story.chains.length}
+                          draftingLink={story.chains[0]?.links?.length}
+                          status="Public"
+                          statusIcon="/icons/Globe.svg"
+                          preview={story.chains[0]?.links[0]?.content}
+                          primaryPath={`/edit/${story._id}`}
+                          primaryButtonLabel="Go to editor"
+                          secondaryPath={`/story/${story._id}`}
+                          secondaryButtonLabel="View story"
+                        />
+                      );
+                    } else {
+                      return (
+                        <StoryCard
+                          title={story.title}
+                          currentTurn={(story.chains[0]?.links?.length + 1) | 1}
+                          totalTurns={story.numberOfLinks}
+                          status="Private"
+                          statusIcon="/icons/Lock.svg"
+                          preview={story.chains[0]?.links[0]?.content}
+                          primaryPath={`/newStoryCreation/${story._id}`}
+                          primaryButtonLabel="Go to project page"
+                        />
+                      );
+                    }
+                  }
+                }
               }
             })}
           </div>
@@ -82,24 +90,28 @@ export function StoriesAndDrafts() {
                 month: 'long',
                 day: 'numeric',
               };
-              if (story.isPublished) {
-                return (
-                  <StoryCard
-                    key={story._id}
-                    title={story.title}
-                    collaborators={story.contributors.length}
-                    chains={story.chains.length}
-                    longestChain={Math.max(
-                      ...story?.chains?.map((chain) => chain?.links?.length || 0)
-                    )}
-                    chainLength={story.numberOfLinks}
-                    status={story.status}
-                    preview={story.chains[0]?.links[0]?.content || 'No preview available'}
-                    updated={new Date(story.updatedAt).toLocaleDateString(undefined, options)}
-                    primaryPath={`/story/${story._id}`}
-                    primaryButtonLabel="View story"
-                  />
-                );
+              for (const chain of story.chains) {
+                for (const link of chain.links) {
+                  if (link.author === user?.username && !link.isDraft) {
+                    return (
+                      <StoryCard
+                        key={story._id}
+                        title={story.title}
+                        collaborators={story.contributors.length}
+                        chains={story.chains.length}
+                        longestChain={Math.max(
+                          ...story?.chains?.map((chain) => chain?.links?.length || 0)
+                        )}
+                        chainLength={story.numberOfLinks}
+                        status={story.status}
+                        preview={story.chains[0]?.links[0]?.content || 'No preview available'}
+                        updated={new Date(story.updatedAt).toLocaleDateString(undefined, options)}
+                        primaryPath={`/story/${story._id}`}
+                        primaryButtonLabel="View story"
+                      />
+                    );
+                  }
+                }
               }
             })}
           </div>

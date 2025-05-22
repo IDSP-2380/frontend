@@ -5,6 +5,7 @@ export interface ILink {
   content: string;
   author: string;
   stage: string;
+  isDraft: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
