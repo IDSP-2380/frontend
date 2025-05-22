@@ -57,6 +57,7 @@
   flex-direction: row;
   justify-content: space-between;
   position: relative;
+  margin-bottom: 16px;
 }
 
 .textEditorNumber {
@@ -74,6 +75,7 @@
   border: none;
   background-color: var(--primary-50);
   border: 1px solid var(--primary-200, #9eacdd);
+  
 }
 
 .reactQuill p {
@@ -118,9 +120,30 @@
 }
 
 .stage {
+  display: flex;
+  justify-content: flex-end;
+  align-content: flex-end;
+  
+}
+
+.stageLogged {
+  display: flex;
+  justify-content: flex-end;
+  align-content:flex-end;
+  margin-right: 12px;
+}
+
+.stageDiv {
   position: absolute;
-  top: -10px;
-  left: 530px;
+  bottom: -5px;
+  display: flex;
+  margin-right: 12px;
+}
+
+.stageDivLogged {
+  position: absolute;
+  bottom: -5px;
+  display: flex;
 }
 
 .stageDiv p {
@@ -174,11 +197,7 @@
   padding-left: 12px;
 }
 
-.stageLogged {
-  position: absolute;
-  top: -10px;
-  left: 530px;
-}
+
 
 .stageDivLogged p {
   border-radius: 999px;
