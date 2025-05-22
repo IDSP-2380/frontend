@@ -9,7 +9,7 @@ import TextEditor from '@/components/TextEditor/TextEditor';
 import useEdit from '@/hooks/useEdit';
 import { useStory } from '@/hooks/useStory';
 import { usePublicStoryStore } from '@/stores/publicStoryStore';
-import { ILink } from '@/stores/storyStore';
+import { ILink, useStoryConfigStore } from '@/stores/storyStore';
 import EditorStyle from '@/styles/Editor.module.css';
 
 export function EditorPage() {
@@ -25,9 +25,15 @@ export function EditorPage() {
     'Conclusion',
   ];
 
+  const { setMaxWordCount } = useStoryConfigStore();
+
   const { linkContent, setLinkContent } = usePublicStoryStore();
 
   const { story, loading } = useStory(id!);
+
+  console.log(story);
+
+  // setMaxWordCount(story?.maxWordCount!);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,7 +72,7 @@ export function EditorPage() {
                     ? 1
                     : story?.chains[0].links.length! + 1}
                 </Text>
-                <TextEditor />
+                <TextEditor maxWordCountProp={story?.maxWordCount!} />
               </Box>
             </Flex>
             <Box className={EditorStyle.buttonContainer}>

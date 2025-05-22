@@ -8,7 +8,7 @@ import FormClasses from './Form.module.css';
 
 interface TextEditorProps {
   heading?: string;
-
+  maxWordCountProp?: string | number;
 }
 
 function undoHandler(this: { quill: Quill }) {
@@ -19,7 +19,7 @@ function redoHandler(this: { quill: Quill }) {
   this.quill.history.redo();
 }
 
-const TextEditor = ({ heading }: TextEditorProps) => {
+const TextEditor = ({ heading, maxWordCountProp }: TextEditorProps) => {
   const { maxWordCount, setMaxWordCount } = useStoryConfigStore();
   const { linkContent, setLinkContent } = usePublicStoryStore();
 
@@ -103,7 +103,8 @@ const TextEditor = ({ heading }: TextEditorProps) => {
         <input type="hidden" name="linkContent" value={linkContent} />
 
         <div className="wordCounter">
-          Word Count: {getWordCount(linkContent)}/{maxWordCount}
+          Word Count: {getWordCount(linkContent)}/
+          {maxWordCountProp !== undefined ? maxWordCountProp : maxWordCount}
         </div>
       </div>
     </>
