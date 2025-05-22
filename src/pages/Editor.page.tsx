@@ -35,6 +35,8 @@ export function EditorPage() {
 
   console.log(story);
 
+  const storyLinks = story?.chains[0].links;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -43,7 +45,15 @@ export function EditorPage() {
 
   useEffect(() => {
     setSelect('');
-  }, []);
+    if (story?.chains?.[0]?.links?.length && linkId) {
+      const lastLink = story.chains[0].links.at(-1);
+      if (lastLink) {
+        setLinkContent(lastLink.content);
+      }
+    } else {
+      setLinkContent('');
+    }
+  }, [story]);
 
   return (
     <>
