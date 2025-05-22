@@ -192,7 +192,7 @@ export function Story() {
               <div className={StoryClasses.textEditor}>
                 <p className={StoryClasses.textEditorNumber}>{index + 1}</p>
                 <div className={StoryClasses.reactQuillLogged} style={{ height: 136, width: 659 }}>
-                  <p>{link.content}</p>
+                  <p> {link.content}</p>
                   <div className={StoryClasses.stageLogged}>
                     <div className={StoryClasses.stageDivLogged}>
                       <p>{link.stage}</p>

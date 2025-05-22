@@ -5,6 +5,7 @@ import ReactQuill from 'react-quill';
 import { usePublicStoryStore } from '@/stores/publicStoryStore';
 import { useStoryConfigStore } from '@/stores/storyStore';
 import FormClasses from './Form.module.css';
+import DOMPurify from 'dompurify';
 
 interface TextEditorProps {
   heading?: string;
@@ -94,7 +95,12 @@ const TextEditor = ({ heading, maxWordCountProp }: TextEditorProps) => {
         <ReactQuill
           ref={quillRef}
           value={linkContent}
-          onChange={setLinkContent}
+          onChange={(content) => {
+            const cleanContent = DOMPurify.sanitize(content, {
+              USE_PROFILES: { html: true }, 
+            });
+            setLinkContent(cleanContent);
+          }}
           modules={modules}
           className="textBox"
           placeholder="The story begins..."
