@@ -145,6 +145,11 @@ export function Story() {
                   onClick={() => navigate(`/edit/${story?._id}/${link._id}`)}
                 >
                   <p>{link.content}</p>
+                  <div className={StoryClasses.stage}>
+                    <div className={StoryClasses.stageDiv}>
+                      <p>{link.stage}</p>
+                    </div>
+                  </div>
                 </div>
                 <div className={StoryClasses.editButton}>
                   <ButtonBase
@@ -167,11 +172,7 @@ export function Story() {
                         : ''}
                     </p>
                   </div>
-                  <div className={StoryClasses.stage}>
-                    <div className={StoryClasses.stageDiv}>
-                      <p>{link.stage}</p>
-                    </div>
-                  </div>
+                  
                 </div>
               </div>
               <div className={StoryClasses.heartAndComment}>
@@ -192,6 +193,11 @@ export function Story() {
                 <p className={StoryClasses.textEditorNumber}>{index + 1}</p>
                 <div className={StoryClasses.reactQuillLogged} style={{ height: 136, width: 659 }}>
                   <p>{link.content}</p>
+                  <div className={StoryClasses.stageLogged}>
+                    <div className={StoryClasses.stageDivLogged}>
+                      <p>{link.stage}</p>
+                    </div>
+                  </div>
                 </div>
                 <div className={StoryClasses.editButton}>
                   <div className={StoryClasses.username}>
@@ -209,11 +215,7 @@ export function Story() {
                         : ''}
                     </p>
                   </div>
-                  <div className={StoryClasses.stageLogged}>
-                    <div className={StoryClasses.stageDivLogged}>
-                      <p>{link.stage}</p>
-                    </div>
-                  </div>
+                  
                 </div>
               </div>
               <div className={StoryClasses.heartAndComment}>
