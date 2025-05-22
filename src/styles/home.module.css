@@ -21,7 +21,3 @@
   left: calc(50% - 512px + 48px);
   gap: 16px;
 }
-
-.Divider {
-  margin-top: 30px;
-}

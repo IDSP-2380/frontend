@@ -48,7 +48,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/stories-and-drafts',
-    element: <StoriesAndDrafts />,
+    element: (
+      <ProtectedRoute>
+        <StoriesAndDrafts />
+      </ProtectedRoute>
+    ),
   },
 ]);
 
