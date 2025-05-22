@@ -11,7 +11,7 @@ export default function EditCard({ linkNumber, linkContent }: EditCardProps) {
     <Box className={EditClasses.cardWidth}>
       <Flex>
         <Text className={EditClasses.numberText}>{linkNumber}</Text>
-        <Box className={EditClasses.cardBorder}>{linkContent}</Box>
+        <Box className={EditClasses.cardBorder} dangerouslySetInnerHTML={{ __html: linkContent }} />
       </Flex>
     </Box>
   );
