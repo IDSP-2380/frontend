@@ -1,8 +1,10 @@
+import { useEffect } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ButtonBase } from '@/components/Buttons/ButtonBase';
 import { HeaderMenu } from '@/components/Header/HeaderMenu';
 import { useStory } from '@/hooks/useStory';
+import { useUpdateStatus } from '@/hooks/useUpdateStatus';
 import { ILink, IStory } from '@/stores/storyStore';
 import StoryClasses from '../styles/storyPage.module.css';
 
@@ -14,6 +16,8 @@ export function Story() {
   const { story } = useStory(id!);
 
   const { user } = useUser();
+
+  const { isCompleted } = useUpdateStatus(story);
 
   return (
     <>
@@ -42,38 +46,97 @@ export function Story() {
           </ButtonBase>
         </div>
 
-        <div className={StoryClasses.linkInfo}>
-          <div className={StoryClasses.contributorsAndStatusAndChain}>
-            <div className={StoryClasses.contributorsAndStatus}>
-              <div className={StoryClasses.contributors}>
-                <img src="/icons/Collaborators.svg" />{' '}
-                <p>{story?.contributors.length} contributors</p>
-              </div>
+        {isCompleted ? (
+          <div className={StoryClasses.linkInfoCompleted}>
+            <div className={StoryClasses.contributorsAndStatusAndChain}>
+              <div className={StoryClasses.views}>
+                <div className={StoryClasses.viewMode}>
+                  <p>View Mode</p>
+                </div>
 
-              <div className={StoryClasses.status}>
-                <p>Status:</p>
-                <p>{story?.status}</p>
+                <div className={StoryClasses.viewOne}>
+                  <img src="/icons/ViewOne.svg" alt="" />
+                </div>
+
+                <div className={StoryClasses.viewTwo}>
+                  <img src="/icons/ViewTwo.svg" />
+                </div>
               </div>
             </div>
 
-            <div className={StoryClasses.chain}>
-              <img src="/icons/GitFork.svg" /> <p>{story?.chains.length} Chain</p>
+            <div className={StoryClasses.completedButtons}>
+              <ButtonBase
+                buttonType="primaryWhite"
+                onClick={() => console.log('hi')}
+                style={{
+                  height: 40,
+                  fontSize: 16,
+                  fontWeight: 600,
+                  lineHeight: 24,
+                  width: 'fit-content',
+                  paddingRight: 16,
+                  paddingLeft: 16
+                }}
+                rightSection={<img src="/icons/Share.svg" />}
+              >
+                Share
+              </ButtonBase>
+
+              <ButtonBase
+                buttonType="primary"
+                onClick={() => console.log('hi')}
+                style={{
+                  height: 40,
+                  fontSize: 16,
+                  fontWeight: 600,
+                  lineHeight: 24,
+                  width: 'fit-content',
+                  paddingRight: 16,
+                  paddingLeft: 16,
+                }}
+                rightSection={<img src="/icons/Export.svg" />}
+              >
+                Export
+              </ButtonBase>
             </div>
           </div>
+        ) : (
+          <div className={StoryClasses.linkInfo}>
+            <div className={StoryClasses.contributorsAndStatusAndChain}>
+              <div className={StoryClasses.contributorsAndStatus}>
+                <div className={StoryClasses.contributors}>
+                  <img src="/icons/Collaborators.svg" />{' '}
+                  <p>{story?.contributors.length} contributors</p>
+                </div>
 
-          <ButtonBase
-            buttonType="secondaryWhite"
-            onClick={() => console.log('hi')}
-            rightSection={<img src="/icons/CornersOut.svg" />}
-          >
-            Chain Map
-          </ButtonBase>
-        </div>
+                <div className={StoryClasses.status}>
+                  <p>Status:</p>
+                  <p>{story?.status}</p>
+                </div>
+              </div>
+
+              <div className={StoryClasses.chain}>
+                <img src="/icons/GitFork.svg" /> <p>{story?.chains.length} Chain</p>
+              </div>
+            </div>
+
+            <ButtonBase
+              buttonType="secondaryWhite"
+              onClick={() => console.log('hi')}
+              rightSection={<img src="/icons/CornersOut.svg" />}
+            >
+              Chain Map
+            </ButtonBase>
+          </div>
+        )}
 
         {story?.chains[0]?.links.map((link: ILink, index: number) => {
           const isLastLink = index === story?.chains[0]?.links.length - 1;
-          return user?.username === link.author && isLastLink ? (
-            <div className={StoryClasses.tapToEdit}>
+
+          const canEdit = !isCompleted && user?.username === link.author && isLastLink;
+
+          return canEdit ? (
+            <div key={link._id} className={StoryClasses.tapToEdit}>
               <div className={StoryClasses.textEditor}>
                 <p className={StoryClasses.textEditorNumber}>{index + 1}</p>
                 <div
@@ -81,7 +144,7 @@ export function Story() {
                   style={{ height: 136, width: 659 }}
                   onClick={() => navigate(`/edit/${story?._id}/${link._id}`)}
                 >
-                  <p>{link.content.replace('<p>', '').replace('</p>', '')}</p>
+                  <p>{link.content}</p>
                 </div>
                 <div className={StoryClasses.editButton}>
                   <ButtonBase
@@ -115,21 +178,20 @@ export function Story() {
                 <div className={StoryClasses.heart}>
                   <img src="/icons/Heart.svg" alt="" />
                 </div>
-
                 <div className={StoryClasses.comment}>
                   <img src="/icons/Comment.svg" alt="" />
                 </div>
               </div>
             </div>
           ) : (
-            <div className={StoryClasses.tapToEdit}>
+            <div
+              key={link._id}
+              className={`${StoryClasses.tapToEdit} ${isCompleted ? StoryClasses.completedLink : ''}`}
+            >
               <div className={StoryClasses.textEditor}>
                 <p className={StoryClasses.textEditorNumber}>{index + 1}</p>
-                <div
-                  className={StoryClasses.reactQuillLogged}
-                  style={{ height: 136, width: 659 }}
-                >
-                  <p>{link.content.replace('<p>', '').replace('</p>', '')}</p>
+                <div className={StoryClasses.reactQuillLogged} style={{ height: 136, width: 659 }}>
+                  <p>{link.content}</p>
                 </div>
                 <div className={StoryClasses.editButton}>
                   <div className={StoryClasses.username}>
@@ -158,7 +220,6 @@ export function Story() {
                 <div className={StoryClasses.heart}>
                   <img src="/icons/Heart.svg" alt="" />
                 </div>
-
                 <div className={StoryClasses.comment}>
                   <img src="/icons/Comment.svg" alt="" />
                 </div>
@@ -167,15 +228,17 @@ export function Story() {
           );
         })}
 
-        <div className={StoryClasses.addLinkButton}>
-          <ButtonBase
-            buttonType="primary"
-            leftSection={<img src="/icons/Link-white.svg" alt="icon" />}
-            onClick={() => navigate(`/edit/${story?._id}`)}
-          >
-            Add an Inlink
-          </ButtonBase>
-        </div>
+        {!isCompleted && (
+          <div className={StoryClasses.addLinkButton}>
+            <ButtonBase
+              buttonType="primary"
+              leftSection={<img src="/icons/Link-white.svg" alt="icon" />}
+              onClick={() => navigate(`/edit/${story?._id}`)}
+            >
+              Add an Inlink
+            </ButtonBase>
+          </div>
+        )}
       </div>
     </>
   );
