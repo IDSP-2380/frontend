@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { Divider } from '@mantine/core';
 import { ButtonBase } from '@/components/Buttons/ButtonBase';
 import StoryCard from '@/components/Cards/StoryCard';
 import { HeaderMenu } from '@/components/Header/HeaderMenu';
@@ -67,7 +68,10 @@ export function StoriesAndDrafts() {
             }
           })}
         </div>
-
+        <Divider
+          className={HomeStyles.Divider}
+          style={{ borderTop: '1px solid var(--background-paper-100)' }}
+        />
         <h2>Completed</h2>
         <div className={StoryCardStyles.FilteredStories}>
           {stories.map((story) => {
