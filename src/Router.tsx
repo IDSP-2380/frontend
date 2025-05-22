@@ -9,9 +9,6 @@ import SignInPage from './pages/SignIn.page';
 import SignUpPage from './pages/SignUp.page';
 import { StoriesAndDrafts } from './pages/StoriesAndDrafts.page';
 import { Story } from './pages/Story.page';
-import UserTest from './pages/UserTest.Page';
-
-// import Test from './pages/Test.page';
 
 const router = createBrowserRouter([
   {
@@ -29,14 +26,6 @@ const router = createBrowserRouter([
   { path: '/project', element: <NewProject /> },
   { path: '/sign-in/*', element: <SignInPage /> },
   { path: '/sign-up/*', element: <SignUpPage /> },
-  {
-    path: '/user/test',
-    element: (
-      <ProtectedRoute>
-        <UserTest />
-      </ProtectedRoute>
-    ),
-  },
   {
     path: '/project',
     element: <NewProject />,
@@ -56,11 +45,6 @@ const router = createBrowserRouter([
   {
     path: '/story/:id',
     element: <Story />,
-  },
-
-  {
-    path: '/testpage',
-    // element: <Test />,
   },
   {
     path: '/stories-and-drafts',
