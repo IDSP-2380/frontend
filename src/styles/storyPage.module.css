@@ -206,3 +206,44 @@
   justify-content: end;
   padding-left: 16px;
 }
+
+.viewMode {
+  display: flex;
+  justify-content: center;
+  color: var(--neutral-900);
+  font-family: var(--opensans);
+  font-weight: var(--font-weight-semi-bold);
+  line-height: var(--font-line-height-S);
+}
+
+.viewOne .viewTwo {
+  width: 40px;
+  height: 40px;
+}
+
+.views {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.linkInfoCompleted {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 100px;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--background-paper-100);
+  width: 760px;
+  margin: auto;
+  padding-bottom: 1rem;
+  margin-bottom: 3rem;
+}
+
+.completedButtons {
+  display: flex;
+  gap: 16px;
+}
