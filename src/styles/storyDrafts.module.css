@@ -1,0 +1,18 @@
+.Divider {
+  margin-top: 30px;
+}
+
+.Buttons {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.Buttons button {
+  position: fixed;
+  bottom: 24px;
+}
+
+.Stories {
+  margin-bottom: 100px;
+}
