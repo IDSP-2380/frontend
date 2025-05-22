@@ -1,22 +1,11 @@
-import { useState } from 'react';
-import axios from 'axios';
-import { Form, useNavigate } from 'react-router-dom';
-import { Button, FloatingIndicator, NumberInput, TextInput } from '@mantine/core';
+import { NumberInput, TextInput } from '@mantine/core';
 import { ButtonBase } from '@/components/Buttons/ButtonBase';
-import { HeaderMenu } from '@/components/Header/HeaderMenu';
 import TextEditor from '@/components/TextEditor/TextEditor';
-import { usePublicStoryStore } from '@/stores/publicStoryStore';
+import useNewPublicStory from '@/hooks/useNewPublicStory';
 import { useStoryConfigStore } from '@/stores/storyStore';
 import FormClasses from '../components/StoryForm/Form.module.css';
-import useNewPublicStory from '@/hooks/useNewPublicStory';
-import { useParams } from 'react-router-dom';
-import { useStory } from '@/hooks/useStory';
-import { ILink } from '@/stores/storyStore';
 
 export function NewPublicStory() {
-
-  
-
   const {
     storyTitle,
     maxWordCount,
@@ -25,7 +14,6 @@ export function NewPublicStory() {
     setMaxWordCount,
     setNumberOfLinks,
   } = useStoryConfigStore();
-
 
   const isFormComplete =
     storyTitle.trim() !== '' && Number(maxWordCount) > 0 && Number(numberOfLinks) > 0;
@@ -36,7 +24,7 @@ export function NewPublicStory() {
     }
   };
 
-  const { submitStory } = useNewPublicStory()
+  const { submitStory } = useNewPublicStory();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,7 +32,6 @@ export function NewPublicStory() {
       await submitStory();
     }
   };
-
 
   return (
     <>
@@ -130,7 +117,7 @@ export function NewPublicStory() {
 
         <TextEditor heading="Start Your Story" />
 
-          <div className={FormClasses.createProjectButton}>
+        <div className={FormClasses.createProjectButton}>
           <ButtonBase
             disabled={!isFormComplete}
             onClick={validate}
@@ -146,7 +133,6 @@ export function NewPublicStory() {
             Create Project
           </ButtonBase>
         </div>
-        
       </form>
     </>
   );

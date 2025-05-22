@@ -1,11 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
+import DOMPurify from 'dompurify';
 import Quill from 'quill';
-import Delta from 'quill-delta';
 import ReactQuill from 'react-quill';
 import { usePublicStoryStore } from '@/stores/publicStoryStore';
 import { useStoryConfigStore } from '@/stores/storyStore';
-import FormClasses from './Form.module.css';
-import DOMPurify from 'dompurify';
 
 interface TextEditorProps {
   heading?: string;
@@ -97,7 +95,7 @@ const TextEditor = ({ heading, maxWordCountProp }: TextEditorProps) => {
           value={linkContent}
           onChange={(content) => {
             const cleanContent = DOMPurify.sanitize(content, {
-              USE_PROFILES: { html: true }, 
+              USE_PROFILES: { html: true },
             });
             setLinkContent(cleanContent);
           }}

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, Flex, Text } from '@mantine/core';
 import { ButtonBase } from '@/components/Buttons/ButtonBase';
@@ -8,13 +9,16 @@ import SelectDropdown from '@/components/SelectDropdown/SelectDropdown';
 import TextEditor from '@/components/TextEditor/TextEditor';
 import useEdit from '@/hooks/useEdit';
 import { useStory } from '@/hooks/useStory';
+import { useHomeStore } from '@/stores/homeStore';
 import { usePublicStoryStore } from '@/stores/publicStoryStore';
-import { ILink, useStoryConfigStore } from '@/stores/storyStore';
+import { ILink } from '@/stores/storyStore';
 import EditorStyle from '@/styles/Editor.module.css';
 
 export function EditorPage() {
   const { id, linkId } = useParams();
   const { editLink } = useEdit(id, linkId);
+
+  const { select, setSelect } = useHomeStore();
 
   const options = [
     'Introduction',
@@ -25,21 +29,21 @@ export function EditorPage() {
     'Conclusion',
   ];
 
-  const { setMaxWordCount } = useStoryConfigStore();
-
   const { linkContent, setLinkContent } = usePublicStoryStore();
 
   const { story, loading } = useStory(id!);
 
   console.log(story);
 
-  // setMaxWordCount(story?.maxWordCount!);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     await editLink();
   };
+
+  useEffect(() => {
+    setSelect('');
+  }, []);
 
   return (
     <>
@@ -84,7 +88,7 @@ export function EditorPage() {
                 Back
               </ButtonBase>
               <ButtonBase
-                disabled={!linkContent}
+                disabled={!linkContent || !select}
                 onClick={() => {}}
                 rightSection={
                   linkContent ? (
