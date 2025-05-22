@@ -85,7 +85,7 @@ export default function StoryCard({
           {status}
         </span>
       </div>
-      <p className={StoryCardStyles.Preview}>{preview}</p>
+      <p className={StoryCardStyles.Preview} dangerouslySetInnerHTML={{ __html: preview }}/>
       <div className={StoryCardStyles.CardFooter}>
         {(status === 'Ongoing' || status === 'Completed') && (
           <span className={StoryCardStyles.UpdatedAt}>Last updated {updated}</span>

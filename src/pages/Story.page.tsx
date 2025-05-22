@@ -144,7 +144,7 @@ export function Story() {
                   style={{ height: 136, width: 659 }}
                   onClick={() => navigate(`/edit/${story?._id}/${link._id}`)}
                 >
-                  <p>{link.content}</p>
+                  <div dangerouslySetInnerHTML={{ __html: link.content }} />
                   <div className={StoryClasses.stage}>
                     <div className={StoryClasses.stageDiv}>
                       <p>{link.stage}</p>
@@ -192,7 +192,7 @@ export function Story() {
               <div className={StoryClasses.textEditor}>
                 <p className={StoryClasses.textEditorNumber}>{index + 1}</p>
                 <div className={StoryClasses.reactQuillLogged} style={{ height: 136, width: 659 }}>
-                  <p> {link.content}</p>
+                  <p dangerouslySetInnerHTML={{ __html: link.content }}/>
                   <div className={StoryClasses.stageLogged}>
                     <div className={StoryClasses.stageDivLogged}>
                       <p>{link.stage}</p>
