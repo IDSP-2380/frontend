@@ -22,11 +22,11 @@ export function HeaderMenu() {
     },
     {
       id: 'login',
-      link: '/sign-in/*',
+      link: '/sign-in',
       label: (
         <SignedOut>
           <ButtonBase
-            onClick={() => navigate('/sign-in/*')}
+            onClick={() => navigate('/sign-in')}
             rightSection={<img src="/icons/User.svg" />}
             buttonType="secondaryNeutral"
           >
